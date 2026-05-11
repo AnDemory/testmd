@@ -1,0 +1,5 @@
+global-styling:
+  css:
+    theme:
+      assets/css/overrides.css: {}
+  
