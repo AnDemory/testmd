@@ -1,5 +1,10 @@
 global-styling:
   css:
     theme:
-      assets/css/overrides.css: {}
-  
+      assets/css/styles.css: {}
+bootstrap:
+  version: 5.3.8
+  js:
+    assets/bootstrap/js/bootstrap.bundle.min.js: {}
+  dependencies:
+    - core/drupal

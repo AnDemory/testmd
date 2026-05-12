@@ -5,4 +5,4 @@ description: 'Custom subtheme extending Solo'
 core_version_requirement: ^10
 libraries:
   - solo_subtheme/global-styling
-
+  - solo_subtheme/bootstrap

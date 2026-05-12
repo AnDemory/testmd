@@ -1,0 +1,66 @@
+:root {
+  --my-primary-color: #0055aa;
+  --my-font-size: 16px;
+}
+
+.domain-www_aquaramatradefair_be {
+  --my-primary-color: #0055aa;
+  --my-font-size: 16px;
+}
+
+.domain-www_fm_day_be {
+  --my-primary-color: #cc0000;
+  --my-font-size: 16px;
+}
+
+body {
+  font-size: var(--my-font-size);
+}
+
+a,
+button {
+  color: var(--my-primary-color);
+}
+
+.homepage-hero {
+  position: relative;
+  overflow: hidden;
+  max-height: 700px;
+  min-height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.homepage-hero .field--name-field-header-image,
+.homepage-hero .media,
+.homepage-hero .field--name-field-media-image,
+.homepage-hero .field__item {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.homepage-hero img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center center;
+}
+.homepage-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.homepage-hero h1 {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  padding: 1rem 2rem;
+  color: #fff;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}

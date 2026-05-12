@@ -12,3 +12,35 @@ function solo_subtheme_preprocess_html(array &$variables): void {
     }
   }
 }
+
+function solo_subtheme_preprocess_block(array &$variables): void {
+  if (($variables['base_plugin_id'] ?? '') !== 'system_branding_block') {
+    return;
+  }
+
+  $domain = \Drupal::service('domain.negotiator')->getActiveDomain();
+
+  if (!$domain) {
+    return;
+  }
+
+  $theme_path = \Drupal::service('extension.list.theme')
+    ->getPath('solo_subtheme');
+
+  switch ($domain->id()) {
+    case 'www_aquaramatradefair_be':
+      $variables['site_logo'] =
+        base_path() . $theme_path . '/assets/images/logos/atf-logo.png';
+      $variables['site_name'] = 'Aquarama Trade Fair';
+      break;
+
+    case 'www_fm_day_be':
+      $variables['site_logo'] =
+        base_path() . $theme_path . '/assets/images/logos/fm-logo.png';
+      $variables['site_name'] = 'FM Day';
+      break;
+  }
+
+  // Important for domain-specific cache separation.
+  $variables['#cache']['contexts'][] = 'url.site';
+}

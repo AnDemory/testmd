@@ -29,6 +29,6 @@ auth.json
 .ddev
 
 # npm
-/www/themes/custom/olivero_subtheme/node_modules
+/www/themes/custom/solo_subtheme/node_modules
 
 

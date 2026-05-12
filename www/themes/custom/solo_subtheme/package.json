@@ -1,0 +1,20 @@
+{
+  "name": "testmd",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-atf": "sass  --load-path=node_modules --watch assets/scss:assets/css --no-source-map & browser-sync start --proxy 'http://aquaramatradefair.ddev.site/' --files 'assets/css/*.css, assets/js/*.js', '**/*.twig,'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bootstrap": "^5.3.8"
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.4",
+    "sass": "^1.99.0"
+  }
+}
