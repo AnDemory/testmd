@@ -31,6 +31,7 @@
         "drupal/quick_node_clone": "^1.22",
         "drupal/registration": "^3.4",
         "drupal/solo": "^1.0",
+        "drupal/webform": "^6.2",
         "drush/drush": "^13.6"
     },
     "conflict": {
