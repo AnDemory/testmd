@@ -32,7 +32,10 @@
         "drupal/registration": "^3.4",
         "drupal/solo": "^1.0",
         "drupal/webform": "^6.2",
-        "drush/drush": "^13.6"
+        "drush/drush": "^13.6",
+        "endroid/qr-code": "^6.0",
+        "picqer/php-barcode-generator": "^3.2",
+        "tecnickcom/tcpdf": "^6.11"
     },
     "conflict": {
         "drupal/drupal": "*"
