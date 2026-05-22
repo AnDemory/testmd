@@ -1,0 +1,67 @@
+<?php
+use Drupal\Core\Url;
+use Drupal\webform\WebformSubmissionInterface;
+
+/**
+ * Implements hook_webform_submission_insert().
+ */
+function webform_ticket_pdf_webform_submission_insert(
+  WebformSubmissionInterface $submission
+) {
+
+  // Your webform machine name.
+  if ($submission->getWebform()->id() !== 'aquarama_trade_fair_2025') {
+    return;
+  }
+
+  $generator = \Drupal::service(
+    'webform_ticket_pdf.generator'
+  );
+
+  $pdf_uri = $generator->generate($submission);
+
+  // Store PDF path in submission data.
+  $data = $submission->getData();
+
+  $data['ticket_pdf'] = $pdf_uri;
+
+  $submission->setData($data);
+
+  $submission->save();
+}
+
+
+/**
+ * Implements hook_entity_view().
+ */
+function webform_ticket_pdf_entity_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+  if (!$entity instanceof WebformSubmissionInterface) {
+    return;
+  }
+
+  if ($entity->getWebform()->id() !== 'aquarama_trade_fair_2025') {
+    return;
+  }
+
+  $data = $entity->getData();
+
+  if (empty($data['ticket_pdf'])) {
+    return;
+  }
+
+  $url = Url::fromRoute('webform_ticket_pdf.download_ticket', [
+    'webform' => $entity->getWebform()->id(),
+    'webform_submission' => $entity->id(),
+  ]);
+
+  $build['ticket_pdf_button'] = [
+    '#type' => 'link',
+    '#title' => t('Open entrance ticket'),
+    '#url' => $url,
+    '#attributes' => [
+      'class' => ['button', 'button--primary'],
+      'target' => '_blank',
+    ],
+    '#weight' => -10,
+  ];
+}
