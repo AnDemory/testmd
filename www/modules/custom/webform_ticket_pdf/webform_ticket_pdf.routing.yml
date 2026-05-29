@@ -1,0 +1,10 @@
+webform_ticket_pdf.download_ticket:
+  path: '/admin/structure/webform/manage/{webform}/submission/{webform_submission}/ticket'
+  defaults:
+    _controller: '\Drupal\webform_ticket_pdf\Controller\TicketDownloadController::download'
+  requirements:
+    _custom_access: '\Drupal\webform_ticket_pdf\Controller\TicketDownloadController::access'
+  options:
+    parameters:
+      webform_submission:
+        type: entity:webform_submission

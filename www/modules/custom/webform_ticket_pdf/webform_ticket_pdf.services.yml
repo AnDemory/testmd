@@ -1,0 +1,5 @@
+services:
+  webform_ticket_pdf.generator:
+    class: Drupal\webform_ticket_pdf\TicketPdfGenerator
+    arguments:
+      - '@file_system'
