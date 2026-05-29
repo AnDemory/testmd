@@ -8,3 +8,9 @@ webform_ticket_pdf.download_ticket:
     parameters:
       webform_submission:
         type: entity:webform_submission
+webform_ticket_pdf.my_registration:
+  path: '/my-registration'
+  defaults:
+    _controller: '\Drupal\webform_ticket_pdf\Controller\MyRegistrationController::redirectToSubmission'
+  requirements:
+    _user_is_logged_in: 'TRUE'
