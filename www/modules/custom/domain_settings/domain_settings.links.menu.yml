@@ -1,0 +1,5 @@
+domain_settings.settings:
+  title: 'Domain settings'
+  description: 'Configure settings per domain.'
+  route_name: domain_settings.settings
+  parent: system.admin_config

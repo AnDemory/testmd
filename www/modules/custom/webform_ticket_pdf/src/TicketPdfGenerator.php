@@ -19,6 +19,46 @@ class TicketPdfGenerator {
     $this->fileSystem = $fileSystem;
   }
 
+  // protected function getBackgroundTemplate(array $data, string $webform_id): string {
+  //   $special_option = !empty($data['special_option']);
+
+
+  //   if ($webform_id === 'aquarama_trade_fair_2025') {
+
+  //       return DRUPAL_ROOT . '/sites/default/files/tickets/ATF2025-visitorbadge-nl.jpg';
+
+  //   }
+
+  //   if ($webform_id === 'another_event_webform') {
+  //     return DRUPAL_ROOT . '/sites/default/files/tickets/another-event.jpg';
+  //   }
+
+  //   throw new \RuntimeException('No ticket template configured for webform: ' . $webform_id);
+  // }
+  protected function getBackgroundTemplate(array $data, string $webform_id): string {
+    $configured_webform_id = \Drupal::service('domain_settings.manager')
+      ->getTicketWebformId();
+
+    if ($configured_webform_id !== $webform_id) {
+      throw new \RuntimeException('This Webform is not configured for ticket PDFs: ' . $webform_id);
+    }
+
+    $template_uri = \Drupal::service('domain_settings.manager')
+      ->getTicketTemplate();
+
+    if (!$template_uri) {
+      throw new \RuntimeException('No ticket template configured for webform: ' . $webform_id);
+    }
+
+    $template_path = \Drupal::service('file_system')->realpath($template_uri);
+
+    if (!$template_path || !file_exists($template_path)) {
+      throw new \RuntimeException('Ticket template file not found: ' . $template_uri);
+    }
+
+    return $template_path;
+  }
+
   public function generate(WebformSubmissionInterface $submission): string {
 
     $data = $submission->getData();
@@ -70,8 +110,8 @@ class TicketPdfGenerator {
     // ADD JPG BACKGROUND
     // -------------------------------------------------
 
-    $background = DRUPAL_ROOT .
-      '/sites/default/files/ATF2025-visitorbadge-nl.jpg';
+    $webform_id = $submission->getWebform()->id();
+    $background = $this->getBackgroundTemplate($data, $webform_id);
 
     $pdf->Image($background, 0, 0, 210, 297, 'JPG');
 
@@ -138,7 +178,8 @@ class TicketPdfGenerator {
     // SAVE PDF
     // -------------------------------------------------
 
-    $output_uri = $directory . '/ticket-' . $sid . '.pdf';
+    $webform_id = $submission->getWebform()->id();
+    $output_uri = $directory . '/' . $webform_id . '-ticket-' . $sid . '.pdf';
 
     $output_path = $this->fileSystem
       ->realpath($output_uri);

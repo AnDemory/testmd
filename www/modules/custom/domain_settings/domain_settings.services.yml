@@ -1,0 +1,6 @@
+services:
+  domain_settings.manager:
+    class: Drupal\domain_settings\Service\DomainSettingsManager
+    arguments:
+      - '@config.factory'
+      - '@request_stack'

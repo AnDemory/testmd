@@ -1,0 +1,7 @@
+domain_settings.settings:
+  path: '/admin/config/domain-settings'
+  defaults:
+    _form: '\Drupal\domain_settings\Form\DomainSettingsForm'
+    _title: 'Domain settings'
+  requirements:
+    _permission: 'administer site configuration'

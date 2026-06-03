@@ -14,3 +14,7 @@ webform_ticket_pdf.my_registration:
     _controller: '\Drupal\webform_ticket_pdf\Controller\MyRegistrationController::redirectToSubmission'
   requirements:
     _user_is_logged_in: 'TRUE'
+  options:
+    parameters:
+      webform:
+        type: entity:webform
