@@ -46,9 +46,17 @@ class TicketPdfGenerator {
     $template_uri = \Drupal::service('domain_settings.manager')
       ->getTicketTemplate();
 
+
+    //  \Drupal::logger('webform_ticket_pdf')->notice('Using ticket template: ' . $template_uri);
+
     if (!$template_uri) {
       throw new \RuntimeException('No ticket template configured for webform: ' . $webform_id);
     }
+
+    // add parameters to add to template name, depending on data values. For example, if there's a "language" field, you could do:
+    $template_uri .= "-visitorbadge-" . ($data['language'] ?? 'nl') . ".jpg";
+
+     \Drupal::logger('webform_ticket_pdf')->notice('Resolved ticket template URI: ' . $template_uri);
 
     $template_path = \Drupal::service('file_system')->realpath($template_uri);
 
@@ -126,19 +134,68 @@ class TicketPdfGenerator {
     // NAME
     // -------------------------------------------------
 
-    $pdf->SetXY(35, 208);
-    $pdf->Write(0, $name);
+    // $pdf->SetXY(35, 208);
+    // $pdf->Write(0, $name);
+    // $pdf->SetXY(120, 208);
+    // $pdf->Write(0, $name);
+$name= "Christophe Van den Eynde"; // --- TESTING LONG NAMES ---
+
+    // First name box.
+    $pdf->SetXY(15, 208);
+    $pdf->MultiCell(
+      75,     // box width
+      6,      // line height
+      $name,  // text
+      0,      // border: 0 = no border
+      'C',    // align: center
+      false,  // fill
+      1       // move cursor to next line after
+    );
+
+    // Second name box.
     $pdf->SetXY(120, 208);
-    $pdf->Write(0, $name);
+    $pdf->MultiCell(
+      75,
+      6,
+      $name,
+      0,
+      'C',
+      false,
+      1
+    );
 
     // -------------------------------------------------
     // COMPANY
     // -------------------------------------------------
 
-    $pdf->SetXY(35, 218);
-    $pdf->Write(0, $company);
-    $pdf->SetXY(120, 218);
-    $pdf->Write(0, $company);
+    // $pdf->SetXY(35, 218);
+    // $pdf->Write(0, $company);
+    // $pdf->SetXY(120, 218);
+    // $pdf->Write(0, $company);
+
+    $pdf->SetFont('helvetica', 'B', 20);
+    $pdf->SetTextColor(0, 0, 0);
+
+    $pdf->SetXY(15, 225);
+    $pdf->MultiCell(
+      75,
+      6,
+      $company,
+      0,
+      'C',
+      false,
+      1
+    );
+    $pdf->SetXY(120, 225);
+    $pdf->MultiCell(
+      75,
+      6,
+      $company,
+      0,
+      'C',
+      false,
+      1
+    );
 
     // -------------------------------------------------
     // BARCODE
@@ -159,18 +216,18 @@ class TicketPdfGenerator {
 
     $pdf->Image(
       $qr_path,
-      150,
+      38,
       240,
-      30,
-      30,
+      29,
+      29,
       'PNG'
     );
     $pdf->Image(
       $qr_path,
-      40,
+      143,
       240,
-      30,
-      30,
+      29,
+      29,
       'PNG'
     );
 

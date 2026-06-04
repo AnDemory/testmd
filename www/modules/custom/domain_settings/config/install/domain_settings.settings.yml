@@ -3,4 +3,4 @@ domains:
     domain: 'aquaramatradefair.ddev.site'
     mail: 'info@aquaramatradefair.be'
     ticket_webform_id: 'aquarama_trade_fair_2025'
-    ticket_template: 'public://tickets/ATF2025-visitorbadge-nl.jpg
+    ticket_template: 'private://templates/

@@ -26,6 +26,8 @@
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/field_group": "^4.0",
         "drupal/mail_login": "^4.2",
+        "drupal/mailsystem": "^4.5",
+        "drupal/mimemail": "^2.0",
         "drupal/paragraphs": "^1.20",
         "drupal/pathauto": "^1.15",
         "drupal/quick_node_clone": "^1.22",

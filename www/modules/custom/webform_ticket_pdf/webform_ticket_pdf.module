@@ -84,6 +84,7 @@ function webform_ticket_pdf_webform_submission_update(
   $generator = \Drupal::service('webform_ticket_pdf.generator');
 
   $pdf_uri = $generator->generate($submission);
+\Drupal::logger('webform_ticket_pdf')->notice('Generated ticket PDF for submission: ' . $submission->id() . ', PDF URI: ' . $pdf_uri);
 
   $data = $submission->getData();
   $data['ticket_pdf'] = $pdf_uri;
@@ -251,3 +252,268 @@ function webform_ticket_pdf_user_has_submission(string $webform_id, int $uid): b
 
   return !empty($ids);
 }
+
+
+// /**
+//  * Implements hook_mail_alter().
+//  */
+// function webform_ticket_pdf_mail_alter(&$message) {
+//   if (($message['module'] ?? '') !== 'webform') {
+//     return;
+//   }
+
+//   if (empty($message['params']['webform_submission'])) {
+//     return;
+//   }
+
+//   /** @var \Drupal\webform\WebformSubmissionInterface $submission */
+//   $submission = $message['params']['webform_submission'];
+
+//   $configured_webform_id = \Drupal::service('domain_settings.manager')
+//     ->getTicketWebformId();
+
+//   if (!$configured_webform_id || $submission->getWebform()->id() !== $configured_webform_id) {
+//     return;
+//   }
+
+//   \Drupal::logger('webform_ticket_pdf')->notice('Altering email for submission: ' . $submission->id());
+
+//   // Regenerate to make sure the PDF matches the latest submission values.
+//   // $pdf_uri = \Drupal::service('webform_ticket_pdf.generator')
+//   //   ->generate($submission);
+
+//   $data = $submission->getData();
+//   $pdf_uri = $data['ticket_pdf'] ?? NULL;
+//   \Drupal::logger('webform_ticket_pdf')->notice('Using PDF URI from submission data: ' . $pdf_uri);
+
+//   $pdf_path = \Drupal::service('file_system')->realpath($pdf_uri);
+
+//   if (!$pdf_path || !file_exists($pdf_path)) {
+//     \Drupal::logger('webform_ticket_pdf')->error('Ticket PDF not found for mail attachment: @uri', [
+//       '@uri' => $pdf_uri,
+//     ]);
+//     return;
+//   }
+
+//   $webform_id = $submission->getWebform()->id();
+//   $sid = $submission->id();
+//   \Drupal::logger('webform_ticket_pdf')->notice('Attaching PDF to email: ' . $pdf_path);
+
+//   $message['attachments'][] = [
+//     'filepath' => $pdf_path,
+//     'filename' => $webform_id . '-ticket-' . $sid . '.pdf',
+//     'filemime' => 'application/pdf',
+//   ];
+// }
+/**
+ * Implements hook_mail_alter().
+ */
+// function webform_ticket_pdf_mail_alter(&$message) {
+//   if (($message['module'] ?? '') !== 'webform') {
+//     return;
+//   }
+
+//   if (empty($message['params']['webform_submission'])) {
+//     return;
+//   }
+
+//   /** @var \Drupal\webform\WebformSubmissionInterface $submission */
+//   $submission = $message['params']['webform_submission'];
+
+//   $configured_webform_id = \Drupal::service('domain_settings.manager')
+//     ->getTicketWebformId();
+
+//   if (!$configured_webform_id || $submission->getWebform()->id() !== $configured_webform_id) {
+//     return;
+//   }
+
+//   $pdf_uri = \Drupal::service('webform_ticket_pdf.generator')
+//     ->generate($submission);
+
+//   $pdf_path = \Drupal::service('file_system')->realpath($pdf_uri);
+
+//   if (!$pdf_path || !file_exists($pdf_path)) {
+//     \Drupal::logger('webform_ticket_pdf')->error('Ticket PDF not found: @uri', [
+//       '@uri' => $pdf_uri,
+//     ]);
+//     return;
+//   }
+
+//   $webform_id = $submission->getWebform()->id();
+//   $sid = $submission->id();
+
+//    $message['params']['attachments'][] = [
+//     'filepath' => $pdf_path,
+//     'filename' => $webform_id . '-ticket-' . $sid . '.pdf',
+//     'filemime' => 'application/pdf',
+//   ];
+
+//   $message['attachments'][] = [
+//     'filepath' => $pdf_path,
+//     'filename' => $webform_id . '-ticket-' . $sid . '.pdf',
+//     'filemime' => 'application/pdf',
+//   ];
+
+//   \Drupal::logger('webform_ticket_pdf')->notice('Attached ticket PDF to Webform email: @path', [
+//     '@path' => $pdf_path,
+//   ]);
+// }
+
+/**
+ * Implements hook_mail_alter().
+ */
+// function webform_ticket_pdf_mail_alter(&$message) {
+//   if (($message['module'] ?? '') !== 'webform') {
+//     return;
+//   }
+
+//   if (empty($message['params']['webform_submission'])) {
+//     return;
+//   }
+
+//   /** @var \Drupal\webform\WebformSubmissionInterface $submission */
+//   $submission = $message['params']['webform_submission'];
+
+//   $configured_webform_id = \Drupal::service('domain_settings.manager')
+//     ->getTicketWebformId();
+
+//   if (!$configured_webform_id || $submission->getWebform()->id() !== $configured_webform_id) {
+//     return;
+//   }
+
+//   // Generate the latest PDF before sending the email.
+//   $pdf_uri = \Drupal::service('webform_ticket_pdf.generator')
+//     ->generate($submission);
+
+//   $pdf_path = \Drupal::service('file_system')->realpath($pdf_uri);
+
+//   if (!$pdf_path || !file_exists($pdf_path)) {
+//     \Drupal::logger('webform_ticket_pdf')->error('Ticket PDF not found for mail attachment: @uri', [
+//       '@uri' => $pdf_uri,
+//     ]);
+//     return;
+//   }
+
+//   $webform_id = $submission->getWebform()->id();
+//   $sid = $submission->id();
+//   $filename = $webform_id . '-ticket-' . $sid . '.pdf';
+
+//   /*
+//    * Mime Mail often looks in $message['params']['attachments'].
+//    * Some mail plugins look in $message['attachments'].
+//    * Add both to be safe.
+//    */
+//   $attachment = [
+//     'filepath' => $pdf_path,
+//     'filename' => $filename,
+//     'filemime' => 'application/pdf',
+//   ];
+
+//   $message['params']['attachments'][] = $attachment;
+//   $message['attachments'][] = $attachment;
+
+//   \Drupal::logger('webform_ticket_pdf')->notice('Attached ticket PDF to Webform email: @path', [
+//     '@path' => $pdf_path,
+//   ]);
+// }
+
+/**
+ * Implements hook_mail_alter().
+ */
+// function webform_ticket_pdf_mail_alter(&$message) {
+//   if (($message['module'] ?? '') !== 'webform') {
+//     return;
+//   }
+
+//   if (empty($message['params']['webform_submission'])) {
+//     return;
+//   }
+
+//   /** @var \Drupal\webform\WebformSubmissionInterface $submission */
+//   $submission = $message['params']['webform_submission'];
+
+//   $configured_webform_id = \Drupal::service('domain_settings.manager')
+//     ->getTicketWebformId();
+
+//   if (!$configured_webform_id || $submission->getWebform()->id() !== $configured_webform_id) {
+//     return;
+//   }
+
+//   $pdf_uri = \Drupal::service('webform_ticket_pdf.generator')
+//     ->generate($submission);
+
+//   $pdf_path = \Drupal::service('file_system')->realpath($pdf_uri);
+
+//   if (!$pdf_path || !file_exists($pdf_path)) {
+//     \Drupal::logger('webform_ticket_pdf')->error('Ticket PDF not found: @uri', [
+//       '@uri' => $pdf_uri,
+//     ]);
+//     return;
+//   }
+
+//   if (!is_readable($pdf_path)) {
+//     \Drupal::logger('webform_ticket_pdf')->error('Ticket PDF is not readable: @path', [
+//       '@path' => $pdf_path,
+//     ]);
+//     return;
+//   }
+
+//   $webform_id = $submission->getWebform()->id();
+//   $sid = $submission->id();
+//   $filename = $webform_id . '-ticket-' . $sid . '.pdf';
+
+//   $attachment = [
+//     'filepath' => $pdf_path,
+//     'path' => $pdf_path,
+//     'filename' => $filename,
+//     'filemime' => 'application/pdf',
+//     'mime' => 'application/pdf',
+//   ];
+
+//   $message['params']['attachments'][] = $attachment;
+
+//   \Drupal::logger('webform_ticket_pdf')->notice('Added Mime Mail attachment: @filename at @path', [
+//     '@filename' => $filename,
+//     '@path' => $pdf_path,
+//   ]);
+// }
+
+/**
+ * Implements hook_mail_alter().
+ */
+// function webform_ticket_pdf_mail_alter(&$message) {
+//   if (($message['module'] ?? '') !== 'webform') {
+//     return;
+//   }
+
+//   if (empty($message['params']['webform_submission'])) {
+//     return;
+//   }
+
+//   /** @var \Drupal\webform\WebformSubmissionInterface $submission */
+//   $submission = $message['params']['webform_submission'];
+
+//   $attachment = \Drupal::state()->get('webform_ticket_pdf.attachment.' . $submission->id());
+
+//   if (empty($attachment['path']) || !file_exists($attachment['path']) || !is_readable($attachment['path'])) {
+//     \Drupal::logger('webform_ticket_pdf')->error('Prepared ticket attachment not available for submission @sid.', [
+//       '@sid' => $submission->id(),
+//     ]);
+//     return;
+//   }
+
+//   $mail_attachment = [
+//     'filepath' => $attachment['path'],
+//     'path' => $attachment['path'],
+//     'filename' => $attachment['filename'],
+//     'filemime' => $attachment['filemime'],
+//     'mime' => $attachment['filemime'],
+//   ];
+
+//   $message['params']['attachments'][] = $mail_attachment;
+//   $message['attachments'][] = $mail_attachment;
+
+//   \Drupal::logger('webform_ticket_pdf')->notice('Added prepared ticket attachment to email: @filename', [
+//     '@filename' => $attachment['filename'],
+//   ]);
+// }

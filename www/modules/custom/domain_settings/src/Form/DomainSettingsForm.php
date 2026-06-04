@@ -90,7 +90,7 @@ class DomainSettingsForm extends ConfigFormBase {
         '#title' => $this->t('Ticket template'),
         '#title_display' => 'invisible',
         '#default_value' => $row['ticket_template'] ?? '',
-        '#placeholder' => 'public://tickets/template.jpg',
+        '#placeholder' => 'private://templates/<magazine>/<year>/<event>',
         '#size' => 45,
       ];
     }

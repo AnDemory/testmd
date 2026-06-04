@@ -1,0 +1,62 @@
+<?php
+
+use Drupal\Core\Render\BubbleableMetadata;
+
+/**
+ * Implements hook_token_info().
+ */
+function domain_settings_token_info() {
+  $types['domain-settings'] = [
+    'name' => t('Domain settings'),
+    'description' => t('Settings for the current domain.'),
+  ];
+
+  $tokens['domain-settings']['mail'] = [
+    'name' => t('Domain email address'),
+    'description' => t('The configured email address for the current domain.'),
+  ];
+
+  $tokens['domain-settings']['ticket-webform-id'] = [
+    'name' => t('Ticket Webform ID'),
+    'description' => t('The configured ticket Webform ID for the current domain.'),
+  ];
+
+  return [
+    'types' => $types,
+    'tokens' => $tokens,
+  ];
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function domain_settings_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+
+  if ($type !== 'domain-settings') {
+    return $replacements;
+  }
+
+  /** @var \Drupal\domain_settings\Service\DomainSettingsManager $manager */
+  $manager = \Drupal::service('domain_settings.manager');
+
+  foreach ($tokens as $name => $original) {
+    switch ($name) {
+      case 'mail':
+        $mail = $manager->getMail();
+
+        if (!$mail) {
+          $mail = \Drupal::config('system.site')->get('mail');
+        }
+
+        $replacements[$original] = $mail;
+        break;
+
+      case 'ticket-webform-id':
+        $replacements[$original] = $manager->getTicketWebformId() ?: '';
+        break;
+    }
+  }
+
+  return $replacements;
+}
