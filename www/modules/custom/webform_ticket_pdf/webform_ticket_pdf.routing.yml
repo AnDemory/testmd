@@ -1,3 +1,10 @@
+webform_ticket_pdf.my_registration:
+  path: '/my-registration'
+  defaults:
+    _controller: '\Drupal\webform_ticket_pdf\Controller\MyRegistrationController::page'
+    _title: 'My registration'
+  requirements:
+    _user_is_logged_in: 'TRUE'
 webform_ticket_pdf.download_ticket:
   path: '/ticket/{webform}/submission/{webform_submission}'
   defaults:
@@ -8,13 +15,15 @@ webform_ticket_pdf.download_ticket:
     parameters:
       webform_submission:
         type: entity:webform_submission
-webform_ticket_pdf.my_registration:
-  path: '/my-registration'
+webform_ticket_pdf.email_ticket:
+  path: '/ticket/{webform}/submission/{webform_submission}/email'
   defaults:
-    _controller: '\Drupal\webform_ticket_pdf\Controller\MyRegistrationController::redirectToSubmission'
+    _controller: '\Drupal\webform_ticket_pdf\Controller\TicketEmailController::send'
+    _title: 'Email ticket'
   requirements:
-    _user_is_logged_in: 'TRUE'
+    _custom_access: '\Drupal\webform_ticket_pdf\Controller\TicketDownloadController::access'
   options:
     parameters:
-      webform:
-        type: entity:webform
+      webform_submission:
+        type: entity:webform_submission
+

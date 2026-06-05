@@ -19,39 +19,32 @@ use Drupal\webform\WebformSubmissionInterface;
  */
 class TicketEmailWebformHandler extends EmailWebformHandler {
 
-  /**
-   * Sends the ticket email manually.
-   *
-   * This is used by the "Email me the ticket" button.
-   */
-  public function sendTicketEmail(WebformSubmissionInterface $webform_submission): bool {
-    if (!$this->appliesToSubmission($webform_submission)) {
-      return FALSE;
-    }
-
-    $message = $this->getMessage($webform_submission);
-
-    if (!$message) {
-      return FALSE;
-    }
-
-    $this->sendMessage($webform_submission, $message);
-
-    return TRUE;
-  }
-
-  /**
+    /**
    * {@inheritdoc}
    */
   protected function getMessageAttachments(WebformSubmissionInterface $webform_submission) {
     $attachments = [];
 
-    if (!$this->appliesToSubmission($webform_submission)) {
+    $configured_webform_id = \Drupal::service('domain_settings.manager')
+      ->getTicketWebformId();
+
+    if (!$configured_webform_id || $webform_submission->getWebform()->id() !== $configured_webform_id) {
       return $attachments;
     }
 
+    // $pdf_uri = \Drupal::service('webform_ticket_pdf.generator')
+    //   ->generate($webform_submission);
+
+    // $pdf_path = \Drupal::service('file_system')->realpath($pdf_uri);
+
+    // if (!$pdf_path || !file_exists($pdf_path) || !is_readable($pdf_path)) {
+    //   return $attachments;
+    // }
+
     $webform_id = $webform_submission->getWebform()->id();
     $sid = $webform_submission->id();
+
+    // $filecontent = file_get_contents($pdf_path);
 
     $filecontent = \Drupal::service('webform_ticket_pdf.generator')
       ->generate($webform_submission);
@@ -67,20 +60,6 @@ class TicketEmailWebformHandler extends EmailWebformHandler {
     ];
 
     return $attachments;
-  }
-
-  /**
-   * Checks whether this handler should apply to this submission.
-   */
-  protected function appliesToSubmission(WebformSubmissionInterface $webform_submission): bool {
-    $configured_webform_id = \Drupal::service('domain_settings.manager')
-      ->getTicketWebformId();
-
-    if (!$configured_webform_id) {
-      return FALSE;
-    }
-
-    return $webform_submission->getWebform()->id() === $configured_webform_id;
   }
 
   /**
@@ -111,7 +90,7 @@ class TicketEmailWebformHandler extends EmailWebformHandler {
     }
 
     if (!empty($configuration['settings']['from_mail'])) {
-      $from .= $from ? ' &lt;' . $configuration['settings']['from_mail'] . '&gt;' : $configuration['settings']['from_mail'];
+      $from .= $from ? ' &lt;' . $configuration['settings']['from_mail'] . '&gt;' : $configuration['settings']['from_mail'] . '</div>';
     }
 
     if ($from) {
@@ -162,6 +141,7 @@ class TicketEmailWebformHandler extends EmailWebformHandler {
         '#markup' => '<div><strong>' . $this->t('Sent when') . ':</strong> ' . implode('; ', $sent_when) . '</div>',
       ];
     }
+
 
     $summary['ticket_attachment'] = [
       '#markup' => '<div><strong>' . $this->t('Attachment') . ':</strong> ' . $this->t('Generated ticket PDF') . '</div>',
