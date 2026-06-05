@@ -9,31 +9,33 @@ function webform_ticket_pdf_webform_submission_insert(
   WebformSubmissionInterface $submission
 ) {
 
-  $configured_webform_id = \Drupal::service('domain_settings.manager')
-    ->getTicketWebformId();
+  // PDF is now generated on demand by TicketDownloadController.
 
-  if (!$configured_webform_id) {
-    return;
-  }
+  // $configured_webform_id = \Drupal::service('domain_settings.manager')
+  //   ->getTicketWebformId();
 
-  if ($submission->getWebform()->id() !== $configured_webform_id) {
-    return;
-  }
+  // if (!$configured_webform_id) {
+  //   return;
+  // }
 
-  $generator = \Drupal::service(
-    'webform_ticket_pdf.generator'
-  );
+  // if ($submission->getWebform()->id() !== $configured_webform_id) {
+  //   return;
+  // }
 
-  $pdf_uri = $generator->generate($submission);
+  // $generator = \Drupal::service(
+  //   'webform_ticket_pdf.generator'
+  // );
 
-  // Store PDF path in submission data.
-  $data = $submission->getData();
+  // $pdf_uri = $generator->generate($submission);
 
-  $data['ticket_pdf'] = $pdf_uri;
+  // // Store PDF path in submission data.
+  // $data = $submission->getData();
 
-  $submission->setData($data);
+  // $data['ticket_pdf'] = $pdf_uri;
 
-  $submission->save();
+  // $submission->setData($data);
+
+  // $submission->save();
 }
 
 /**
@@ -43,26 +45,28 @@ function webform_ticket_pdf_webform_submission_update(
   WebformSubmissionInterface $submission
 ) {
 
-  $configured_webform_id = \Drupal::service('domain_settings.manager')
-    ->getTicketWebformId();
+  // PDF is now generated on demand by TicketDownloadController.
 
-  if (!$configured_webform_id) {
-    return;
-  }
+  // $configured_webform_id = \Drupal::service('domain_settings.manager')
+  //   ->getTicketWebformId();
 
-  if ($submission->getWebform()->id() !== $configured_webform_id) {
-    return;
-  }
+  // if (!$configured_webform_id) {
+  //   return;
+  // }
 
-  $generator = \Drupal::service('webform_ticket_pdf.generator');
+  // if ($submission->getWebform()->id() !== $configured_webform_id) {
+  //   return;
+  // }
 
-  $pdf_uri = $generator->generate($submission);
-\Drupal::logger('webform_ticket_pdf')->notice('Generated ticket PDF for submission: ' . $submission->id() . ', PDF URI: ' . $pdf_uri);
+  // $generator = \Drupal::service('webform_ticket_pdf.generator');
 
-  $data = $submission->getData();
-  $data['ticket_pdf'] = $pdf_uri;
+  // $pdf_uri = $generator->generate($submission);
 
-  $submission->setData($data);
+
+  // $data = $submission->getData();
+  // $data['ticket_pdf'] = $pdf_uri;
+
+  // $submission->setData($data);
 
   // Avoid infinite loop by not saving again here.
 }

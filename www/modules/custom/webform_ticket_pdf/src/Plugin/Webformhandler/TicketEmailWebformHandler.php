@@ -32,19 +32,22 @@ class TicketEmailWebformHandler extends EmailWebformHandler {
       return $attachments;
     }
 
-    $pdf_uri = \Drupal::service('webform_ticket_pdf.generator')
-      ->generate($webform_submission);
+    // $pdf_uri = \Drupal::service('webform_ticket_pdf.generator')
+    //   ->generate($webform_submission);
 
-    $pdf_path = \Drupal::service('file_system')->realpath($pdf_uri);
+    // $pdf_path = \Drupal::service('file_system')->realpath($pdf_uri);
 
-    if (!$pdf_path || !file_exists($pdf_path) || !is_readable($pdf_path)) {
-      return $attachments;
-    }
+    // if (!$pdf_path || !file_exists($pdf_path) || !is_readable($pdf_path)) {
+    //   return $attachments;
+    // }
 
     $webform_id = $webform_submission->getWebform()->id();
     $sid = $webform_submission->id();
 
-    $filecontent = file_get_contents($pdf_path);
+    // $filecontent = file_get_contents($pdf_path);
+
+    $filecontent = \Drupal::service('webform_ticket_pdf.generator')
+      ->generate($webform_submission);
 
     if ($filecontent === FALSE || $filecontent === '') {
       return $attachments;

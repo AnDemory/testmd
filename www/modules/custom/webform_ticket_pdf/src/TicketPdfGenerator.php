@@ -19,22 +19,6 @@ class TicketPdfGenerator {
     $this->fileSystem = $fileSystem;
   }
 
-  // protected function getBackgroundTemplate(array $data, string $webform_id): string {
-  //   $special_option = !empty($data['special_option']);
-
-
-  //   if ($webform_id === 'aquarama_trade_fair_2025') {
-
-  //       return DRUPAL_ROOT . '/sites/default/files/tickets/ATF2025-visitorbadge-nl.jpg';
-
-  //   }
-
-  //   if ($webform_id === 'another_event_webform') {
-  //     return DRUPAL_ROOT . '/sites/default/files/tickets/another-event.jpg';
-  //   }
-
-  //   throw new \RuntimeException('No ticket template configured for webform: ' . $webform_id);
-  // }
   protected function getBackgroundTemplate(array $data, string $webform_id): string {
     $configured_webform_id = \Drupal::service('domain_settings.manager')
       ->getTicketWebformId();
@@ -79,17 +63,17 @@ class TicketPdfGenerator {
 
     $sid = $submission->id();
 
-    // -------------------------------------------------
-    // CREATE DIRECTORY
-    // -------------------------------------------------
+    // // -------------------------------------------------
+    // // CREATE DIRECTORY
+    // // -------------------------------------------------
 
-    $directory = 'private://tickets';
+    // $directory = 'private://tickets';
 
-    $this->fileSystem->prepareDirectory(
-      $directory,
-      FileSystemInterface::CREATE_DIRECTORY |
-      FileSystemInterface::MODIFY_PERMISSIONS
-    );
+    // $this->fileSystem->prepareDirectory(
+    //   $directory,
+    //   FileSystemInterface::CREATE_DIRECTORY |
+    //   FileSystemInterface::MODIFY_PERMISSIONS
+    // );
 
     // -------------------------------------------------
     // GENERATE QR CODE
@@ -134,11 +118,6 @@ class TicketPdfGenerator {
     // NAME
     // -------------------------------------------------
 
-    // $pdf->SetXY(35, 208);
-    // $pdf->Write(0, $name);
-    // $pdf->SetXY(120, 208);
-    // $pdf->Write(0, $name);
-$name= "Christophe Van den Eynde"; // --- TESTING LONG NAMES ---
 
     // First name box.
     $pdf->SetXY(15, 208);
@@ -231,19 +210,25 @@ $name= "Christophe Van den Eynde"; // --- TESTING LONG NAMES ---
       'PNG'
     );
 
+    // // -------------------------------------------------
+    // // SAVE PDF
+    // // -------------------------------------------------
+
+    // $webform_id = $submission->getWebform()->id();
+    // $output_uri = $directory . '/' . $webform_id . '-ticket-' . $sid . '.pdf';
+
+    // $output_path = $this->fileSystem
+    //   ->realpath($output_uri);
+
+    // $pdf->Output($output_path, 'F');
+
+    // return $output_uri;
+
     // -------------------------------------------------
-    // SAVE PDF
+    // RETURN PDF AS STRING, DO NOT SAVE FILE
     // -------------------------------------------------
 
-    $webform_id = $submission->getWebform()->id();
-    $output_uri = $directory . '/' . $webform_id . '-ticket-' . $sid . '.pdf';
-
-    $output_path = $this->fileSystem
-      ->realpath($output_uri);
-
-    $pdf->Output($output_path, 'F');
-
-    return $output_uri;
+    return $pdf->Output('', 'S');
   }
 
   // =====================================================
