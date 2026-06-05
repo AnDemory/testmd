@@ -53,8 +53,14 @@ class TicketEmailWebformHandler extends EmailWebformHandler {
     $webform_id = $webform_submission->getWebform()->id();
     $sid = $webform_submission->id();
 
+     $domain = webform_ticket_pdf_get_domain_for_submission($webform_submission);
+
+    if (!$domain) {
+       return $attachments;
+    }
+
     $filecontent = \Drupal::service('webform_ticket_pdf.generator')
-      ->generate($webform_submission);
+      ->generate($webform_submission, $domain);
 
     if ($filecontent === FALSE || $filecontent === '') {
       return $attachments;
@@ -73,14 +79,16 @@ class TicketEmailWebformHandler extends EmailWebformHandler {
    * Checks whether this handler should apply to this submission.
    */
   protected function appliesToSubmission(WebformSubmissionInterface $webform_submission): bool {
-    $configured_webform_id = \Drupal::service('domain_settings.manager')
-      ->getTicketWebformId();
+  //   $configured_webform_id = \Drupal::service('domain_settings.manager')
+  //     ->getTicketWebformId();
 
-    if (!$configured_webform_id) {
-      return FALSE;
-    }
+  //   if (!$configured_webform_id) {
+  //     return FALSE;
+  //   }
 
-    return $webform_submission->getWebform()->id() === $configured_webform_id;
+  //   return $webform_submission->getWebform()->id() === $configured_webform_id;
+  return function_exists('webform_ticket_pdf_is_ticket_submission')
+    && webform_ticket_pdf_is_ticket_submission($webform_submission);
   }
 
   /**

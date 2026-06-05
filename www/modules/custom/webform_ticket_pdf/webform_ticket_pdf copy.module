@@ -6,7 +6,6 @@ use Drupal\webform\WebformSubmissionInterface;
 
 /**
  * Implements hook_webform_submission_insert().
- * Use only for physical PDF generation on submission, which is now deprecated in favor of on-demand generation in TicketDownloadController.
  */
 function webform_ticket_pdf_webform_submission_insert(
   WebformSubmissionInterface $submission
@@ -43,7 +42,6 @@ function webform_ticket_pdf_webform_submission_insert(
 
 /**
  * Implements hook_webform_submission_update().
- * Use only for physical PDF generation on submission, which is now deprecated in favor of on-demand generation in TicketDownloadController.
  */
 function webform_ticket_pdf_webform_submission_update(
   WebformSubmissionInterface $submission
@@ -77,7 +75,6 @@ function webform_ticket_pdf_webform_submission_update(
 
 /**
  * Implements hook_entity_view().
- * Use only for adding a link to the PDF in the submission view, which is now deprecated in favor of on-demand generation in TicketDownloadController.
  */
 // function webform_ticket_pdf_entity_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
 //   if (!$entity instanceof WebformSubmissionInterface) {
@@ -112,10 +109,7 @@ function webform_ticket_pdf_webform_submission_update(
 //   ];
 // }
 
-/**
- * Implements hook_preprocess_menu().
- * Updates the "My registration" menu item title if the user already has a submission, to avoid confusion about whether they can submit again.
- */
+
 function webform_ticket_pdf_preprocess_menu(array &$variables) {
   $current_user = \Drupal::currentUser();
 
@@ -167,23 +161,136 @@ function webform_ticket_pdf_user_has_submission(string $webform_id, int $uid): b
 
 
 /**
- * Gets the domain ID linked to a ticket submission.
+ * Implements hook_form_alter().
  */
-function webform_ticket_pdf_get_domain_for_submission(WebformSubmissionInterface $submission): ?string {
-  $webform_id = $submission->getWebform()->id();
+function webform_ticket_pdf_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  if (!str_contains($form_id, 'webform')) {
+    return;
+  }
 
-  $ticket_webform_ids_by_domain = \Drupal::service('domain_settings.manager')
-    ->getTicketWebformIdsByDomain();
+  $build_info = $form_state->getBuildInfo();
 
-  $domain = array_search($webform_id, $ticket_webform_ids_by_domain, TRUE);
+  if (empty($build_info['callback_object'])) {
+    return;
+  }
 
-  return $domain !== FALSE ? $domain : NULL;
+  $callback_object = $build_info['callback_object'];
+
+  if (!method_exists($callback_object, 'getEntity')) {
+    return;
+  }
+
+  $entity = $callback_object->getEntity();
+
+  if (!$entity instanceof WebformSubmissionInterface) {
+    return;
+  }
+
+  $configured_webform_id = \Drupal::service('domain_settings.manager')
+    ->getTicketWebformId();
+
+  if (!$configured_webform_id) {
+    return;
+  }
+
+  if ($entity->getWebform()->id() !== $configured_webform_id) {
+    return;
+  }
+
+  $form['ticket_actions'] = [
+    '#type' => 'container',
+    '#attributes' => [
+      'class' => ['ticket-actions'],
+    ],
+    '#weight' => -100,
+  ];
+
+  $form['ticket_actions']['download_ticket'] = [
+    '#type' => 'link',
+    '#title' => t('Download ticket'),
+    '#url' => Url::fromRoute('webform_ticket_pdf.download_ticket', [
+      'webform' => $entity->getWebform()->id(),
+      'webform_submission' => $entity->id(),
+    ]),
+    '#attributes' => [
+      'class' => ['button', 'button--primary'],
+      'target' => '_blank',
+    ],
+  ];
+
+  $form['ticket_actions']['email_ticket'] = [
+    '#type' => 'link',
+    '#title' => t('Email ticket'),
+    '#url' => Url::fromRoute('webform_ticket_pdf.email_ticket', [
+      'webform' => $entity->getWebform()->id(),
+      'webform_submission' => $entity->id(),
+    ]),
+    '#attributes' => [
+      'class' => ['button'],
+    ],
+  ];
 }
 
-
 /**
- * Checks whether this is a configured ticket submission.
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Adds ticket buttons to the Webform submissions overview table.
  */
-function webform_ticket_pdf_is_ticket_submission(WebformSubmissionInterface $submission): bool {
-  return webform_ticket_pdf_get_domain_for_submission($submission) !== NULL;
+function webform_ticket_pdf_form_webform_results_submissions_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  $webform = $form_state->get('webform');
+
+  if (!$webform) {
+    return;
+  }
+
+  $configured_webform_id = \Drupal::service('domain_settings.manager')
+    ->getTicketWebformId();
+
+  if (!$configured_webform_id || $webform->id() !== $configured_webform_id) {
+    return;
+  }
+
+  if (empty($form['submissions']['#header']) || empty($form['submissions']['#options'])) {
+    return;
+  }
+
+  $form['submissions']['#header']['ticket_actions'] = t('Ticket');
+
+  foreach ($form['submissions']['#options'] as $sid => &$row) {
+    if (!is_numeric($sid)) {
+      continue;
+    }
+
+    $row['ticket_actions'] = [
+      'data' => [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['ticket-actions'],
+        ],
+        'download' => [
+          '#type' => 'link',
+          '#title' => t('Download'),
+          '#url' => Url::fromRoute('webform_ticket_pdf.download_ticket', [
+            'webform' => $configured_webform_id,
+            'webform_submission' => $sid,
+          ]),
+          '#attributes' => [
+            'class' => ['button', 'button--small'],
+            'target' => '_blank',
+          ],
+        ],
+        'email' => [
+          '#type' => 'link',
+          '#title' => t('Email'),
+          '#url' => Url::fromRoute('webform_ticket_pdf.email_ticket', [
+            'webform' => $configured_webform_id,
+            'webform_submission' => $sid,
+          ]),
+          '#attributes' => [
+            'class' => ['button', 'button--small'],
+          ],
+        ],
+      ],
+    ];
+  }
 }

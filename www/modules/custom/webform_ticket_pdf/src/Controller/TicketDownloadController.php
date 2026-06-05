@@ -5,7 +5,7 @@ namespace Drupal\webform_ticket_pdf\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\webform\WebformSubmissionInterface;
 // use Symfony\Component\HttpFoundation\BinaryFileResponse;
-// use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
@@ -41,8 +41,14 @@ class TicketDownloadController extends ControllerBase {
   //   return $response;
   // }
   public function download(WebformSubmissionInterface $webform_submission) {
+    $domain = webform_ticket_pdf_get_domain_for_submission($webform_submission);
+
+    if (!$domain) {
+      throw new NotFoundHttpException('No ticket domain found for this submission.');
+    }
+
     $pdf_content = \Drupal::service('webform_ticket_pdf.generator')
-      ->generate($webform_submission);
+      ->generate($webform_submission, $domain);
 
     $response = new Response($pdf_content);
     $response->headers->set('Content-Type', 'application/pdf');

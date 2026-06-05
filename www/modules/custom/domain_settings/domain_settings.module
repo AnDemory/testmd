@@ -60,3 +60,4 @@ function domain_settings_tokens($type, $tokens, array $data, array $options, Bub
 
   return $replacements;
 }
+

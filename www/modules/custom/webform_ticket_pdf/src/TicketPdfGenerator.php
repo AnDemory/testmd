@@ -19,16 +19,16 @@ class TicketPdfGenerator {
     $this->fileSystem = $fileSystem;
   }
 
-  protected function getBackgroundTemplate(array $data, string $webform_id): string {
+  protected function getBackgroundTemplate(array $data, string $webform_id, ?string $domain = NULL): string {
     $configured_webform_id = \Drupal::service('domain_settings.manager')
-      ->getTicketWebformId();
+      ->getTicketWebformId($domain);
 
     if ($configured_webform_id !== $webform_id) {
-      throw new \RuntimeException('This Webform is not configured for ticket PDFs: ' . $webform_id);
+      throw new \RuntimeException('This Webform is not configured for ticket PDFs: ' . $configured_webform_id . '<->' .$webform_id);
     }
 
     $template_uri = \Drupal::service('domain_settings.manager')
-      ->getTicketTemplate();
+      ->getTicketTemplate($domain);
 
 
     //  \Drupal::logger('webform_ticket_pdf')->notice('Using ticket template: ' . $template_uri);
@@ -51,7 +51,8 @@ class TicketPdfGenerator {
     return $template_path;
   }
 
-  public function generate(WebformSubmissionInterface $submission): string {
+  //public function generate(WebformSubmissionInterface $submission): string {
+  public function generate(WebformSubmissionInterface $submission, ?string $domain = NULL): string {
 
     $data = $submission->getData();
 
@@ -103,7 +104,7 @@ class TicketPdfGenerator {
     // -------------------------------------------------
 
     $webform_id = $submission->getWebform()->id();
-    $background = $this->getBackgroundTemplate($data, $webform_id);
+    $background = $this->getBackgroundTemplate($data, $webform_id, $domain);
 
     $pdf->Image($background, 0, 0, 210, 297, 'JPG');
 

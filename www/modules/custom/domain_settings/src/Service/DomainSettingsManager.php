@@ -61,12 +61,35 @@ class DomainSettingsManager {
   /**
    * Returns configured ticket Webform ID for a domain.
    */
-  public function getTicketWebformId(?string $domain = NULL): ?string {
-    $settings = $this->getForDomain($domain);
+  // public function getTicketWebformId(?string $domain = NULL): ?string {
+  //   $settings = $this->getForDomain($domain);
 
-    return $settings['ticket_webform_id'] ?? NULL;
-  }
+  //   return $settings['ticket_webform_id'] ?? NULL;
+  // }
+  // public function getTicketWebformId(?string $domain_id = NULL): ?string {
+  //   if (!$domain_id) {
+  //     // $domain = $this->domainNegotiator->getActiveDomain();
+  //     $domain = \Drupal::service('domain.negotiator')->getActiveDomain();
 
+  //     if (!$domain) {
+  //       return NULL;
+  //     }
+
+  //     $domain_id = $domain->id();
+  //   }
+
+  //   $settings = $this->getSettings($domain_id);
+
+  //   return $settings['ticket_webform_id'] ?? NULL;
+  // }
+/**
+ * Returns configured ticket Webform ID for a domain.
+ */
+public function getTicketWebformId(?string $domain = NULL): ?string {
+  $settings = $this->getForDomain($domain);
+
+  return $settings['ticket_webform_id'] ?? NULL;
+}
   /**
    * Returns configured ticket template URI for a domain.
    */
@@ -76,4 +99,40 @@ class DomainSettingsManager {
     return $settings['ticket_template'] ?? NULL;
   }
 
+  // public function getTicketWebformIdsByDomain(): array {
+  //   $result = [];
+
+  //   $domains = \Drupal::entityTypeManager()
+  //     ->getStorage('domain')
+  //     ->loadMultiple();
+
+  //   foreach ($domains as $domain) {
+  //     $domain_id = $domain->id();
+
+  //     $ticket_webform_id = $this->getTicketWebformId($domain_id);
+
+  //     if ($ticket_webform_id) {
+  //       $result[$domain_id] = $ticket_webform_id;
+  //     }
+  //   }
+
+  //   return $result;
+  // }
+/**
+ * Returns configured ticket Webform IDs keyed by configured domain host.
+ */
+public function getTicketWebformIdsByDomain(): array {
+  $result = [];
+
+  foreach ($this->getAll() as $settings) {
+    $domain = strtolower($settings['domain'] ?? '');
+    $ticket_webform_id = $settings['ticket_webform_id'] ?? '';
+
+    if ($domain && $ticket_webform_id) {
+      $result[$domain] = $ticket_webform_id;
+    }
+  }
+
+  return $result;
+}
 }

@@ -22,6 +22,12 @@ class TicketEmailController extends ControllerBase {
       }
     }
 
+    $domain = webform_ticket_pdf_get_domain_for_submission($webform_submission);
+
+    if (!$domain) {
+      throw new NotFoundHttpException('No ticket domain found for this submission.');
+    }
+
     if (!$handler || !method_exists($handler, 'sendTicketEmail')) {
       throw new NotFoundHttpException('Ticket email handler not found.');
     }
