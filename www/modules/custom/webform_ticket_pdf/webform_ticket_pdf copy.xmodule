@@ -1,6 +1,4 @@
 <?php
-
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\webform\WebformSubmissionInterface;
 
@@ -76,38 +74,38 @@ function webform_ticket_pdf_webform_submission_update(
 /**
  * Implements hook_entity_view().
  */
-// function webform_ticket_pdf_entity_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
-//   if (!$entity instanceof WebformSubmissionInterface) {
-//     return;
-//   }
+function webform_ticket_pdf_entity_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+  if (!$entity instanceof WebformSubmissionInterface) {
+    return;
+  }
 
-//   $configured_webform_id = \Drupal::service('domain_settings.manager')
-//     ->getTicketWebformId();
+  $configured_webform_id = \Drupal::service('domain_settings.manager')
+    ->getTicketWebformId();
 
-//   if (!$configured_webform_id) {
-//     return;
-//   }
+  if (!$configured_webform_id) {
+    return;
+  }
 
-//   if ($entity->getWebform()->id() !== $configured_webform_id) {
-//     return;
-//   }
+  if ($entity->getWebform()->id() !== $configured_webform_id) {
+    return;
+  }
 
-//   $url = Url::fromRoute('webform_ticket_pdf.download_ticket', [
-//     'webform' => $entity->getWebform()->id(),
-//     'webform_submission' => $entity->id(),
-//   ]);
+  $url = Url::fromRoute('webform_ticket_pdf.download_ticket', [
+    'webform' => $entity->getWebform()->id(),
+    'webform_submission' => $entity->id(),
+  ]);
 
-//   $build['ticket_pdf_button'] = [
-//     '#type' => 'link',
-//     '#title' => t('Open entrance ticket'),
-//     '#url' => $url,
-//     '#attributes' => [
-//       'class' => ['button', 'button--primary'],
-//       'target' => '_blank',
-//     ],
-//     '#weight' => -10,
-//   ];
-// }
+  $build['ticket_pdf_button'] = [
+    '#type' => 'link',
+    '#title' => t('Open entrance ticket'),
+    '#url' => $url,
+    '#attributes' => [
+      'class' => ['button', 'button--primary'],
+      'target' => '_blank',
+    ],
+    '#weight' => -10,
+  ];
+}
 
 
 function webform_ticket_pdf_preprocess_menu(array &$variables) {
@@ -157,76 +155,4 @@ function webform_ticket_pdf_user_has_submission(string $webform_id, int $uid): b
     ->execute();
 
   return !empty($ids);
-}
-
-
-/**
- * Implements hook_form_alter().
- */
-function webform_ticket_pdf_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-  if (!str_contains($form_id, 'webform')) {
-    return;
-  }
-
-  $build_info = $form_state->getBuildInfo();
-
-  if (empty($build_info['callback_object'])) {
-    return;
-  }
-
-  $callback_object = $build_info['callback_object'];
-
-  if (!method_exists($callback_object, 'getEntity')) {
-    return;
-  }
-
-  $entity = $callback_object->getEntity();
-
-  if (!$entity instanceof WebformSubmissionInterface) {
-    return;
-  }
-
-  $configured_webform_id = \Drupal::service('domain_settings.manager')
-    ->getTicketWebformId();
-
-  if (!$configured_webform_id) {
-    return;
-  }
-
-  if ($entity->getWebform()->id() !== $configured_webform_id) {
-    return;
-  }
-
-  $form['ticket_actions'] = [
-    '#type' => 'container',
-    '#attributes' => [
-      'class' => ['ticket-actions'],
-    ],
-    '#weight' => -100,
-  ];
-
-  $form['ticket_actions']['download_ticket'] = [
-    '#type' => 'link',
-    '#title' => t('Download ticket'),
-    '#url' => Url::fromRoute('webform_ticket_pdf.download_ticket', [
-      'webform' => $entity->getWebform()->id(),
-      'webform_submission' => $entity->id(),
-    ]),
-    '#attributes' => [
-      'class' => ['button', 'button--primary'],
-      'target' => '_blank',
-    ],
-  ];
-
-  $form['ticket_actions']['email_ticket'] = [
-    '#type' => 'link',
-    '#title' => t('Email ticket'),
-    '#url' => Url::fromRoute('webform_ticket_pdf.email_ticket', [
-      'webform' => $entity->getWebform()->id(),
-      'webform_submission' => $entity->id(),
-    ]),
-    '#attributes' => [
-      'class' => ['button'],
-    ],
-  ];
 }
