@@ -35,13 +35,24 @@ class TicketEmailController extends ControllerBase {
     $sent = $handler->sendTicketEmail($webform_submission);
 
     if ($sent) {
-      $this->messenger()->addStatus($this->t('Your ticket has been emailed to you.'));
+      $this->messenger()->addStatus($this->t('The ticket has been emailed.'));
     }
     else {
       $this->messenger()->addError($this->t('The ticket email could not be sent.'));
     }
 
-    return new RedirectResponse(Url::fromRoute('webform_ticket_pdf.my_registration')->toString());
-  }
+    $request = \Drupal::request();
 
+    $destination = $request->query->get('destination');
+
+    if (!$destination) {
+      $destination = $request->headers->get('referer');
+    }
+
+    if (!$destination) {
+      $destination = Url::fromRoute('webform_ticket_pdf.my_registration')->toString();
+    }
+
+    return new RedirectResponse($destination);
+  }
 }

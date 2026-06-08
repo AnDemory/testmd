@@ -187,3 +187,204 @@ function webform_ticket_pdf_get_domain_for_submission(WebformSubmissionInterface
 function webform_ticket_pdf_is_ticket_submission(WebformSubmissionInterface $submission): bool {
   return webform_ticket_pdf_get_domain_for_submission($submission) !== NULL;
 }
+
+
+/**
+ * Implements hook_link_alter().
+ */
+function webform_ticket_pdf_link_alter(&$variables) {
+  if (empty($variables['url'])) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Url $url */
+  $url = $variables['url'];
+
+  if (!$url->isRouted()) {
+    return;
+  }
+
+  $new_tab_routes = [
+    'webform_ticket_pdf.download_ticket',
+    'webform_ticket_pdf.print_ticket',
+  ];
+
+  if (!in_array($url->getRouteName(), $new_tab_routes, TRUE)) {
+    return;
+  }
+
+  $variables['options']['attributes']['target'] = '_blank';
+  $variables['options']['attributes']['rel'] = 'noopener noreferrer';
+}
+
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Adds ticket actions to each row on the Webform submissions overview page.
+ */
+// function webform_ticket_pdf_form_webform_submission_filter_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+//   \Drupal::logger('webform_ticket_pdf')->notice('Altering form: ' . $form_id);
+
+
+//   $route_match = \Drupal::routeMatch();
+
+//   $webform = $route_match->getParameter('webform');
+
+//   \Drupal::logger('webform_ticket_pdf')->notice('Altering form for webform ID: ' . $webform->id());
+//   if (!$webform || !method_exists($webform, 'id')) {
+//     return;
+//   }
+//   \Drupal::logger('webform_ticket_pdf')->notice('Webform ID: ' . $webform->id());
+//   if (empty($form['items'])) {
+//     return;
+//   }
+// \Drupal::logger('webform_ticket_pdf')->notice('Form has items to alter');
+//   // Add a new column to the overview table.
+//   if (!empty($form['items']['#header'])) {
+//     $form['items']['#header']['ticket_actions'] = t('Ticket');
+//   }
+
+//   foreach ($form['items'] as $sid => &$row) {
+//     if (!is_numeric($sid)) {
+//       continue;
+//     }
+// \Drupal::logger('webform_ticket_pdf')->notice('Altering row for submission ID: ' . $sid);
+//     $row['ticket_actions'] = [
+//       '#type' => 'container',
+//       '#attributes' => [
+//         'class' => ['ticket-actions'],
+//       ],
+
+//       'view' => [
+//         '#type' => 'link',
+//         '#title' => t('View'),
+//         '#url' => Url::fromRoute('webform_ticket_pdf.download_ticket', [
+//           'webform' => $webform->id(),
+//           'webform_submission' => $sid,
+//         ]),
+//         '#attributes' => [
+//           'class' => ['button', 'button--small'],
+//           'target' => '_blank',
+//           'rel' => 'noopener noreferrer',
+//         ],
+//       ],
+
+//       'print' => [
+//         '#type' => 'link',
+//         '#title' => t('Print'),
+//         '#url' => Url::fromRoute('webform_ticket_pdf.print_ticket', [
+//           'webform' => $webform->id(),
+//           'webform_submission' => $sid,
+//         ]),
+//         '#attributes' => [
+//           'class' => ['button', 'button--small'],
+//           'target' => '_blank',
+//           'rel' => 'noopener noreferrer',
+//         ],
+//       ],
+
+//       'email' => [
+//         '#type' => 'link',
+//         '#title' => t('Email'),
+//         '#url' => Url::fromRoute('webform_ticket_pdf.email_ticket', [
+//           'webform' => $webform->id(),
+//           'webform_submission' => $sid,
+//         ]),
+//         '#attributes' => [
+//           'class' => ['button', 'button--small'],
+//         ],
+//       ],
+//     ];
+//   }
+// }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Adds ticket actions to each row on the Webform submissions overview page.
+ */
+function webform_ticket_pdf_form_webform_submission_bulk_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  $route_match = \Drupal::routeMatch();
+
+  $webform = $route_match->getParameter('webform');
+
+  if (!$webform || !method_exists($webform, 'id')) {
+    return;
+  }
+
+  $ticket_webform_ids = \Drupal::service('domain_settings.manager')
+  ->getTicketWebformIdsByDomain();
+
+  if (!in_array($webform->id(), $ticket_webform_ids, TRUE)) {
+    return;
+  }
+
+  if (!isset($form['items']['#options'])) {
+    return;
+  }
+
+  // Add a new column header.
+  $form['items']['#header'] = ['ticket_actions' => t('Ticket'),] + $form['items']['#header'];
+
+  $current_path = \Drupal::service('path.current')->getPath();
+
+  foreach ($form['items']['#options'] as $sid => &$row) {
+    if (!is_numeric($sid)) {
+      continue;
+    }
+
+    $row['ticket_actions'] = [
+      'data' => [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['ticket-actions'],
+        ],
+
+        'view' => [
+          '#type' => 'link',
+          '#title' => t('View'),
+          '#url' => Url::fromRoute('webform_ticket_pdf.download_ticket', [
+            'webform' => $webform->id(),
+            'webform_submission' => $sid,
+          ]),
+          '#attributes' => [
+            'class' => ['button', 'button--small'],
+            'target' => '_blank',
+            'rel' => 'noopener noreferrer',
+          ],
+        ],
+
+        'print' => [
+          '#type' => 'link',
+          '#title' => t('Print'),
+          '#url' => Url::fromRoute('webform_ticket_pdf.print_ticket', [
+            'webform' => $webform->id(),
+            'webform_submission' => $sid,
+          ]),
+          '#attributes' => [
+            'class' => ['button', 'button--small'],
+            'target' => '_blank',
+            'rel' => 'noopener noreferrer',
+          ],
+        ],
+
+        'email' => [
+          '#type' => 'link',
+          '#title' => t('Email'),
+          '#url' => Url::fromRoute('webform_ticket_pdf.email_ticket', [
+            'webform' => $webform->id(),
+            'webform_submission' => $sid,
+          ], [
+            'query' => [
+              'destination' => $current_path,
+            ],
+          ]),
+          '#attributes' => [
+            'class' => ['button', 'button--small'],
+          ],
+        ],
+      ],
+    ];
+  }
+}

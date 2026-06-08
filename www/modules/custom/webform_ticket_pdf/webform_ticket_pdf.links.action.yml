@@ -1,11 +1,17 @@
 webform_ticket_pdf.download_ticket_action:
   route_name: webform_ticket_pdf.download_ticket
-  title: 'Download ticket'
+  title: 'View ticket'
   appears_on:
     - entity.webform_submission.canonical
 
 webform_ticket_pdf.email_ticket_action:
   route_name: webform_ticket_pdf.email_ticket
   title: 'Email ticket'
+  appears_on:
+    - entity.webform_submission.canonical
+
+webform_ticket_pdf.print_ticket_action:
+  route_name: webform_ticket_pdf.print_ticket
+  title: 'Print ticket'
   appears_on:
     - entity.webform_submission.canonical

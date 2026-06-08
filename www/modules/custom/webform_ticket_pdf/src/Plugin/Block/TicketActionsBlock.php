@@ -40,7 +40,7 @@ class TicketActionsBlock extends BlockBase {
       ],
       'download_ticket' => [
         '#type' => 'link',
-        '#title' => $this->t('Download ticket'),
+        '#title' => $this->t('View ticket'),
         '#url' => Url::fromRoute('webform_ticket_pdf.download_ticket', [
           'webform' => $submission->getWebform()->id(),
           'webform_submission' => $submission->id(),

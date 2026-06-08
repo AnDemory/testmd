@@ -26,4 +26,15 @@ webform_ticket_pdf.email_ticket:
     parameters:
       webform_submission:
         type: entity:webform_submission
+webform_ticket_pdf.print_ticket:
+  path: '/ticket/submission/{webform_submission}/print'
+  defaults:
+    _controller: '\Drupal\webform_ticket_pdf\Controller\TicketPrintController::print'
+    _title: 'Print ticket'
+  requirements:
+    _custom_access: '\Drupal\webform_ticket_pdf\Controller\TicketDownloadController::access'
+  options:
+    parameters:
+      webform_submission:
+        type: entity:webform_submission
 

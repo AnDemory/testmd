@@ -55,7 +55,7 @@ class MyRegistrationController extends ControllerBase {
       '#attributes' => [
         'class' => ['ticket-actions'],
       ],
-      '#weight' => 100,
+      '#weight' => 0,
     ];
 
     $build['actions']['download_ticket'] = [
@@ -64,6 +64,10 @@ class MyRegistrationController extends ControllerBase {
       '#url' => Url::fromRoute('webform_ticket_pdf.download_ticket', [
         'webform' => $submission->getWebform()->id(),
         'webform_submission' => $submission->id(),
+      ], [
+        'query' => [
+          'download' => 1,
+        ],
       ]),
       '#attributes' => [
         'class' => ['button', 'button--primary'],
