@@ -3,6 +3,7 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\webform\WebformSubmissionInterface;
+use Drupal\user\UserInterface;
 
 /**
  * Implements hook_webform_submission_insert().
@@ -305,6 +306,25 @@ function webform_ticket_pdf_link_alter(&$variables) {
  * Adds ticket actions to each row on the Webform submissions overview page.
  */
 function webform_ticket_pdf_form_webform_submission_bulk_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+\Drupal::logger('webform_ticket_pdf')->notice('<pre>@items</pre>', [
+  '@items' => print_r(array_keys($form['items']), TRUE),
+]);
+
+
+$options = $form['items']['#options'] ?? [];
+
+\Drupal::logger('webform_ticket_pdf')->notice('Option keys: @keys', [
+  '@keys' => implode(', ', array_slice(array_keys($options), 0, 10)),
+]);
+
+$first_key = array_key_first($options);
+if ($first_key !== NULL) {
+  \Drupal::logger('webform_ticket_pdf')->notice('First option key: @key; columns: @columns', [
+    '@key' => $first_key,
+    '@columns' => implode(', ', array_keys($options[$first_key])),
+  ]);
+}
+
   $route_match = \Drupal::routeMatch();
 
   $webform = $route_match->getParameter('webform');
@@ -387,4 +407,92 @@ function webform_ticket_pdf_form_webform_submission_bulk_form_alter(array &$form
       ],
     ];
   }
+
+
+  _webform_ticket_pdf_add_user_columns_to_submissions_table($form);
+}
+
+/**
+ * Adds user columns to the Webform submissions overview table.
+ */
+function _webform_ticket_pdf_add_user_columns_to_submissions_table(array &$form): void {
+  if (empty($form['items']['#header']) || empty($form['items']['#rows'])) {
+    return;
+  }
+
+  // Add headers.
+  $form['items']['#header'] = ['ticket_actions' => t('Ticket'),] + $form['items']['#header'];
+  $form['items']['#header'] = ['first_name' => t('First name'),] + $form['items']['#header'];
+  $form['items']['#header'] = ['last_name' => t('Name'),] + $form['items']['#header'];
+  $form['items']['#header'] = ['company' =>  t('Company'),] + $form['items']['#header'];
+  $options = &$form['items']['#options'];
+  $storage = \Drupal::entityTypeManager()->getStorage('webform_submission');
+
+  foreach ($options as $key => &$row) {
+    $sid = NULL;
+
+    // Case 1: the row key is the submission ID.
+    if (is_numeric($key)) {
+      $sid = $key;
+    }
+
+    // Case 2: sid/id is stored in the row.
+    if (!$sid && !empty($row['sid'])) {
+      $sid = is_array($row['sid']) && isset($row['sid']['#markup'])
+        ? $row['sid']['#markup']
+        : $row['sid'];
+    }
+
+    if (!$sid && !empty($row['id'])) {
+      $sid = is_array($row['id']) && isset($row['id']['#markup'])
+        ? $row['id']['#markup']
+        : $row['id'];
+    }
+
+    if (!$sid || !is_numeric($sid)) {
+      $row['first_name'] = '';
+      $row['last_name'] = '';
+      $row['company'] = '';
+      continue;
+    }
+
+    $submission = $storage->load($sid);
+
+    if (!$submission instanceof \Drupal\webform\WebformSubmissionInterface) {
+      $row['first_name'] = '';
+      $row['last_name'] = '';
+      $row['company'] = '';
+      continue;
+    }
+
+    $owner = $submission->getOwner();
+
+    if (!$owner instanceof \Drupal\user\UserInterface || $owner->isAnonymous()) {
+      $row['first_name'] = '';
+      $row['last_name'] = '';
+      $row['company'] = '';
+      continue;
+    }
+
+    $row['first_name'] = _webform_ticket_pdf_user_field_value($owner, 'field_first_name');
+    $row['last_name'] = _webform_ticket_pdf_user_field_value($owner, 'field_name');
+    $row['company'] = _webform_ticket_pdf_user_field_value($owner, 'field_company_name');
+  }
+}
+
+/**
+ * Safely gets a user field value.
+ */
+function _webform_ticket_pdf_user_field_value(UserInterface $user, string $field_name): string {
+  if (!$user->hasField($field_name) || $user->get($field_name)->isEmpty()) {
+    return '';
+  }
+
+  $field = $user->get($field_name);
+
+  if (!empty($field->entity) && $field->entity instanceof EntityInterface) {
+    return $field->entity->label();
+  }
+
+  return (string) $field->value;
 }
