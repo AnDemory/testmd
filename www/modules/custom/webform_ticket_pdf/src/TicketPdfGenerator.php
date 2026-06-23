@@ -37,8 +37,14 @@ class TicketPdfGenerator {
       throw new \RuntimeException('No ticket template configured for webform: ' . $webform_id);
     }
 
+    $template_uri .= "-visitorbadge";
+
+    if ($domain == 'fm-day.ddev.site') {
+      $template_uri .= "-" . $data['profile_custom'];
+    }
+
     // add parameters to add to template name, depending on data values. For example, if there's a "language" field, you could do:
-    $template_uri .= "-visitorbadge-" . ($data['language'] ?? 'nl') . ".jpg";
+    $template_uri .= "-" . ($data['language'] ?? 'nl') . ".jpg";
 
      \Drupal::logger('webform_ticket_pdf')->notice('Resolved ticket template URI: ' . $template_uri);
 
@@ -62,7 +68,7 @@ class TicketPdfGenerator {
 
     $name = $account->get('field_first_name')->value . " ". $account->get('field_name')->value;
 
-    $sid = $submission->id();
+    $sid = $account->id();
 
     // // -------------------------------------------------
     // // CREATE DIRECTORY
@@ -77,16 +83,19 @@ class TicketPdfGenerator {
     // );
 
     // -------------------------------------------------
+    // GENERATE BARCODE
+    // -------------------------------------------------
+
+    $eancode = $this->generateEAN($sid);
+    $barcode_path = $this->generateBarcode($eancode);
+
+    // -------------------------------------------------
     // GENERATE QR CODE
     // -------------------------------------------------
 
     $qr_path = $this->generateQrCode($sid);
 
-    // -------------------------------------------------
-    // GENERATE BARCODE
-    // -------------------------------------------------
 
-    $barcode_path = $this->generateBarcode($sid);
 
     // -------------------------------------------------
     // CREATE PDF
@@ -183,11 +192,27 @@ class TicketPdfGenerator {
 
     $pdf->Image(
       $barcode_path,
-      120,
+      131, // 105 + ((105 - 53)/2)
       20,
-      60,
+      53,
       20,
       'PNG'
+    );
+
+    // -------------------------------------------------
+    // EANCODE
+    // -------------------------------------------------
+
+    $pdf->SetFont('helvetica', '', 8);
+    $pdf->SetXY(120,40);
+    $pdf->MultiCell(
+      75,     // box width
+      6,      // line height
+      $eancode,  // text
+      0,      // border: 0 = no border
+      'C',    // align: center
+      false,  // fill
+      1       // move cursor to next line after
     );
 
     // -------------------------------------------------
@@ -257,10 +282,10 @@ class TicketPdfGenerator {
   // BARCODE
   // =====================================================
 
-  protected function generateBarcode($sid): string {
+  protected function generateBarcode($ean): string {
 
     // EAN13 requires 12 digits
-    $ean = str_pad((string) $sid, 12, '0', STR_PAD_LEFT);
+    // $ean = str_pad((string) $sid, 12, '0', STR_PAD_LEFT);
 
     $generator = new BarcodeGeneratorPNG();
 
@@ -270,11 +295,34 @@ class TicketPdfGenerator {
     );
 
     $path = sys_get_temp_dir() .
-      '/barcode-' . $sid . '.png';
+      '/barcode-' . $ean . '.png';
 
     file_put_contents($path, $barcode);
 
     return $path;
   }
 
+  protected function generateEAN( $sid, $prefix = '250' ) {
+
+    $ean       = $prefix . str_pad( (int) $sid, 9, '0', STR_PAD_LEFT );
+    $weightflag = true;
+    $sum        = 0;
+
+    // Weight for a digit in the checksum is 3, 1, 3.. starting from the last digit.
+    // loop backwards to make the loop length-agnostic. The same basic functionality
+    // will work for codes of different lengths.
+    for ( $i = strlen( $ean ) - 1; $i >= 0; $i-- ) {
+
+      $sum += (int) $ean[ $i ] * ( $weightflag ? 3 : 1 );
+
+      $weightflag = ! $weightflag;
+    }
+
+    $ean .= ( 10 - ( $sum % 10 ) ) % 10;
+
+    return $ean;
+  }
+
 }
+
+
