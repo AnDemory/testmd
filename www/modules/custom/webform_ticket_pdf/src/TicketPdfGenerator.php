@@ -10,6 +10,8 @@ use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 
 use Picqer\Barcode\BarcodeGeneratorPNG;
+use Jenssegers\Optimus\Optimus;
+
 
 class TicketPdfGenerator {
 
@@ -93,9 +95,21 @@ class TicketPdfGenerator {
     // GENERATE QR CODE
     // -------------------------------------------------
 
-    $qr_path = $this->generateQrCode($sid);
+    $qr_path = $this->generateQrCode($eancode);
 
+    define( 'FCO_APP_VENDOR_OPTIMUS_PRIME', 1514780639 );
+define( 'FCO_APP_VENDOR_OPTIMUS_INVERSE', 422888479 );
+define( 'FCO_APP_VENDOR_OPTIMUS_RANDOM', 1459426347 );
+# init optimus encryption library
+			$optimus = new \Jenssegers\Optimus\Optimus(
+				\FCO_APP_VENDOR_OPTIMUS_PRIME,
+				\FCO_APP_VENDOR_OPTIMUS_INVERSE,
+				\FCO_APP_VENDOR_OPTIMUS_RANDOM
+			);
 
+			# add auth ID and initial PIN to exhibitor data
+			$fair_exhibitor['lrat_auth']     = $optimus->encode( 8082 );
+			$fair_exhibitor['lrat_auth_pin'] = \mb_substr( $fair_exhibitor['lrat_auth'], 0, 4 );
 
     // -------------------------------------------------
     // CREATE PDF
@@ -192,28 +206,14 @@ class TicketPdfGenerator {
 
     $pdf->Image(
       $barcode_path,
-      131, // 105 + ((105 - 53)/2)
-      20,
-      53,
-      20,
+      133, // 105 + ((105 - 49)/2)
+      18,
+      49,
+      17,
       'PNG'
     );
 
-    // -------------------------------------------------
-    // EANCODE
-    // -------------------------------------------------
-
-    $pdf->SetFont('helvetica', '', 8);
-    $pdf->SetXY(120,40);
-    $pdf->MultiCell(
-      75,     // box width
-      6,      // line height
-      $eancode,  // text
-      0,      // border: 0 = no border
-      'C',    // align: center
-      false,  // fill
-      1       // move cursor to next line after
-    );
+ 
 
     // -------------------------------------------------
     // QR CODE
@@ -235,6 +235,45 @@ class TicketPdfGenerator {
       29,
       'PNG'
     );
+
+   // -------------------------------------------------
+    // EANCODES
+    // -------------------------------------------------
+
+    $pdf->SetFont('helvetica', '', 9);
+    $pdf->SetTextColor(164, 164, 164);
+    $pdf->SetXY(120,37);
+    $pdf->MultiCell(
+      75,     // box width
+      6,      // line height
+      $fair_exhibitor['lrat_auth_pin'],  // text
+      0,      // border: 0 = no border
+      'C',    // align: center
+      false,  // fill
+      1       // move cursor to next line after
+    );
+    $pdf->SetXY(38,270);
+    $pdf->MultiCell(
+      29,     // box width
+      6,      // line height
+      $eancode,  // text
+      0,      // border: 0 = no border
+      'C',    // align: center
+      false,  // fill
+      1       // move cursor to next line after
+    );
+    $pdf->SetXY(143,270);
+    $pdf->MultiCell(
+      29,     // box width
+      6,      // line height
+      $eancode,  // text
+      0,      // border: 0 = no border
+      'C',    // align: center
+      false,  // fill
+      1       // move cursor to next line after
+    );
+
+    
 
     // // -------------------------------------------------
     // // SAVE PDF
@@ -261,9 +300,11 @@ class TicketPdfGenerator {
   // QR CODE
   // =====================================================
 
-  protected function generateQrCode($sid): string {
+  protected function generateQrCode($eancode): string {
 
-    $url = 'https://example.com/check-ticket/' . $sid;
+    $lead_retrieval_url = \Drupal::service('domain_settings.manager')
+      ->getLeadRetrievalUrl($domain);
+    $url = $lead_retrieval_url . 'create/'. $eancode;
 
     $qrCode = new QrCode($url);
 

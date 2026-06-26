@@ -11,11 +11,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class MyRegistrationController extends ControllerBase {
 
   public function page() {
-    $webform_id = \Drupal::service('domain_settings.manager')
-      ->getTicketWebformId();
+    $webform_id = $this->getWebformId();
 
     if (!$webform_id) {
-      throw new NotFoundHttpException('No ticket Webform configured for this domain.');
+      throw new NotFoundHttpException($this->getMissingWebformMessage());
     }
 
     $uid = $this->currentUser()->id();
@@ -32,8 +31,7 @@ class MyRegistrationController extends ControllerBase {
       ->execute();
 
     if (empty($ids)) {
-      $url = Url::fromUri('internal:/webform/' . $webform_id)->toString();
-      return new RedirectResponse($url);
+      return $this->getNewSubmissionResponse($webform_id);
     }
 
     $sid = reset($ids);
@@ -88,6 +86,20 @@ class MyRegistrationController extends ControllerBase {
     ];
 
     return $build;
+  }
+
+  protected function getWebformId(): ?string {
+    return \Drupal::service('domain_settings.manager')
+      ->getTicketWebformId();
+  }
+
+  protected function getMissingWebformMessage(): string {
+    return 'No ticket Webform configured for this domain.';
+  }
+
+  protected function getNewSubmissionResponse(string $webform_id) {
+    $url = Url::fromUri('internal:/webform/' . $webform_id)->toString();
+    return new RedirectResponse($url);
   }
 
 }

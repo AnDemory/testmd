@@ -44,7 +44,9 @@ class DomainSettingsForm extends ConfigFormBase {
         $this->t('Domain'),
         $this->t('Email address'),
         $this->t('Ticket Webform'),
+        $this->t('Ticket Exhibitor Webform'),
         $this->t('Ticket template'),
+        $this->t('Lead Retrieval URL'),
       ],
       '#tree' => TRUE,
       '#empty' => $this->t('No domain settings configured.'),
@@ -85,12 +87,29 @@ class DomainSettingsForm extends ConfigFormBase {
         '#default_value' => $row['ticket_webform_id'] ?? '',
       ];
 
+      $form['domains'][$i]['ticket_exhibitor_webform_id'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Ticket Exhibitor Webform'),
+        '#title_display' => 'invisible',
+        '#options' => $webform_options,
+        '#default_value' => $row['ticket_exhibitor_webform_id'] ?? '',
+      ];
+
       $form['domains'][$i]['ticket_template'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Ticket template'),
         '#title_display' => 'invisible',
         '#default_value' => $row['ticket_template'] ?? '',
         '#placeholder' => 'private://templates/<magazine>/<year>/<event>',
+        '#size' => 45,
+      ];
+
+      $form['domains'][$i]['lead_retrieval_url'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Lead Retrieval URL'),
+        '#title_display' => 'invisible',
+        '#default_value' => $row['lead_retrieval_url'] ?? '',
+        '#placeholder' => 'https://<event><year>-events.fcoffice.be/apps/lr/',
         '#size' => 45,
       ];
     }
@@ -106,10 +125,12 @@ class DomainSettingsForm extends ConfigFormBase {
       $domain = strtolower(trim($row['domain'] ?? ''));
       $mail = trim($row['mail'] ?? '');
       $ticket_webform_id = trim($row['ticket_webform_id'] ?? '');
+      $ticket_exhibitor_webform_id = trim($row['ticket_exhibitor_webform_id'] ?? '');
       $ticket_template = trim($row['ticket_template'] ?? '');
+      $lead_retrieval_url = trim($row['lead_retrieval_url'] ?? '');
 
       // Ignore completely empty rows.
-      if ($domain === '' && $mail === '' && $ticket_webform_id === '' && $ticket_template === '') {
+      if ($domain === '' && $mail === '' && $ticket_webform_id === '' && $ticket_exhibitor_webform_id === '' && $lead_retrieval_url === '') {
         continue;
       }
 
@@ -143,10 +164,12 @@ class DomainSettingsForm extends ConfigFormBase {
       $domain = strtolower(trim($row['domain'] ?? ''));
       $mail = trim($row['mail'] ?? '');
       $ticket_webform_id = trim($row['ticket_webform_id'] ?? '');
+      $ticket_exhibitor_webform_id = trim($row['ticket_exhibitor_webform_id'] ?? '');
       $ticket_template = trim($row['ticket_template'] ?? '');
+      $lead_retrieval_url = trim($row['lead_retrieval_url'] ?? '');
 
       // Ignore empty rows.
-      if ($domain === '' && $mail === '' && $ticket_webform_id === '' && $ticket_template === '') {
+      if ($domain === '' && $mail === '' && $ticket_webform_id && $ticket_exhibitor_webform_id === '' && $ticket_template === '' && $lead_retrieval_url === '') {
         continue;
       }
 
@@ -154,7 +177,9 @@ class DomainSettingsForm extends ConfigFormBase {
         'domain' => $domain,
         'mail' => $mail,
         'ticket_webform_id' => $ticket_webform_id,
-        'ticket_template' => $ticket_template
+        'ticket_exhibitor_webform_id' => $ticket_exhibitor_webform_id,
+        'ticket_template' => $ticket_template,
+        'lead_retrieval_url' => $lead_retrieval_url,
       ];
     }
 

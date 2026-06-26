@@ -18,6 +18,12 @@ domain_settings.settings:
           ticket_webform_id:
             type: string
             label: 'Ticket Webform ID'
+          ticket_exhibitor_webform_id:
+            type: string
+            label: 'Ticket Exhibitor Webform ID'
           ticket_template:
             type: string
             label: 'Ticket template'
+          lead_retrieval_url:
+            type: string
+            label: 'Lead Retrieval URL'

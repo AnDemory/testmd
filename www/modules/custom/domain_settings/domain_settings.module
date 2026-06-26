@@ -1,6 +1,81 @@
 <?php
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\webform\WebformInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_access() for webform entities.
+ * Webform access: only on the domain set in Domain Settings.
+ */
+function domain_settings_webform_access(WebformInterface $webform, $operation, AccountInterface $account) {
+  $restricted_operations = [
+    'view',
+    'submission_page',
+    'submission_create',
+  ];
+
+  if (!in_array($operation, $restricted_operations, TRUE)) {
+    return AccessResult::neutral();
+  }
+
+  $config = \Drupal::config('domain_settings.settings');
+  $allowed_domains = _domain_settings_get_domains_for_webform(
+    $webform->id(),
+    $config->get('domains') ?: []
+  );
+
+  // Only Webforms selected in the domain settings table are domain-restricted.
+  if (!$allowed_domains) {
+    return AccessResult::neutral()
+      ->addCacheableDependency($config);
+  }
+
+  /** @var \Drupal\domain_settings\Service\DomainSettingsManager $manager */
+  $manager = \Drupal::service('domain_settings.manager');
+  $current_domain = $manager->getCurrentDomain();
+
+  if (in_array($current_domain, $allowed_domains, TRUE)) {
+    return AccessResult::neutral()
+      ->addCacheContexts(['url.site'])
+      ->addCacheableDependency($config);
+  }
+
+  return AccessResult::forbidden('This webform is not available on the current domain.')
+    ->addCacheContexts(['url.site'])
+    ->addCacheableDependency($config);
+}
+
+/**
+ * Gets configured domain hosts that may show a Webform.
+ */
+function _domain_settings_get_domains_for_webform(string $webform_id, array $domains): array {
+  $allowed_domains = [];
+
+  foreach ($domains as $settings) {
+    if (!is_array($settings)) {
+      continue;
+    }
+
+    $domain = strtolower(trim($settings['domain'] ?? ''));
+
+    if ($domain === '') {
+      continue;
+    }
+
+    $configured_webform_ids = [
+      trim((string) ($settings['ticket_webform_id'] ?? '')),
+      trim((string) ($settings['ticket_exhibitor_webform_id'] ?? '')),
+    ];
+
+    if (in_array($webform_id, $configured_webform_ids, TRUE)) {
+      $allowed_domains[] = $domain;
+    }
+  }
+
+  return array_values(array_unique($allowed_domains));
+}
 
 /**
  * Implements hook_token_info().
@@ -60,4 +135,3 @@ function domain_settings_tokens($type, $tokens, array $data, array $options, Bub
 
   return $replacements;
 }
-

@@ -36,6 +36,7 @@
         "drupal/webform": "^6.2",
         "drush/drush": "^13.6",
         "endroid/qr-code": "^6.0",
+        "jenssegers/optimus": "^1.1",
         "picqer/php-barcode-generator": "^3.2",
         "tecnickcom/tcpdf": "^6.11"
     },
