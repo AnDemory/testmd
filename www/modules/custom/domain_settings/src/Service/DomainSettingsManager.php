@@ -87,7 +87,7 @@ class DomainSettingsManager {
  */
 public function getTicketWebformId(?string $domain = NULL): ?string {
   $settings = $this->getForDomain($domain);
-
+  // \Drupal::logger('DomainSettingsManager')->notice( $domain);
   return $settings['ticket_webform_id'] ?? NULL;
 }
 /**

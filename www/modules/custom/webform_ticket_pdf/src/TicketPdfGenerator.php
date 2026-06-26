@@ -26,7 +26,14 @@ class TicketPdfGenerator {
       ->getTicketWebformId($domain);
 
     if ($configured_webform_id !== $webform_id) {
-      throw new \RuntimeException('This Webform is not configured for ticket PDFs: ' . $configured_webform_id . '<->' .$webform_id);
+
+      $configured_webform_id = \Drupal::service('domain_settings.manager')
+        ->getTicketExhibitorWebformId($domain);
+
+      if ($configured_webform_id !== $webform_id) {
+        throw new \RuntimeException('This Webform is not configured for ticket PDFs: ' . $configured_webform_id . '<->' .$webform_id);
+      }
+     
     }
 
     $template_uri = \Drupal::service('domain_settings.manager')
@@ -39,9 +46,10 @@ class TicketPdfGenerator {
       throw new \RuntimeException('No ticket template configured for webform: ' . $webform_id);
     }
 
-    $template_uri .= "-visitorbadge";
+    $webform_type = webform_ticket_pdf_type($webform_id);
+    $template_uri .= "-" . $webform_type;
 
-    if ($domain == 'fm-day.ddev.site') {
+    if ($domain == 'fm-day.ddev.site' && 'visitor' === $webform_type) {
       $template_uri .= "-" . $data['profile_custom'];
     }
 
@@ -63,14 +71,52 @@ class TicketPdfGenerator {
   public function generate(WebformSubmissionInterface $submission, ?string $domain = NULL): string {
 
     $data = $submission->getData();
+    $webform_id = $submission->getWebform()->id();
+    $is_visitor = 'visitor' === webform_ticket_pdf_type($webform_id) ? true : false;
+    $fair_exhibitor = NULL;
+    $qr_exhibitor = NULL;
 
-    $name = $data['name'] ?? 'An Demory';
-    $company = $data['company'] ?? 'FCO Media';
-    $account = $submission->getOwner();
+    if ($is_visitor) {
 
-    $name = $account->get('field_first_name')->value . " ". $account->get('field_name')->value;
+      $name = $data['name'] ?? 'An Demory';
+      $company = $data['company'] ?? 'FCO Media';
+      $account = $submission->getOwner();
 
-    $sid = $account->id();
+      $name = $account->get('field_first_name')->value . " ". $account->get('field_name')->value;
+
+      $ean_type = "250";
+      $base_id = $account->id();
+    } else {
+      $ean_type = "251";
+      $base_id = $submission->id();
+
+      $first_name = $data['first_name'] ?? '';
+      $last_name = $data['last_name'] ?? '';
+      $company = $data['company_name'] ?? '';
+
+      $name = trim($first_name . ' ' . $last_name);
+
+      // -------------------------------------------------
+      // GENERATE IDENTIFY QR CODE
+      // -------------------------------------------------
+
+      define( 'FCO_APP_VENDOR_OPTIMUS_PRIME', 1514780639 );
+      define( 'FCO_APP_VENDOR_OPTIMUS_INVERSE', 422888479 );
+      define( 'FCO_APP_VENDOR_OPTIMUS_RANDOM', 1459426347 );
+      # init optimus encryption library
+      $optimus = new \Jenssegers\Optimus\Optimus(
+        \FCO_APP_VENDOR_OPTIMUS_PRIME,
+        \FCO_APP_VENDOR_OPTIMUS_INVERSE,
+        \FCO_APP_VENDOR_OPTIMUS_RANDOM
+      );
+
+      # add auth ID and initial PIN to exhibitor data
+      $fair_exhibitor['lrat_auth']     = $optimus->encode( $base_id );
+      $fair_exhibitor['lrat_auth_pin'] = \mb_substr( $fair_exhibitor['lrat_auth'], 0, 4 );
+\Drupal::logger("TicketPdfGenerator")->notice("base id".$base_id);
+\Drupal::logger("TicketPdfGenerator")->notice("lrat id".$fair_exhibitor['lrat_auth'] );
+      $qr_exhibitor = $this->generateQrCode('identify', $fair_exhibitor['lrat_auth']);
+    }
 
     // // -------------------------------------------------
     // // CREATE DIRECTORY
@@ -84,32 +130,20 @@ class TicketPdfGenerator {
     //   FileSystemInterface::MODIFY_PERMISSIONS
     // );
 
+   
+
     // -------------------------------------------------
     // GENERATE BARCODE
     // -------------------------------------------------
 
-    $eancode = $this->generateEAN($sid);
+    $eancode = $this->generateEAN($base_id, $ean_type);
     $barcode_path = $this->generateBarcode($eancode);
 
     // -------------------------------------------------
     // GENERATE QR CODE
     // -------------------------------------------------
 
-    $qr_path = $this->generateQrCode($eancode);
-
-    define( 'FCO_APP_VENDOR_OPTIMUS_PRIME', 1514780639 );
-define( 'FCO_APP_VENDOR_OPTIMUS_INVERSE', 422888479 );
-define( 'FCO_APP_VENDOR_OPTIMUS_RANDOM', 1459426347 );
-# init optimus encryption library
-			$optimus = new \Jenssegers\Optimus\Optimus(
-				\FCO_APP_VENDOR_OPTIMUS_PRIME,
-				\FCO_APP_VENDOR_OPTIMUS_INVERSE,
-				\FCO_APP_VENDOR_OPTIMUS_RANDOM
-			);
-
-			# add auth ID and initial PIN to exhibitor data
-			$fair_exhibitor['lrat_auth']     = $optimus->encode( 8082 );
-			$fair_exhibitor['lrat_auth_pin'] = \mb_substr( $fair_exhibitor['lrat_auth'], 0, 4 );
+    $qr_path = $this->generateQrCode('create', $eancode);
 
     // -------------------------------------------------
     // CREATE PDF
@@ -126,7 +160,7 @@ define( 'FCO_APP_VENDOR_OPTIMUS_RANDOM', 1459426347 );
     // ADD JPG BACKGROUND
     // -------------------------------------------------
 
-    $webform_id = $submission->getWebform()->id();
+    
     $background = $this->getBackgroundTemplate($data, $webform_id, $domain);
 
     $pdf->Image($background, 0, 0, 210, 297, 'JPG');
@@ -236,6 +270,17 @@ define( 'FCO_APP_VENDOR_OPTIMUS_RANDOM', 1459426347 );
       'PNG'
     );
 
+    if (!$is_visitor) {
+      $pdf->Image(
+        $qr_exhibitor,
+        143,
+        100,
+        29,
+        29,
+        'PNG'
+      );
+    }
+
    // -------------------------------------------------
     // EANCODES
     // -------------------------------------------------
@@ -246,7 +291,7 @@ define( 'FCO_APP_VENDOR_OPTIMUS_RANDOM', 1459426347 );
     $pdf->MultiCell(
       75,     // box width
       6,      // line height
-      $fair_exhibitor['lrat_auth_pin'],  // text
+      $eancode,  // text
       0,      // border: 0 = no border
       'C',    // align: center
       false,  // fill
@@ -300,11 +345,11 @@ define( 'FCO_APP_VENDOR_OPTIMUS_RANDOM', 1459426347 );
   // QR CODE
   // =====================================================
 
-  protected function generateQrCode($eancode): string {
-
+  protected function generateQrCode($action, $eancode): string {
+\Drupal::logger("TicketPdfGenerator")->notice("ecie".$eancode );
     $lead_retrieval_url = \Drupal::service('domain_settings.manager')
       ->getLeadRetrievalUrl($domain);
-    $url = $lead_retrieval_url . 'create/'. $eancode;
+    $url = $lead_retrieval_url . $action . '/'. $eancode;
 
     $qrCode = new QrCode($url);
 
@@ -312,7 +357,7 @@ define( 'FCO_APP_VENDOR_OPTIMUS_RANDOM', 1459426347 );
 
     $result = $writer->write($qrCode);
 
-    $path = sys_get_temp_dir() . '/qr-' . $sid . '.png';
+    $path = sys_get_temp_dir() . '/qr-' . $eancode . '.png';
 
     $result->saveToFile($path);
 

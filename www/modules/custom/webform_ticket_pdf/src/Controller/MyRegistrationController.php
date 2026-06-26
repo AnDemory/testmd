@@ -5,39 +5,49 @@ namespace Drupal\webform_ticket_pdf\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 use Drupal\webform\Entity\WebformSubmission;
+use Drupal\webform\WebformSubmissionInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MyRegistrationController extends ControllerBase {
 
-  public function page() {
-    $webform_id = $this->getWebformId();
+  public function page(WebformSubmissionInterface $webform_submission = NULL) {
+    $webform_id = $this->getWebformId(); //ExhibitorRegistrationController overrules this
 
     if (!$webform_id) {
       throw new NotFoundHttpException($this->getMissingWebformMessage());
     }
 
-    $uid = $this->currentUser()->id();
+    $isVisitor = 'visitor' === webform_ticket_pdf_type($webform_id) ? true : false;
 
-    $storage = $this->entityTypeManager()
-      ->getStorage('webform_submission');
+    if ($isVisitor) {
+      $uid = $this->currentUser()->id();
+      $storage = $this->entityTypeManager()
+        ->getStorage('webform_submission');
 
-    $ids = $storage->getQuery()
-      ->condition('webform_id', $webform_id)
-      ->condition('uid', $uid)
-      ->sort('created', 'DESC')
-      ->range(0, 1)
-      ->accessCheck(FALSE)
-      ->execute();
+      $ids = $storage->getQuery()
+        ->condition('webform_id', $webform_id)
+        ->condition('uid', $uid)
+        ->sort('created', 'DESC')
+        ->range(0, 1)
+        ->accessCheck(FALSE)
+        ->execute();
 
-    if (empty($ids)) {
-      return $this->getNewSubmissionResponse($webform_id);
+      if (empty($ids)) {
+        return $this->getNewSubmissionResponse($webform_id);
+      }
+
+      $sid = reset($ids);
+      $submission = WebformSubmission::load($sid);
     }
-
-    $sid = reset($ids);
-
-    /** @var \Drupal\webform\WebformSubmissionInterface $submission */
-    $submission = WebformSubmission::load($sid);
+    else {
+      if ($webform_submission) {
+        $submission = $webform_submission;
+      }
+      else {
+        return $this->getNewSubmissionResponse($webform_id);
+      }
+    }
 
     if (!$submission) {
       throw new NotFoundHttpException('Registration not found.');
@@ -45,15 +55,12 @@ class MyRegistrationController extends ControllerBase {
 
     $build = [];
 
-    $build['form'] = $this->entityFormBuilder()
-      ->getForm($submission, 'edit');
-
     $build['actions'] = [
       '#type' => 'container',
       '#attributes' => [
         'class' => ['ticket-actions'],
       ],
-      '#weight' => 0,
+      '#weight' => -10,
     ];
 
     $build['actions']['download_ticket'] = [
@@ -85,6 +92,11 @@ class MyRegistrationController extends ControllerBase {
       ],
     ];
 
+    if ($isVisitor) {
+      $build['form'] = $this->entityFormBuilder()
+        ->getForm($submission, 'edit');
+    }
+
     return $build;
   }
 
@@ -100,6 +112,10 @@ class MyRegistrationController extends ControllerBase {
   protected function getNewSubmissionResponse(string $webform_id) {
     $url = Url::fromUri('internal:/webform/' . $webform_id)->toString();
     return new RedirectResponse($url);
+  }
+
+  protected function getRegistrationType() {   
+    return 'visitor';
   }
 
 }

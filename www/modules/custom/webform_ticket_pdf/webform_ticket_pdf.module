@@ -4,6 +4,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\user\UserInterface;
+use Drupal\webform\Entity\Webform;
 
 /**
  * Implements hook_webform_submission_insert().
@@ -177,6 +178,14 @@ function webform_ticket_pdf_get_domain_for_submission(WebformSubmissionInterface
     ->getTicketWebformIdsByDomain();
 
   $domain = array_search($webform_id, $ticket_webform_ids_by_domain, TRUE);
+  if ($domain !== FALSE) {
+    return $domain;
+  }
+
+  $ticket_exhibitor_webform_ids_by_domain = \Drupal::service('domain_settings.manager')
+    ->getTicketExhibitorWebformIdsByDomain();
+
+  $domain = array_search($webform_id, $ticket_exhibitor_webform_ids_by_domain, TRUE);
 
   return $domain !== FALSE ? $domain : NULL;
 }
@@ -187,6 +196,26 @@ function webform_ticket_pdf_get_domain_for_submission(WebformSubmissionInterface
  */
 function webform_ticket_pdf_is_ticket_submission(WebformSubmissionInterface $submission): bool {
   return webform_ticket_pdf_get_domain_for_submission($submission) !== NULL;
+}
+
+
+/**
+ * Checks whether this is a visitor or exhibitor category webform
+ */
+function webform_ticket_pdf_type(string $webform_id): string {
+  $webform = Webform::load($webform_id);
+
+  if ($webform) {
+    $categories = (array) $webform->get('categories');
+    $type_categories = ['visitor', 'exhibitor'];
+    $matched = array_intersect($type_categories, $categories);
+    $type = NULL;
+
+    if ($matched) {
+      $type = reset($matched); // visitor or exhibitor
+    }
+    return $type;
+  }
 }
 
 

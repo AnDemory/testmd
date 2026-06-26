@@ -77,6 +77,10 @@ class TicketDownloadController extends ControllerBase {
       return AccessResult::allowed();
     }
 
+    if ($account->hasPermission('view own webform submission')) {
+      return AccessResult::allowed();
+    }
+
     if ($webform_submission->getOwnerId() == $account->id()) {
       return AccessResult::allowed();
     }

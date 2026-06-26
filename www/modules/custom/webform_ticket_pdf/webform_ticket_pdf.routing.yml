@@ -4,30 +4,34 @@ webform_ticket_pdf.my_registration:
     _controller: '\Drupal\webform_ticket_pdf\Controller\MyRegistrationController::page'
     _title: 'My registration'
   requirements:
-    _user_is_logged_in: 'TRUE'
+    _user_is_logged_in: 'TRUE'  
+
 
 webform_ticket_pdf.exhibitor_registration:
-  path: '/form/fm-day-2026-exposant'
+  path: '/exhibitor-registration'
   defaults:
     _controller: '\Drupal\webform_ticket_pdf\Controller\ExhibitorRegistrationController::page'
     _title: 'Exhibitor registration'
-  requirements:
-    _user_is_logged_in: 'TRUE'
 
-webform_ticket_pdf.exhibitor_registration_internal:
-  path: '/webform/fm_day_2026_exposant'
+webform_ticket_pdf.exhibitor_registration_ticket:
+  path: '/exhibitor-registration/ticket/{webform_submission}'
   defaults:
     _controller: '\Drupal\webform_ticket_pdf\Controller\ExhibitorRegistrationController::page'
-    _title: 'Exhibitor registration'
+    _title: 'Exhibitor ticket'
   requirements:
-    _user_is_logged_in: 'TRUE'
+    _access: 'TRUE'
+  options:
+    parameters:
+      webform_submission:
+        type: entity:webform_submission
+
+
 
 webform_ticket_pdf.download_ticket:
   path: '/ticket/{webform}/submission/{webform_submission}'
   defaults:
     _controller: '\Drupal\webform_ticket_pdf\Controller\TicketDownloadController::download'
-  requirements:
-    _custom_access: '\Drupal\webform_ticket_pdf\Controller\TicketDownloadController::access'
+  
   options:
     parameters:
       webform_submission:
