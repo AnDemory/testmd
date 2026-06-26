@@ -1,0 +1,15 @@
+uuid: 69059d59-ff2f-4d39-85f2-34c1d6e0f48b
+langcode: en
+status: true
+dependencies:
+  config:
+    - domain.record.www_aquaramatradefair_be
+  module:
+    - domain_access
+id: domain_access_add_editor_action_www_aquaramatradefair_be
+label: 'Add editors to the Aquarama Tradefair domain'
+type: user
+plugin: domain_access_add_editor_action
+configuration:
+  domain_id:
+    - www_aquaramatradefair_be

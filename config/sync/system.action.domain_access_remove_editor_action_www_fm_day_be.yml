@@ -1,0 +1,15 @@
+uuid: 72fb556b-d4db-4eb6-a9ef-258afe840db8
+langcode: en
+status: true
+dependencies:
+  config:
+    - domain.record.www_fm_day_be
+  module:
+    - domain_access
+id: domain_access_remove_editor_action_www_fm_day_be
+label: 'Remove editors from the FM Day domain'
+type: user
+plugin: domain_access_remove_editor_action
+configuration:
+  domain_id:
+    - www_fm_day_be

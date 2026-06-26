@@ -1,0 +1,21 @@
+uuid: c00961b3-a928-4e33-87a1-95ae26e04215
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.registration.field_bedrijf_of_kennisinstellin
+    - registration.type.atf_registration_2025
+  module:
+    - options
+id: registration.atf_registration_2025.field_bedrijf_of_kennisinstellin
+field_name: field_bedrijf_of_kennisinstellin
+entity_type: registration
+bundle: atf_registration_2025
+label: 'Bedrijf of kennisinstelling'
+description: 'Indien lid watercircle.be: gelieve uw bedrijf OF uw kennisinstelling en onderzoeksgroep in te vullen aub.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

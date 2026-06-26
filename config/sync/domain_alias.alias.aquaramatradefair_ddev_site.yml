@@ -1,0 +1,9 @@
+uuid: 75fcff6a-6adb-466e-b886-5d5802ac358c
+langcode: en
+status: true
+dependencies: {  }
+id: aquaramatradefair_ddev_site
+domain_id: www_aquaramatradefair_be
+pattern: aquaramatradefair.ddev.site
+redirect: 0
+environment: local

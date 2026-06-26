@@ -1,0 +1,436 @@
+_core:
+  default_config_hash: Ka6FYAWn5BwDYeHDi6mA0UpyNl-45TkgL1zgt35MuWU
+keyboard_navigation_menus:
+  account: 0
+  admin: 0
+  footer: 0
+  main: 0
+  tools: 0
+search_result_content_types: {  }
+site_reading_mode_content_type: {  }
+enable_px_based_widths: 0
+site_global_width: sw-1600
+enable_custom_widths: false
+enable_custom_node_width_message: ''
+site_global_breakpoints: sb-992
+site_regions_collapse_order: 0
+site_menu_breakpoints: mn-992
+site_global_regions_gap: '16'
+site_global_font_size: '16'
+site_node_date_format: solo_date_l
+site_import_google_font: ''
+site_css_injector: ''
+site_css_dynamic: ''
+site_js_dynamic: ''
+site_login_page_on: 0
+site_flip_header_menu: 0
+site_opacity_onscroll_on: 0
+site_inline_items_on: 0
+color_coded_system_tabs: 1
+site_toggle_speed: normal
+menu_template_assignments:
+  account:
+    template: ''
+    menu_name: ''
+    menu_id: account
+  admin:
+    template: ''
+    menu_name: ''
+    menu_id: admin
+  footer:
+    template: ''
+    menu_name: ''
+    menu_id: footer
+  main:
+    template: ''
+    menu_name: ''
+    menu_id: main
+  tools:
+    template: ''
+    menu_name: ''
+    menu_id: tools
+site_breadcrumb_pagetitle_off: 0
+site_breadcrumb_scroll: 1
+site_mobile_layout_order: left_main_right
+enable_per_type_layout_top: false
+enable_per_type_layout_main: 0
+enable_per_type_layout_bottom: false
+enable_per_type_layout_footer: false
+main_2col: solo-col-2-1
+main_3col: solo-col-1-2-1
+count_main: 2
+classes_page_wrapper: ''
+opacity_page_wrapper: 0
+classes_header: ''
+header_logo_image_alt: ''
+skip_header_content: 0
+header_sitename_center_default: 0
+header_sitename_center: 0
+header_sitename_center_small: 0
+header_change_icons: 0
+site_name_font_size_s: ''
+site_name_font_size_l: ''
+site_name_google_font: ''
+site_name_animate_on: ''
+classes_primary_menu: ''
+primary_menu_depth_info: ''
+primary_menu_alignment: none
+skip_navigation_content: 0
+primary_menu_on_hover: 0
+primary_menu_arrow_hover: 0
+primary_menu_border: 0
+primary_menu_branding: 0
+primary_menu_expand_left: 0
+primary_menu_megamenu: 0
+primary_menu_megamenu_layout: m-1-1
+primary_menu_submenu_header: 0
+classes_system_messages: ''
+system_messages_disable_dark: false
+classes_page_title: ''
+site_pagetitle_font_size_s: ''
+site_pagetitle_font_size_l: ''
+site_pagetitle_google_font: ''
+site_pagetitle_animate_on: ''
+site_pagetitle_center: false
+classes_breadcrumb: ''
+classes_main_container: ''
+site_regions_main_rounded: ''
+site_regions_main_border: 0
+skip_main_content: 0
+classes_content: ''
+align_content: region-left
+classes_sidebar_second: ''
+align_sidebar_second: region-left
+classes_footer_menu: ''
+skip_footer_content: false
+classes_credit_copyright: ''
+footer_copyright: 'Copyright © %year% Company Name - All rights reserved'
+footer_link: 'https://www.alaahaddad.com/'
+footer_link_label: 'Developed & Designed by'
+footer_link_text: 'Alaa Haddad'
+footer_use_formatted_text: 0
+footer_copyright_formatted:
+  value: ''
+  format: basic_html
+classes_popup_login_block: ''
+header_popup_login: false
+classes_fixed_search_block: ''
+site_load_w3css_on: 0
+site_font_google_local_on: 0
+site_font_awesome_on: '0'
+site_font_google_global_on: ''
+site_font_google_heading_on: ''
+site_font_google_special_on: ''
+disable_search_filters:
+  disable_language: 0
+  disable_keywords: 0
+  disable_types: 0
+enable_teaser_mode: 0
+theme_category: forest_and_nature_tones
+predefined_current_theme: forest_and_nature_tones|solo-enchanted-forest-zest
+sm_icon_size: sm-icons-small
+sm_icon_colors: ''
+sm_show_icons: 1
+sm_icon_telegram: ''
+sm_icon_bluesky: 'https://bsky.app/profile/alaahaddad.bsky.social'
+sm_icon_reddit: 'https://www.reddit.com/user/flashwebcenter/'
+sm_icon_whatsapp: 'https://www.drupal.org/u/flashwebcenter'
+sm_icon_snapchat: 'https://www.snapchat.com/add/flashwebcenter'
+sm_icon_threads: 'https://www.drupal.org/u/flashwebcenter'
+sm_icon_tiktok: 'https://www.tiktok.com/@flashwebcenter'
+sm_icon_facebook: 'https://www.facebook.com/flashwebcenter'
+sm_icon_twitter: 'https://x.com/flashwebcenter'
+sm_icon_pinterest: 'https://www.pinterest.com/alaahaddad'
+sm_icon_linkedin: 'https://www.linkedin.com/company/flash-web-center'
+sm_icon_instagram: 'https://www.instagram.com/flashwebcenter'
+sm_icon_youtube: 'https://www.youtube.com/user/flashwebcenter'
+sm_icon_drupal: 'https://www.drupal.org/u/flashwebcenter'
+sm_icon_mastodon: 'https://mastodon.social/deck/@flashwebcenter'
+sm_icon_rss: rss.xml
+sm_icon_email: '/#email'
+disable_block_title_visibility: ''
+features:
+  comment_user_picture: 1
+  comment_user_verification: 1
+  favicon: 1
+  logo: true
+  name: true
+  node_user_picture: 1
+  slogan: true
+logo:
+  use_default: 1
+  path: 'public://logo-atf.svg'
+favicon:
+  use_default: 1
+comment_heading_first: 1
+comment_title_tag: h3
+comment_show_permalink: 1
+comment_show_author: 1
+comment_show_date: 1
+comment_show_picture: 1
+comment_show_new_indicator: 1
+comment_date_format: solo_relative
+comment_form_position: before
+placeholder_info: ''
+solo_menu_debug: 0
+solo_menu_debug_verbosity: normal
+debug_info: ''
+settings_popup_login_block___r_bg_fr: ''
+settings_popup_login_block___r_bg: ''
+settings_popup_login_block___r_tx: ''
+settings_popup_login_block___r_h1: ''
+settings_popup_login_block___r_lk: ''
+settings_popup_login_block___r_lk_h: ''
+settings_popup_login_block___r_br: ''
+settings_popup_login_block___r_tx_lk: ''
+settings_popup_login_block___r_tx_lk_h: ''
+settings_popup_login_block___r_bg_lk: ''
+settings_popup_login_block___r_bg_lk_h: ''
+settings_popup_login_block___r_tx_bt: ''
+settings_popup_login_block___r_tx_bt_h: ''
+settings_popup_login_block___r_bg_bt: ''
+settings_popup_login_block___r_bg_bt_h: ''
+settings_page_wrapper___r_bg_fr: ''
+settings_page_wrapper___r_bg: ''
+settings_page_wrapper___r_tx: ''
+settings_page_wrapper___r_h1: ''
+settings_page_wrapper___r_lk: ''
+settings_page_wrapper___r_lk_h: ''
+settings_page_wrapper___r_br: ''
+settings_page_wrapper___r_tx_lk: ''
+settings_page_wrapper___r_tx_lk_h: ''
+settings_page_wrapper___r_bg_lk: ''
+settings_page_wrapper___r_bg_lk_h: ''
+settings_page_wrapper___r_tx_bt: ''
+settings_page_wrapper___r_tx_bt_h: ''
+settings_page_wrapper___r_bg_bt: ''
+settings_page_wrapper___r_bg_bt_h: ''
+settings_fixed_search_block___r_bg_fr: ''
+settings_fixed_search_block___r_bg: ''
+settings_fixed_search_block___r_tx: ''
+settings_fixed_search_block___r_h1: ''
+settings_fixed_search_block___r_lk: ''
+settings_fixed_search_block___r_lk_h: ''
+settings_fixed_search_block___r_br: ''
+settings_fixed_search_block___r_tx_lk: ''
+settings_fixed_search_block___r_tx_lk_h: ''
+settings_fixed_search_block___r_bg_lk: ''
+settings_fixed_search_block___r_bg_lk_h: ''
+settings_fixed_search_block___r_tx_bt: ''
+settings_fixed_search_block___r_tx_bt_h: ''
+settings_fixed_search_block___r_bg_bt: ''
+settings_fixed_search_block___r_bg_bt_h: ''
+settings_header___r_bg_fr: ''
+settings_header___r_bg: ''
+settings_header___r_tx: ''
+settings_header___r_h1: ''
+settings_header___r_lk: ''
+settings_header___r_lk_h: ''
+settings_header___r_br: ''
+settings_header___r_tx_lk: ''
+settings_header___r_tx_lk_h: ''
+settings_header___r_bg_lk: ''
+settings_header___r_bg_lk_h: ''
+settings_header___r_tx_bt: ''
+settings_header___r_tx_bt_h: ''
+settings_header___r_bg_bt: ''
+settings_header___r_bg_bt_h: ''
+settings_primary_menu___r_bg_fr: ''
+settings_primary_menu___r_bg: ''
+settings_primary_menu___r_tx: ''
+settings_primary_menu___r_h1: ''
+settings_primary_menu___r_lk: ''
+settings_primary_menu___r_lk_h: ''
+settings_primary_menu___r_br: ''
+settings_primary_menu___r_tx_lk: ''
+settings_primary_menu___r_tx_lk_h: ''
+settings_primary_menu___r_bg_lk: ''
+settings_primary_menu___r_bg_lk_h: ''
+settings_primary_menu___r_tx_bt: ''
+settings_primary_menu___r_tx_bt_h: ''
+settings_primary_menu___r_bg_bt: ''
+settings_primary_menu___r_bg_bt_h: ''
+settings_system_messages___r_bg_fr: ''
+settings_system_messages___r_bg: ''
+settings_system_messages___r_tx: ''
+settings_system_messages___r_h1: ''
+settings_system_messages___r_lk: ''
+settings_system_messages___r_lk_h: ''
+settings_system_messages___r_br: ''
+settings_system_messages___r_tx_lk: ''
+settings_system_messages___r_tx_lk_h: ''
+settings_system_messages___r_bg_lk: ''
+settings_system_messages___r_bg_lk_h: ''
+settings_system_messages___r_tx_bt: ''
+settings_system_messages___r_tx_bt_h: ''
+settings_system_messages___r_bg_bt: ''
+settings_system_messages___r_bg_bt_h: ''
+settings_page_title___r_bg_fr: ''
+settings_page_title___r_bg: ''
+settings_page_title___r_tx: ''
+settings_page_title___r_h1: ''
+settings_page_title___r_lk: ''
+settings_page_title___r_lk_h: ''
+settings_page_title___r_br: ''
+settings_page_title___r_tx_lk: ''
+settings_page_title___r_tx_lk_h: ''
+settings_page_title___r_bg_lk: ''
+settings_page_title___r_bg_lk_h: ''
+settings_page_title___r_tx_bt: ''
+settings_page_title___r_tx_bt_h: ''
+settings_page_title___r_bg_bt: ''
+settings_page_title___r_bg_bt_h: ''
+settings_breadcrumb___r_bg_fr: ''
+settings_breadcrumb___r_bg: ''
+settings_breadcrumb___r_tx: ''
+settings_breadcrumb___r_h1: ''
+settings_breadcrumb___r_lk: ''
+settings_breadcrumb___r_lk_h: ''
+settings_breadcrumb___r_br: ''
+settings_breadcrumb___r_tx_lk: ''
+settings_breadcrumb___r_tx_lk_h: ''
+settings_breadcrumb___r_bg_lk: ''
+settings_breadcrumb___r_bg_lk_h: ''
+settings_breadcrumb___r_tx_bt: ''
+settings_breadcrumb___r_tx_bt_h: ''
+settings_breadcrumb___r_bg_bt: ''
+settings_breadcrumb___r_bg_bt_h: ''
+settings_main_container___r_bg_fr: ''
+settings_main_container___r_bg: ''
+settings_main_container___r_tx: ''
+settings_main_container___r_h1: ''
+settings_main_container___r_lk: ''
+settings_main_container___r_lk_h: ''
+settings_main_container___r_br: ''
+settings_main_container___r_tx_lk: ''
+settings_main_container___r_tx_lk_h: ''
+settings_main_container___r_bg_lk: ''
+settings_main_container___r_bg_lk_h: ''
+settings_main_container___r_tx_bt: ''
+settings_main_container___r_tx_bt_h: ''
+settings_main_container___r_bg_bt: ''
+settings_main_container___r_bg_bt_h: ''
+settings_content___r_bg_fr: ''
+settings_content___r_bg: ''
+settings_content___r_tx: ''
+settings_content___r_h1: ''
+settings_content___r_lk: ''
+settings_content___r_lk_h: ''
+settings_content___r_br: ''
+settings_content___r_tx_lk: ''
+settings_content___r_tx_lk_h: ''
+settings_content___r_bg_lk: ''
+settings_content___r_bg_lk_h: ''
+settings_content___r_tx_bt: ''
+settings_content___r_tx_bt_h: ''
+settings_content___r_bg_bt: ''
+settings_content___r_bg_bt_h: ''
+settings_sidebar_second___r_bg_fr: ''
+settings_sidebar_second___r_bg: ''
+settings_sidebar_second___r_tx: ''
+settings_sidebar_second___r_h1: ''
+settings_sidebar_second___r_lk: ''
+settings_sidebar_second___r_lk_h: ''
+settings_sidebar_second___r_br: ''
+settings_sidebar_second___r_tx_lk: ''
+settings_sidebar_second___r_tx_lk_h: ''
+settings_sidebar_second___r_bg_lk: ''
+settings_sidebar_second___r_bg_lk_h: ''
+settings_sidebar_second___r_tx_bt: ''
+settings_sidebar_second___r_tx_bt_h: ''
+settings_sidebar_second___r_bg_bt: ''
+settings_sidebar_second___r_bg_bt_h: ''
+settings_footer_menu___r_bg_fr: ''
+settings_footer_menu___r_bg: ''
+settings_footer_menu___r_tx: ''
+settings_footer_menu___r_h1: ''
+settings_footer_menu___r_lk: ''
+settings_footer_menu___r_lk_h: ''
+settings_footer_menu___r_br: ''
+settings_footer_menu___r_tx_lk: ''
+settings_footer_menu___r_tx_lk_h: ''
+settings_footer_menu___r_bg_lk: ''
+settings_footer_menu___r_bg_lk_h: ''
+settings_footer_menu___r_tx_bt: ''
+settings_footer_menu___r_tx_bt_h: ''
+settings_footer_menu___r_bg_bt: ''
+settings_footer_menu___r_bg_bt_h: ''
+settings_credit_copyright___r_bg_fr: ''
+settings_credit_copyright___r_bg: ''
+settings_credit_copyright___r_tx: ''
+settings_credit_copyright___r_h1: ''
+settings_credit_copyright___r_lk: ''
+settings_credit_copyright___r_lk_h: ''
+settings_credit_copyright___r_br: ''
+settings_credit_copyright___r_tx_lk: ''
+settings_credit_copyright___r_tx_lk_h: ''
+settings_credit_copyright___r_bg_lk: ''
+settings_credit_copyright___r_bg_lk_h: ''
+settings_credit_copyright___r_tx_bt: ''
+settings_credit_copyright___r_tx_bt_h: ''
+settings_credit_copyright___r_bg_bt: ''
+settings_credit_copyright___r_bg_bt_h: ''
+preloader_enabled: false
+preloader_force_show: false
+preloader_disable_authenticated: true
+preloader_disable_admin_routes: true
+preloader_path_rules: ''
+preloader_hide_on: dom_ready
+preloader_transition: fade
+preloader_max_display_seconds: 8
+preloader_style: spinner
+preloader_spinner_show_percent: false
+preloader_logo_use_theme: true
+preloader_logo_url: ''
+preloader_logo_width: 160
+preloader_logo_height: 80
+preloader_logo_opacity: 100
+preloader_text: ''
+preloader_text_font: ''
+preloader_text_font_size: 24
+preloader_text_animate_effect: ''
+settings_preloader___r_tx: ''
+settings_preloader___r_bg: ''
+preloader_bg_opacity: 100
+back_to_top_enabled: 1
+back_to_top_disable_admin_routes: 1
+back_to_top_disable_authenticated: 0
+back_to_top_hide_small_screens: 0
+back_to_top_scroll_threshold: '400'
+back_to_top_position: bottom-right
+back_to_top_style: solid
+back_to_top_icon: arrow-up
+settings_back_to_top___r_bg: ''
+settings_back_to_top___r_tx: ''
+solo_layout_main_2col_article: solo-col-2-1
+solo_layout_main_3col_article: solo-col-1-2-1
+solo_layout_main_2col_page: solo-col-2-1
+solo_layout_main_3col_page: solo-col-1-2-1
+classes_sidebar_first: ''
+align_sidebar_first: region-left
+settings_sidebar_first___r_bg: ''
+settings_sidebar_first___r_tx: ''
+settings_sidebar_first___r_h1: ''
+settings_sidebar_first___r_lk: ''
+settings_sidebar_first___r_lk_h: ''
+settings_sidebar_first___r_br: ''
+settings_sidebar_first___r_bg_fr: ''
+settings_sidebar_first___r_tx_lk: ''
+settings_sidebar_first___r_tx_lk_h: ''
+settings_sidebar_first___r_bg_lk: ''
+settings_sidebar_first___r_bg_lk_h: ''
+settings_sidebar_first___r_tx_bt: ''
+settings_sidebar_first___r_tx_bt_h: ''
+settings_sidebar_first___r_bg_bt: ''
+settings_sidebar_first___r_bg_bt_h: ''
+header_login_links: Login
+popup_login_use_inline_styles: false
+popup_login_animation_duration: 300
+popup_login_close_on_escape: true
+popup_login_close_on_outside_click: true
+popup_login_focus_trap: true
+popup_login_announce_to_screen_readers: true
+popup_login_return_focus_on_close: true
+popup_login_custom_triggers: ''
+popup_login_z_index: 10000
+popup_login_overlay_opacity: 50

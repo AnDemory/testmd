@@ -1,0 +1,9 @@
+uuid: fa53759d-310e-4be2-b558-1cecd31c795f
+langcode: en
+status: true
+dependencies: {  }
+id: fm_day_ddev_site
+domain_id: www_fm_day_be
+pattern: fm-day.ddev.site
+redirect: 0
+environment: local

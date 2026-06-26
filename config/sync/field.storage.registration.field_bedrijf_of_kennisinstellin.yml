@@ -1,0 +1,27 @@
+uuid: 2349de49-947b-4bc4-81d9-05dc7e5819a2
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - registration
+id: registration.field_bedrijf_of_kennisinstellin
+field_name: field_bedrijf_of_kennisinstellin
+entity_type: registration
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: bedrijf
+      label: Bedrijf
+    -
+      value: kennisinstelling_en_onderzoeksgroep
+      label: 'Kennisinstelling en onderzoeksgroep'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

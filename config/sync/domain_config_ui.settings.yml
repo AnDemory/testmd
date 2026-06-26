@@ -1,0 +1,4 @@
+_core:
+  default_config_hash: PJP3-sJN2SQZTgCupMBEHry3ui7zsl93xtTovoTanFU
+remember_domain: false
+path_pages: "/admin/appearance\r\n/admin/config/system/site-information\r\n/admin/appearance/settings\r\n/admin/appearance/settings/solo_subtheme\r\n/admin/appearance/settings/solo\r\n/admin/config/system/mimemail\r\n/admin/config/system/mailsystem\r\n/admin/config/domain/domain_access"

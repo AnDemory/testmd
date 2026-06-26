@@ -1,0 +1,20 @@
+uuid: 9ee269ee-3ccd-467f-b340-97c7a0603b1e
+langcode: en
+status: false
+dependencies:
+  theme:
+    - solo_subtheme
+_core:
+  default_config_hash: 03Jl-eNW3zdEf4kyH46w0XK5nnnMyfEa9CVOEUzQTEA
+id: solo_subtheme_page_title
+theme: solo_subtheme
+region: sidebar_first
+weight: 0
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  label_display: '0'
+  provider: core
+visibility: {  }

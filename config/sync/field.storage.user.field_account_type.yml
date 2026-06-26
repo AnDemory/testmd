@@ -1,0 +1,27 @@
+uuid: 1e93b454-3b85-44b0-be81-eb774bf376af
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - user
+id: user.field_account_type
+field_name: field_account_type
+entity_type: user
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: private
+      label: Private
+    -
+      value: business
+      label: Business
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,11 @@
+name: 'Aquarama Trade Fair'
+mail: admin@example2.com
+simple_address: false
+sitestyle: true
+textonly: false
+linkonly: false
+user_plaintext_field: ''
+format: full_html
+advanced:
+  incoming: false
+  key: a-QIhDEvNjRz_YEmqnfXcxDf4ltGgOcIvILLRxCMt60

@@ -1,0 +1,21 @@
+uuid: 7209f34a-3500-4d2f-b8d1-2e0402916f92
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.registration.field_ik_ben
+    - registration.type.atf_registration_2025
+  module:
+    - options
+id: registration.atf_registration_2025.field_ik_ben
+field_name: field_ik_ben
+entity_type: registration
+bundle: atf_registration_2025
+label: 'Ik ben'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -1,0 +1,27 @@
+uuid: 46a117fa-cb4d-480c-8574-0927362dcda5
+langcode: en
+status: false
+dependencies:
+  module:
+    - system
+    - user
+  theme:
+    - solo_subtheme
+_core:
+  default_config_hash: 8_4m4Q7_AeC2OFUGBHCSeYm2_x18skOcMbX2_W-6jmo
+id: solo_subtheme_userlogin
+theme: solo_subtheme
+region: sidebar_first
+weight: 0
+provider: null
+plugin: user_login_block
+settings:
+  id: user_login_block
+  label: 'User login'
+  label_display: '0'
+  provider: user
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    pages: /user/login

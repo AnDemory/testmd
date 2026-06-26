@@ -1,0 +1,15 @@
+uuid: 9a7815d9-6fa2-4d25-838c-31f90ef6f785
+langcode: en
+status: true
+dependencies:
+  config:
+    - domain.record.www_fm_day_be
+  module:
+    - domain_access
+id: domain_access_remove_action_www_fm_day_be
+label: 'Remove selected content from the FM Day domain'
+type: node
+plugin: domain_access_remove_action
+configuration:
+  domain_id:
+    - www_fm_day_be

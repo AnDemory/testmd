@@ -1,0 +1,31 @@
+uuid: e5c3e390-431e-4560-9e45-c7be8eff8fe7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_paragraphs
+    - node.type.homepage
+    - paragraphs.paragraphs_type.articles
+  module:
+    - entity_reference_revisions
+id: node.homepage.field_paragraphs
+field_name: field_paragraphs
+entity_type: node
+bundle: homepage
+label: Paragraphs
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      articles: articles
+    negate: 0
+    target_bundles_drag_drop:
+      articles:
+        weight: 2
+        enabled: true
+field_type: entity_reference_revisions

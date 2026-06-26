@@ -1,0 +1,21 @@
+uuid: f084ad3c-6d3d-416c-b272-d97558dad12f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.registration.field_watercircle_be_vmx
+    - registration.type.atf_registration_2025
+id: registration.atf_registration_2025.field_watercircle_be_vmx
+field_name: field_watercircle_be_vmx
+entity_type: registration
+bundle: atf_registration_2025
+label: 'Watercircle.be - VMx'
+description: "09:30 - 13:00\r\n<br>\r\nStudenten: €25, Waercircle.be-leden: €50, VMX-leden:€75, niet-leden: €100\r\n<br>\r\nBetaling na ontvangst factuur. Inschrijving is pas definitief na betaling."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

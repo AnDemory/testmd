@@ -1,0 +1,108 @@
+_core:
+  default_config_hash: nwm3a4D5hKaEtJSIGZaqEv59AuYzO286G-ys8b1gHNU
+domains:
+  -
+    domain: aquaramatradefair.ddev.site
+    mail: info@aquaramatradefair.be
+    ticket_webform_id: aquarama_trade_fair_2025
+    ticket_exhibitor_webform_id: ''
+    ticket_template: 'private://templates/ATF/2025/ATF2025'
+    lead_retrieval_url: ''
+  -
+    domain: fm-day.ddev.site
+    mail: info@fm-day.be
+    ticket_webform_id: fm_day_2026
+    ticket_exhibitor_webform_id: fm_day_2026_exhibitor
+    ticket_template: 'private://templates/FM/2026/FM2026'
+    lead_retrieval_url: 'https://fmhb2026-events.fcoffice.local:444/apps/lr/'
+  -
+    domain: ''
+    mail: ''
+    ticket_webform_id: ''
+    ticket_exhibitor_webform_id: ''
+    ticket_template: ''
+    lead_retrieval_url: ''
+  -
+    domain: ''
+    mail: ''
+    ticket_webform_id: ''
+    ticket_exhibitor_webform_id: ''
+    ticket_template: ''
+    lead_retrieval_url: ''
+  -
+    domain: ''
+    mail: ''
+    ticket_webform_id: ''
+    ticket_exhibitor_webform_id: ''
+    ticket_template: ''
+    lead_retrieval_url: ''
+  -
+    domain: ''
+    mail: ''
+    ticket_webform_id: ''
+    ticket_exhibitor_webform_id: ''
+    ticket_template: ''
+    lead_retrieval_url: ''
+  -
+    domain: ''
+    mail: ''
+    ticket_webform_id: ''
+    ticket_exhibitor_webform_id: ''
+    ticket_template: ''
+    lead_retrieval_url: ''
+  -
+    domain: ''
+    mail: ''
+    ticket_webform_id: ''
+    ticket_exhibitor_webform_id: ''
+    ticket_template: ''
+    lead_retrieval_url: ''
+  -
+    domain: ''
+    mail: ''
+    ticket_webform_id: ''
+    ticket_exhibitor_webform_id: ''
+    ticket_template: ''
+    lead_retrieval_url: ''
+  -
+    domain: ''
+    mail: ''
+    ticket_webform_id: ''
+    ticket_exhibitor_webform_id: ''
+    ticket_template: ''
+    lead_retrieval_url: ''
+  -
+    domain: ''
+    mail: ''
+    ticket_webform_id: ''
+    ticket_exhibitor_webform_id: ''
+    ticket_template: ''
+    lead_retrieval_url: ''
+  -
+    domain: ''
+    mail: ''
+    ticket_webform_id: ''
+    ticket_exhibitor_webform_id: ''
+    ticket_template: ''
+    lead_retrieval_url: ''
+  -
+    domain: ''
+    mail: ''
+    ticket_webform_id: ''
+    ticket_exhibitor_webform_id: ''
+    ticket_template: ''
+    lead_retrieval_url: ''
+  -
+    domain: ''
+    mail: ''
+    ticket_webform_id: ''
+    ticket_exhibitor_webform_id: ''
+    ticket_template: ''
+    lead_retrieval_url: ''
+  -
+    domain: ''
+    mail: ''
+    ticket_webform_id: ''
+    ticket_exhibitor_webform_id: ''
+    ticket_template: ''
+    lead_retrieval_url: ''

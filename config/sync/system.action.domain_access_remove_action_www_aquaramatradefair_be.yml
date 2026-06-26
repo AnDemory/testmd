@@ -1,0 +1,15 @@
+uuid: b50e26f3-afd3-45ff-83dc-f7ecf96f30fa
+langcode: en
+status: true
+dependencies:
+  config:
+    - domain.record.www_aquaramatradefair_be
+  module:
+    - domain_access
+id: domain_access_remove_action_www_aquaramatradefair_be
+label: 'Remove selected content from the Aquarama Tradefair domain'
+type: node
+plugin: domain_access_remove_action
+configuration:
+  domain_id:
+    - www_aquaramatradefair_be

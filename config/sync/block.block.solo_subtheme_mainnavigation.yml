@@ -1,0 +1,25 @@
+uuid: 1a1734a6-45d4-4869-b3f5-455be30ae6e5
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.main
+  module:
+    - domain_menu_access
+  theme:
+    - solo_subtheme
+id: solo_subtheme_mainnavigation
+theme: solo_subtheme
+region: primary_menu
+weight: 0
+provider: null
+plugin: 'domain_access_menu_block:main'
+settings:
+  id: 'domain_access_menu_block:main'
+  label: 'Main navigation'
+  label_display: '0'
+  provider: domain_menu_access
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility: {  }

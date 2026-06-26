@@ -1,0 +1,12 @@
+uuid: bacadce5-cdd0-4722-b14f-84dc0fe08a8b
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflows.workflow.registration
+id: atf_registration_2025
+label: 'ATF Registration 2026'
+workflow: registration
+defaultState: complete
+heldExpireTime: 1
+heldExpireState: canceled

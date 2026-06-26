@@ -1,0 +1,15 @@
+uuid: 66f9494a-9884-4205-886c-b92936623113
+langcode: en
+status: true
+dependencies:
+  config:
+    - domain.record.www_aquaramatradefair_be
+  module:
+    - domain_access
+id: domain_access_remove_editor_action_www_aquaramatradefair_be
+label: 'Remove editors from the Aquarama Tradefair domain'
+type: user
+plugin: domain_access_remove_editor_action
+configuration:
+  domain_id:
+    - www_aquaramatradefair_be

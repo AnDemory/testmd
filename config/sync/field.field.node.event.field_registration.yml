@@ -1,0 +1,25 @@
+uuid: 21e1a63f-9036-48ff-b00f-d1343f18e216
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_registration
+    - node.type.event
+  module:
+    - webform
+id: node.event.field_registration
+field_name: field_registration
+entity_type: node
+bundle: event
+label: Registration
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:webform'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+field_type: webform

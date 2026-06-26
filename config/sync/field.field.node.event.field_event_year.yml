@@ -1,0 +1,23 @@
+uuid: 2a857bca-da15-4584-bbaa-87cd1efc8df2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_event_year
+    - node.type.event
+id: node.event.field_event_year
+field_name: field_event_year
+entity_type: node
+bundle: event
+label: 'Event Year'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 2026
+  max: 3000
+  prefix: ''
+  suffix: ''
+field_type: integer

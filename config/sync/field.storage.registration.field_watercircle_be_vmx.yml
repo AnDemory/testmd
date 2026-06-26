@@ -1,0 +1,18 @@
+uuid: 2c0ded86-803c-463e-93e8-6a1745621c46
+langcode: en
+status: true
+dependencies:
+  module:
+    - registration
+id: registration.field_watercircle_be_vmx
+field_name: field_watercircle_be_vmx
+entity_type: registration
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

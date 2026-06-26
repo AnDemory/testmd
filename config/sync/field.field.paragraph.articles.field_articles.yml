@@ -1,0 +1,25 @@
+uuid: 759fcdd0-24b9-439a-8e21-e48e5353fa1a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_articles
+    - paragraphs.paragraphs_type.articles
+  module:
+    - block_field
+id: paragraph.articles.field_articles
+field_name: field_articles
+entity_type: paragraph
+bundle: articles
+label: Articles
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  selection: blocks
+  selection_settings:
+    plugin_ids:
+      'views_block:search_api_articles-most_recent': 'views_block:search_api_articles-most_recent'
+field_type: block_field

@@ -1,0 +1,15 @@
+uuid: 4dbd6579-605d-4ef8-9448-23768a6f540a
+langcode: en
+status: true
+dependencies: {  }
+name: header_image
+label: 'Header image'
+effects:
+  6e6fe13c-9f8c-4087-a46a-43f6a77e79c7:
+    uuid: 6e6fe13c-9f8c-4087-a46a-43f6a77e79c7
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 1570
+      height: 360
+      anchor: center-center

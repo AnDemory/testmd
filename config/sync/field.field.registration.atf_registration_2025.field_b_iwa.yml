@@ -1,0 +1,21 @@
+uuid: 575bf3e6-cd9e-454f-b8ad-bebd9f16e2c3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.registration.field_b_iwa
+    - registration.type.atf_registration_2025
+id: registration.atf_registration_2025.field_b_iwa
+field_name: field_b_iwa
+entity_type: registration
+bundle: atf_registration_2025
+label: B-IWA
+description: "15:00 - 16:15\r\n<br>\r\nB-IWA members: free, non-memberd, €70, no show: €70"
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -1,0 +1,366 @@
+uuid: 832602ed-6cef-46a2-a8c5-345b6e55144f
+langcode: en
+status: open
+dependencies:
+  module:
+    - webform_ticket_pdf
+weight: 0
+open: null
+close: null
+uid: 1
+template: false
+archive: false
+id: aquarama_trade_fair_2025
+title: 'Aquarama Trade Fair 2025'
+description: '<p>Aquarama Trade Fair 2025</p>'
+categories: {  }
+elements: |-
+  intro_text:
+    '#type': processed_text
+    '#text': '<p>Registreer u hieronder als bezoeker van de Aquarama Trade Fair 2026. Na de registratie ontvangt u een e-mail met uw toegangsticket in bijlage ter bevestiging.</p><p><em>Iedere bezoeker dient zich apart te registreren!</em></p><p><strong>Organisatie:&nbsp;</strong> FCO Media, +32 (0)56 77 13 10, <a href="mailto:info@aquarama.be">info@aquarama.be</a>&nbsp;</p>'
+    '#format': basic_html
+  gratis_beursbezoek:
+    '#type': checkbox
+    '#title': 'GRATIS beursbezoek'
+    '#description': '<p>09:00 - 18:00</p>'
+    '#required': true
+    '#default_value': true
+    '#access_create_roles':
+      - authenticated
+  mijn_congres:
+    '#type': checkboxes
+    '#title': 'Mijn congres'
+    '#options':
+      'Watercircle.be - VMx': |-
+        Watercircle.be - VMx -- 09:30 - 13:00
+        Studenten: €25, Watercircle.be-leden: €50, VMX-leden: €75; niet-leden: €100
+        Betaling na ontvangst factuur. Inschrijving is pas definitief na betaling.
+      AquaFlanders: 'AquaFlanders -- 13:30 - 16:00 Gratis; no show: €50'
+      B-IWA: |-
+        B-IWA -- 15:00 - 16:15
+        B-IWA- members: free, non-members: €70, now show: €70
+  mijn_lidmaatschap:
+    '#type': checkboxes
+    '#title': 'Mijn lidmaatschap'
+    '#description': '<p>Ik ben:</p>'
+    '#options':
+      'Lid watercircle.be': 'Lid watercircle.be'
+      'Lid VMX': 'Lid VMX'
+      'Lid B-IWA': 'Lid B-IWA'
+      Student: 'Student -- U bent student bachelor of master, een inschrijvingsbewijs kan opgevraagd worden'
+    '#options_none': true
+    '#options_none_value': 'Geen van bovenstaande'
+    '#options_none_text': 'Geen van bovenstaande'
+    '#required': true
+  bedrijf_of_kennisinstelling:
+    '#type': textfield
+    '#title': 'Bedrijf of kennisinstelling'
+    '#description': '<p>Indien lid watercirckebe: gelieve uw bedrijf OF uw kennisinstelling en onderzoeksgroep in te vullen aub.</p>'
+    '#states':
+      visible:
+        ':input[name="mijn_lidmaatschap[Lid watercircle.be]"]':
+          checked: true
+  flexbox:
+    '#type': webform_flexbox
+  uw_prijs:
+    '#type': webform_computed_twig
+    '#title': 'Uw prijs'
+    '#template': |-
+      {% set congressen = data.mijn_congres|default([]) %}
+      {% set lidmaatschap = data.mijn_lidmaatschap|default([]) %}
+
+      {% set is_student = 'Student' in lidmaatschap %}
+      {% set is_member_watercircle = 'Lid watercircle.be' in lidmaatschap %}
+      {% set is_member_vmx = 'Lid VMX' in lidmaatschap %}
+      {% set is_member_biwa = 'Lid B-IWA' in lidmaatschap %}
+
+      {% set total = 0 %}
+
+      {# Watercircle.be - VMx #}
+      {% if 'Watercircle.be - VMx' in congressen %}
+        {% if is_student %}
+          {% set total = total + 25 %}
+        {% elseif is_member_watercircle %}
+          {% set total = total + 50 %}
+        {% elseif is_member_vmx %}
+          {% set total = total + 75 %}
+        {% else %}
+          {% set total = total + 100 %}
+        {% endif %}
+      {% endif %}
+
+      {# B-IWA #}
+      {% if 'B-IWA' in congressen %}
+        {% if is_member_biwa %}
+          {% set total = total + 0 %}
+        {% else %}
+          {% set total = total + 70 %}
+        {% endif %}
+      {% endif %}
+
+      €{{ total }}
+    '#hide_empty': true
+    '#store': true
+    '#ajax': true
+css: ''
+javascript: ''
+settings:
+  ajax: false
+  ajax_scroll_top: form
+  ajax_progress_type: ''
+  ajax_effect: ''
+  ajax_speed: null
+  page: true
+  page_submit_path: ''
+  page_confirm_path: ''
+  page_theme_name: ''
+  form_title: source_entity_webform
+  form_submit_once: true
+  form_open_message: ''
+  form_close_message: ''
+  form_exception_message: ''
+  form_previous_submissions: true
+  form_confidential: false
+  form_confidential_message: ''
+  form_disable_remote_addr: false
+  form_convert_anonymous: false
+  form_prepopulate: false
+  form_prepopulate_source_entity: false
+  form_prepopulate_source_entity_required: false
+  form_prepopulate_source_entity_type: ''
+  form_unsaved: false
+  form_disable_back: true
+  form_submit_back: false
+  form_disable_autocomplete: false
+  form_novalidate: false
+  form_disable_inline_errors: false
+  form_required: false
+  form_autofocus: false
+  form_details_toggle: false
+  form_reset: false
+  form_access_denied: default
+  form_access_denied_title: ''
+  form_access_denied_message: ''
+  form_access_denied_attributes: {  }
+  form_file_limit: ''
+  form_attributes: {  }
+  form_method: ''
+  form_action: ''
+  share: false
+  share_node: false
+  share_theme_name: ''
+  share_title: true
+  share_page_body_attributes: {  }
+  submission_label: ''
+  submission_exception_message: ''
+  submission_locked_message: ''
+  submission_log: false
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
+  submission_views: {  }
+  submission_views_replace: {  }
+  submission_user_columns: {  }
+  submission_user_duplicate: false
+  submission_access_denied: default
+  submission_access_denied_title: ''
+  submission_access_denied_message: ''
+  submission_access_denied_attributes: {  }
+  previous_submission_message: ''
+  previous_submissions_message: ''
+  autofill: false
+  autofill_message: ''
+  autofill_excluded_elements: {  }
+  wizard_progress_bar: true
+  wizard_progress_pages: false
+  wizard_progress_percentage: false
+  wizard_progress_link: false
+  wizard_progress_states: false
+  wizard_start_label: ''
+  wizard_preview_link: false
+  wizard_confirmation: true
+  wizard_confirmation_label: ''
+  wizard_auto_forward: true
+  wizard_auto_forward_hide_next_button: false
+  wizard_keyboard: true
+  wizard_track: ''
+  wizard_prev_button_label: ''
+  wizard_next_button_label: ''
+  wizard_toggle: false
+  wizard_toggle_show_label: ''
+  wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
+  preview: 0
+  preview_label: ''
+  preview_title: ''
+  preview_message: ''
+  preview_attributes: {  }
+  preview_excluded_elements: {  }
+  preview_exclude_empty: true
+  preview_exclude_empty_checkbox: false
+  draft: none
+  draft_multiple: false
+  draft_auto_save: false
+  draft_saved_message: ''
+  draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
+  confirmation_type: page
+  confirmation_url: ''
+  confirmation_title: ''
+  confirmation_message: ''
+  confirmation_attributes: {  }
+  confirmation_back: true
+  confirmation_back_label: ''
+  confirmation_back_attributes: {  }
+  confirmation_exclude_query: false
+  confirmation_exclude_token: false
+  confirmation_update: false
+  limit_total: null
+  limit_total_interval: null
+  limit_total_message: ''
+  limit_total_unique: false
+  limit_user: null
+  limit_user_interval: null
+  limit_user_message: ''
+  limit_user_unique: false
+  entity_limit_total: null
+  entity_limit_total_interval: null
+  entity_limit_user: null
+  entity_limit_user_interval: null
+  purge: none
+  purge_days: null
+  results_disabled: false
+  results_disabled_ignore: false
+  results_customize: false
+  token_view: false
+  token_update: false
+  token_delete: false
+  serial_disabled: false
+access:
+  create:
+    roles:
+      - authenticated
+    users: {  }
+    permissions: {  }
+  view_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  purge_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  view_own:
+    roles:
+      - authenticated
+    users: {  }
+    permissions: {  }
+  update_own:
+    roles:
+      - authenticated
+    users: {  }
+    permissions: {  }
+  delete_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  administer:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+handlers:
+  email:
+    id: email
+    handler_id: email
+    label: Email
+    notes: ''
+    status: false
+    conditions: {  }
+    weight: -49
+    settings:
+      states:
+        - completed
+        - updated
+      to_mail: '[current-user:mail]'
+      to_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      from_mail: '[domain-settings:mail]'
+      from_options: {  }
+      from_name: _default
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      subject: _default
+      body: '<p>[current-user:field_name:value] [current-user:field_first_name:value],<br><br>Wij hebben uw inschrijving voor de Aquarama Trade Fair 2025 goed ontvangen.<br><br>In de bijlage kunt u uw bestelde toegangsticket terugvinden. Dit toegangsticket geldt als badge en biedt u rechtstreeks toegang tot de beurs. Gelieve dit toegangsticket af te drukken en mee te brengen naar de ingang van de beurs. Uw registratie wijzigen en het toegangsticket downloaden kan steeds via uw profielpagina’s op onze website. (<a href="https://aquaramatradefair.ddev.site/my-registration">Klik hier</a>)<br><br><br><br><strong>Praktische info</strong><br>Aquarama Trade Fair 2025<br>Donderdag 23 oktober van 9u tot 18u<br>Brabanthal, Brabantlaan 1, 3001 Leuven<br><br>Bij ‘no show’ of afmelden minder dan 48u voor het congres is de toegangsprijs verschuldigd.&nbsp;<br><br><strong>Organisatie</strong><br>FCO Media<br>Boulevard des Canadiens 118<br>B - 7711 Dottignies<br>+32 (0)56 77 13 10<br><a href="mailto:info@aquarama.be">info@aquarama.be</a><br><a href="https://www.aquaramatradefair.be">www.aquaramatradefair.be</a></p><div id="eid-safari-extension-is-installed">&nbsp;</div><p><img src="https://www.aquaramatradefair.be/uploads/nieuws/images/full/atf20261200x800web2.jpg"></p>'
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      exclude_attachments: false
+      html: true
+      attachments: false
+      twig: false
+      theme_name: ''
+      parameters: {  }
+      debug: false
+  ticket_email:
+    id: ticket_email
+    handler_id: ticket_email
+    label: 'Ticket email'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: -50
+    settings:
+      states:
+        - completed
+        - updated
+      to_mail: '[current-user:mail]'
+      to_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: '[domain-settings:mail]'
+      from_options: {  }
+      from_name: _default
+      subject: _default
+      body: '<p>[current-user:field_name:value] [current-user:field_first_name:value],<br><br>Wij hebben uw inschrijving voor de Aquarama Trade Fair 2025 goed ontvangen.<br><br>In de bijlage kunt u uw bestelde toegangsticket terugvinden. Dit toegangsticket geldt als badge en biedt u rechtstreeks toegang tot de beurs. Gelieve dit toegangsticket af te drukken en mee te brengen naar de ingang van de beurs. Uw registratie wijzigen en het toegangsticket downloaden kan steeds via uw profielpagina’s op onze website. (<a href="https://aquaramatradefair.ddev.site/my-registration">Klik hier</a>)<br><br><br><br><strong>Praktische info</strong><br>Aquarama Trade Fair 2025<br>Donderdag 23 oktober van 9u tot 18u<br>Brabanthal, Brabantlaan 1, 3001 Leuven<br><br>Bij ‘no show’ of afmelden minder dan 48u voor het congres is de toegangsprijs verschuldigd.&nbsp;<br><br><strong>Organisatie</strong><br>FCO Media<br>Boulevard des Canadiens 118<br>B - 7711 Dottignies<br>+32 (0)56 77 13 10<br><a href="mailto:info@aquarama.be">info@aquarama.be</a><br><a href="https://www.aquaramatradefair.be">www.aquaramatradefair.be</a></p><div id="eid-safari-extension-is-installed">&nbsp;</div><p><img src="https://www.aquaramatradefair.be/uploads/nieuws/images/full/atf20261200x800web2.jpg"></p>'
+      excluded_elements: {  }
+      ignore_access: 0
+      exclude_empty: true
+      exclude_empty_checkbox: 0
+      exclude_attachments: false
+      html: true
+      attachments: false
+      twig: false
+      debug: false
+      reply_to: '[domain-settings:mail]'
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      theme_name: ''
+      parameters: {  }
+variants: {  }

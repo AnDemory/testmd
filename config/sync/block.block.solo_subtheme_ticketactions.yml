@@ -1,0 +1,25 @@
+uuid: 5ec196ec-6065-41d3-8b8d-752125aaf647
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+    - webform_ticket_pdf
+  theme:
+    - solo_subtheme
+id: solo_subtheme_ticketactions
+theme: solo_subtheme
+region: content
+weight: 0
+provider: null
+plugin: ticket_actions_block
+settings:
+  id: ticket_actions_block
+  label: 'Ticket actions'
+  label_display: visible
+  provider: webform_ticket_pdf
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/admin/structure/webform/manage/*/submission/*'

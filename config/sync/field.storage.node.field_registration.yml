@@ -1,0 +1,20 @@
+uuid: 0c3482c6-8783-4a66-8b3f-91a3c33b99a1
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - webform
+id: node.field_registration
+field_name: field_registration
+entity_type: node
+type: webform
+settings:
+  target_type: webform
+module: webform
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,176 @@
+uuid: f57456fc-ce61-42a1-a6f0-2caeedade25d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.user.user.field_account_type
+    - field.field.user.user.field_company_name
+    - field.field.user.user.field_domain_access
+    - field.field.user.user.field_domain_admin
+    - field.field.user.user.field_domain_all_affiliates
+    - field.field.user.user.field_first_name
+    - field.field.user.user.field_name
+    - field.field.user.user.field_vat_number
+    - field.field.user.user.user_picture
+    - image.style.thumbnail
+  module:
+    - conditional_fields
+    - image
+    - path
+    - user
+_core:
+  default_config_hash: FaQ9Ptcpxpg30AtiqRDtl_8zbJArHP1LPfug_s59TOA
+id: user.user.default
+targetEntityType: user
+bundle: user
+mode: default
+content:
+  account:
+    weight: -10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  contact:
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_account_type:
+    type: options_buttons
+    weight: 53
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_company_name:
+    type: string_textfield
+    weight: 54
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings:
+      conditional_fields:
+        eb9e44ad-d1f9-4253-bc61-c3134b46618a:
+          entity_type: user
+          bundle: user
+          dependee: field_account_type
+          settings:
+            state: visible
+            reset: true
+            condition: value
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form:
+              -
+                value: business
+            effect: show
+            effect_options: {  }
+            selector: ''
+        57bb65ce-5a41-4f0c-ae30-b6e6d871890c:
+          entity_type: user
+          bundle: user
+          dependee: field_account_type
+          settings:
+            state: required
+            reset: false
+            condition: value
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form:
+              -
+                value: business
+            effect: show
+            effect_options: {  }
+            selector: ''
+  field_domain_access:
+    type: options_buttons
+    weight: 40
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_domain_admin:
+    type: options_buttons
+    weight: 50
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_domain_all_affiliates:
+    type: boolean_checkbox
+    weight: 41
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_first_name:
+    type: string_textfield
+    weight: 51
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_name:
+    type: string_textfield
+    weight: 52
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_vat_number:
+    type: string_textfield
+    weight: 55
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings:
+      conditional_fields:
+        263559b6-fd2a-4329-8b62-c8b550eb8098:
+          entity_type: user
+          bundle: user
+          dependee: field_account_type
+          settings:
+            state: visible
+            reset: false
+            condition: value
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form:
+              -
+                value: business
+            effect: show
+            effect_options: {  }
+            selector: ''
+  language:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  timezone:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  user_picture:
+    type: image_image
+    weight: -1
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+hidden:
+  langcode: true

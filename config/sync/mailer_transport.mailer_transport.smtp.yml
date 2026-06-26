@@ -1,0 +1,18 @@
+uuid: 3f3a6ca5-19c4-40ab-9681-81af338c5e1f
+langcode: en
+status: true
+dependencies: {  }
+id: smtp
+label: SMTP
+plugin: smtp
+configuration:
+  user: 'An Demory4'
+  pass: test123456
+  host: erer
+  port: null
+  query:
+    verify_peer: true
+    local_domain: ''
+    restart_threshold: null
+    restart_threshold_sleep: null
+    ping_threshold: null

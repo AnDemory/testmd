@@ -1,0 +1,15 @@
+uuid: 987787e4-ef91-4ede-bcb8-af8c468f58a0
+langcode: en
+status: true
+dependencies:
+  config:
+    - domain.record.www_fm_day_be
+  module:
+    - domain_access
+id: domain_access_add_action_www_fm_day_be
+label: 'Add selected content to the FM Day domain'
+type: node
+plugin: domain_access_add_action
+configuration:
+  domain_id:
+    - www_fm_day_be

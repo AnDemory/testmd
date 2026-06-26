@@ -1,0 +1,14 @@
+uuid: 5d4c8707-af93-485a-9924-9d041c2b536f
+langcode: en
+status: true
+dependencies:
+  config:
+    - domain.record.www_aquaramatradefair_be
+  module:
+    - domain_source
+id: domain_source_set_action.www_aquaramatradefair_be
+label: 'Set content domain source value to the Aquarama Tradefair domain'
+type: node
+plugin: domain_source_set_action
+configuration:
+  domain_id: www_aquaramatradefair_be

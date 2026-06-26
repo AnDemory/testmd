@@ -1,0 +1,164 @@
+uuid: 40d70d80-c94c-42b5-b6a8-306668087b95
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.registration.atf_registration_2025.field_aquaflanders
+    - field.field.registration.atf_registration_2025.field_b_iwa
+    - field.field.registration.atf_registration_2025.field_bedrijf
+    - field.field.registration.atf_registration_2025.field_bedrijf_of_kennisinstellin
+    - field.field.registration.atf_registration_2025.field_gratis_beursbezoek
+    - field.field.registration.atf_registration_2025.field_ik_ben
+    - field.field.registration.atf_registration_2025.field_vlario
+    - field.field.registration.atf_registration_2025.field_watercircle_be_vmx
+    - registration.type.atf_registration_2025
+  module:
+    - conditional_fields
+    - registration
+id: registration.atf_registration_2025.default
+targetEntityType: registration
+bundle: atf_registration_2025
+mode: default
+content:
+  anon_mail:
+    type: email_default
+    weight: 0
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+  count:
+    type: registration_spaces_default
+    weight: 2
+    region: content
+    settings:
+      hide_single_space: true
+      placeholder: ''
+    third_party_settings: {  }
+  created:
+    type: datetime_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_aquaflanders:
+    type: boolean_checkbox
+    weight: 13
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_b_iwa:
+    type: boolean_checkbox
+    weight: 15
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_bedrijf:
+    type: string_textfield
+    weight: 18
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings:
+      conditional_fields:
+        e03db6a8-73bf-426a-977e-0177044d4aae:
+          entity_type: registration
+          bundle: atf_registration_2025
+          dependee: field_bedrijf_of_kennisinstellin
+          settings:
+            state: visible
+            condition: value
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form: {  }
+            effect: show
+            effect_options: {  }
+            selector: ''
+  field_bedrijf_of_kennisinstellin:
+    type: options_buttons
+    weight: 17
+    region: content
+    settings: {  }
+    third_party_settings:
+      conditional_fields:
+        b036ebf2-1145-4c0d-ad73-e49df05ee63d:
+          entity_type: registration
+          bundle: atf_registration_2025
+          dependee: field_ik_ben
+          settings:
+            state: visible
+            condition: value
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form: {  }
+            effect: show
+            effect_options: {  }
+            selector: ''
+        025c0b1a-de18-46e6-8304-beb17a981f07:
+          entity_type: registration
+          bundle: atf_registration_2025
+          dependee: field_ik_ben
+          settings:
+            state: visible
+            condition: value
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form: {  }
+            effect: show
+            effect_options: {  }
+            selector: ''
+  field_gratis_beursbezoek:
+    type: boolean_checkbox
+    weight: 11
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_ik_ben:
+    type: options_buttons
+    weight: 16
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_vlario:
+    type: boolean_checkbox
+    weight: 14
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_watercircle_be_vmx:
+    type: boolean_checkbox
+    weight: 12
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  state:
+    type: registration_state_default
+    weight: 3
+    region: content
+    settings:
+      hide_single_state: true
+    third_party_settings: {  }
+  user_uid:
+    type: entity_reference_autocomplete
+    weight: 1
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

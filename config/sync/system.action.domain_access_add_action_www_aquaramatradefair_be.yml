@@ -1,0 +1,15 @@
+uuid: 23e75f92-8bc2-4a00-81a1-75904e0e041b
+langcode: en
+status: true
+dependencies:
+  config:
+    - domain.record.www_aquaramatradefair_be
+  module:
+    - domain_access
+id: domain_access_add_action_www_aquaramatradefair_be
+label: 'Add selected content to the Aquarama Tradefair domain'
+type: node
+plugin: domain_access_add_action
+configuration:
+  domain_id:
+    - www_aquaramatradefair_be

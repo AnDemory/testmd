@@ -1,0 +1,21 @@
+uuid: fcbba5d8-5de5-4f40-8aa5-08bde8a023e3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.registration.field_aquaflanders
+    - registration.type.atf_registration_2025
+id: registration.atf_registration_2025.field_aquaflanders
+field_name: field_aquaflanders
+entity_type: registration
+bundle: atf_registration_2025
+label: AquaFlanders
+description: "13:30 - 16:00\r\n<br>\r\nGratis, no show : €50"
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

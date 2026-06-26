@@ -1,0 +1,18 @@
+uuid: b80931e6-0153-439b-91b5-f92090f18e7b
+langcode: en
+status: true
+dependencies:
+  module:
+    - registration
+id: registration.field_aquaflanders
+field_name: field_aquaflanders
+entity_type: registration
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

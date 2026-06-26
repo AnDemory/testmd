@@ -1,0 +1,42 @@
+uuid: 19e33ecb-a29d-4966-9040-ea7c24c18b3d
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.basic_html
+    - filter.format.webform_default
+    - registration.type.atf_registration_2025
+  module:
+    - comment
+    - contact
+    - file
+    - filter
+    - media
+    - registration
+    - search
+    - shortcut
+    - system
+    - webform
+_core:
+  default_config_hash: cFrlqjtkTfvY3RGccjJkPf1SGIfJ942IrxTLWAO4mgA
+id: authenticated
+label: 'Authenticated user'
+weight: 1
+is_admin: false
+permissions:
+  - 'access comments'
+  - 'access content'
+  - 'access shortcuts'
+  - 'access site-wide contact form'
+  - 'access webform submission user'
+  - 'create atf_registration_2025 registration self'
+  - 'delete own files'
+  - 'edit own webform submission'
+  - 'post comments'
+  - 'search content'
+  - 'skip comment approval'
+  - 'update own atf_registration_2025 registration'
+  - 'use text format basic_html'
+  - 'use text format webform_default'
+  - 'view media'
+  - 'view own atf_registration_2025 registration'

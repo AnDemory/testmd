@@ -1,0 +1,14 @@
+uuid: 4c861bb9-0de4-4270-9e43-f2d19da11791
+langcode: en
+status: true
+dependencies:
+  config:
+    - domain.record.www_fm_day_be
+  module:
+    - domain_source
+id: domain_source_set_action.www_fm_day_be
+label: 'Set content domain source value to the FM Day domain'
+type: node
+plugin: domain_source_set_action
+configuration:
+  domain_id: www_fm_day_be

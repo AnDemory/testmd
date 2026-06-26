@@ -1,0 +1,22 @@
+uuid: e59ce6e4-dd92-4b5a-91b3-f0f4b6cbbe0d
+langcode: en
+status: false
+dependencies:
+  module:
+    - system
+  theme:
+    - solo_subtheme
+_core:
+  default_config_hash: uB1BsjFLYtDfQn84zNrBSUzkEg9ZlxURQpjR5B0XFQA
+id: solo_subtheme_messages
+theme: solo_subtheme
+region: sidebar_first
+weight: -50
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Status messages'
+  label_display: '0'
+  provider: system
+visibility: {  }
