@@ -33,7 +33,7 @@ class TicketPdfGenerator {
       if ($configured_webform_id !== $webform_id) {
         throw new \RuntimeException('This Webform is not configured for ticket PDFs: ' . $configured_webform_id . '<->' .$webform_id);
       }
-     
+
     }
 
     $template_uri = \Drupal::service('domain_settings.manager')
@@ -85,7 +85,7 @@ class TicketPdfGenerator {
       $name = $account->get('field_first_name')->value . " ". $account->get('field_name')->value;
 
       $ean_type = "250";
-      $base_id = $account->id();
+      $base_id = $submission->id();
     } else {
       $ean_type = "251";
       $base_id = $submission->id();
@@ -128,7 +128,7 @@ class TicketPdfGenerator {
     //   FileSystemInterface::MODIFY_PERMISSIONS
     // );
 
-   
+
 
     // -------------------------------------------------
     // GENERATE BARCODE
@@ -158,7 +158,7 @@ class TicketPdfGenerator {
     // ADD JPG BACKGROUND
     // -------------------------------------------------
 
-    
+
     $background = $this->getBackgroundTemplate($data, $webform_id, $domain);
 
     $pdf->Image($background, 0, 0, 210, 297, 'JPG');
@@ -245,7 +245,7 @@ class TicketPdfGenerator {
       'PNG'
     );
 
- 
+
 
     // -------------------------------------------------
     // QR CODE
@@ -320,7 +320,7 @@ class TicketPdfGenerator {
         29,
         'PNG'
       );
-      
+
       $pdf->SetTextColor(0, 0, 0);
       $pdf->SetXY(143,130);
       $pdf->MultiCell(
@@ -333,8 +333,8 @@ class TicketPdfGenerator {
         1       // move cursor to next line after
       );
     }
-   
-   
+
+
 
     // // -------------------------------------------------
     // // SAVE PDF
