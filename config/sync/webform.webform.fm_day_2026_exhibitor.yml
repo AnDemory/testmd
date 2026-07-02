@@ -11,7 +11,9 @@ archive: false
 id: fm_day_2026_exhibitor
 title: 'FM-Day 2026 exhibitor'
 description: ''
-categories: {  }
+categories:
+  - Event
+  - exhibitor
 elements: |-
   company_name:
     '#type': textfield
@@ -43,8 +45,8 @@ settings:
   page_submit_path: ''
   page_confirm_path: ''
   page_theme_name: ''
-  form_title: both
-  form_submit_once: false
+  form_title: source_entity_webform
+  form_submit_once: true
   form_open_message: ''
   form_close_message: ''
   form_exception_message: ''
@@ -58,8 +60,8 @@ settings:
   form_prepopulate_source_entity_required: false
   form_prepopulate_source_entity_type: ''
   form_unsaved: false
-  form_disable_back: false
-  form_submit_back: false
+  form_disable_back: true
+  form_submit_back: true
   form_disable_autocomplete: false
   form_novalidate: false
   form_disable_inline_errors: false
@@ -135,8 +137,8 @@ settings:
   draft_loaded_message: ''
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
-  confirmation_type: page
-  confirmation_url: ''
+  confirmation_type: url_message
+  confirmation_url: '/exhibitor-registration/ticket/[webform_submission:sid]'
   confirmation_title: ''
   confirmation_message: ''
   confirmation_attributes: {  }
@@ -196,7 +198,9 @@ access:
     users: {  }
     permissions: {  }
   view_own:
-    roles: {  }
+    roles:
+      - content_editor
+      - administrator
     users: {  }
     permissions: {  }
   update_own:

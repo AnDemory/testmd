@@ -113,9 +113,7 @@ class TicketPdfGenerator {
       # add auth ID and initial PIN to exhibitor data
       $fair_exhibitor['lrat_auth']     = $optimus->encode( $base_id );
       $fair_exhibitor['lrat_auth_pin'] = \mb_substr( $fair_exhibitor['lrat_auth'], 0, 4 );
-\Drupal::logger("TicketPdfGenerator")->notice("base id".$base_id);
-\Drupal::logger("TicketPdfGenerator")->notice("lrat id".$fair_exhibitor['lrat_auth'] );
-      $qr_exhibitor = $this->generateQrCode('identify', $fair_exhibitor['lrat_auth']);
+      $qr_exhibitor = $this->generateQrCode('identify', $fair_exhibitor['lrat_auth'], $domain);
     }
 
     // // -------------------------------------------------
@@ -143,7 +141,7 @@ class TicketPdfGenerator {
     // GENERATE QR CODE
     // -------------------------------------------------
 
-    $qr_path = $this->generateQrCode('create', $eancode);
+    $qr_path = $this->generateQrCode('create', $eancode, $domain);
 
     // -------------------------------------------------
     // CREATE PDF
@@ -270,18 +268,8 @@ class TicketPdfGenerator {
       'PNG'
     );
 
-    if (!$is_visitor) {
-      $pdf->Image(
-        $qr_exhibitor,
-        143,
-        100,
-        29,
-        29,
-        'PNG'
-      );
-    }
 
-   // -------------------------------------------------
+    // -------------------------------------------------
     // EANCODES
     // -------------------------------------------------
 
@@ -318,7 +306,35 @@ class TicketPdfGenerator {
       1       // move cursor to next line after
     );
 
-    
+    // -------------------------------------------------
+    //  EXHIBITOR
+    // -------------------------------------------------
+
+
+    if (!$is_visitor) {
+      $pdf->Image(
+        $qr_exhibitor,
+        143,
+        100,
+        29,
+        29,
+        'PNG'
+      );
+      
+      $pdf->SetTextColor(0, 0, 0);
+      $pdf->SetXY(143,130);
+      $pdf->MultiCell(
+        29,     // box width
+        6,      // line height
+        $fair_exhibitor['lrat_auth_pin'],  // text
+        0,      // border: 0 = no border
+        'C',    // align: center
+        false,  // fill
+        1       // move cursor to next line after
+      );
+    }
+   
+   
 
     // // -------------------------------------------------
     // // SAVE PDF
@@ -345,11 +361,11 @@ class TicketPdfGenerator {
   // QR CODE
   // =====================================================
 
-  protected function generateQrCode($action, $eancode): string {
-\Drupal::logger("TicketPdfGenerator")->notice("ecie".$eancode );
+  protected function generateQrCode($action, $code, ?string $domain = NULL): string {
+
     $lead_retrieval_url = \Drupal::service('domain_settings.manager')
       ->getLeadRetrievalUrl($domain);
-    $url = $lead_retrieval_url . $action . '/'. $eancode;
+    $url = $lead_retrieval_url . $action . '/'. $code;
 
     $qrCode = new QrCode($url);
 
@@ -357,7 +373,7 @@ class TicketPdfGenerator {
 
     $result = $writer->write($qrCode);
 
-    $path = sys_get_temp_dir() . '/qr-' . $eancode . '.png';
+   $path = sys_get_temp_dir() . '/qr-' . $action . '-' . hash('sha256', $url) . '.png';
 
     $result->saveToFile($path);
 

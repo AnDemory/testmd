@@ -1,9 +1,7 @@
 uuid: 832602ed-6cef-46a2-a8c5-345b6e55144f
 langcode: en
 status: open
-dependencies:
-  module:
-    - webform_ticket_pdf
+dependencies: {  }
 weight: 0
 open: null
 close: null
@@ -13,7 +11,8 @@ archive: false
 id: aquarama_trade_fair_2025
 title: 'Aquarama Trade Fair 2025'
 description: '<p>Aquarama Trade Fair 2025</p>'
-categories: {  }
+categories:
+  - visitor
 elements: |-
   intro_text:
     '#type': processed_text
