@@ -1,4 +1,4 @@
-uuid: b38aa3b6-be5e-4132-b100-d7e5fe92bf52
+uuid: 96ef6bef-22ed-4277-8850-c5ac5d892631
 langcode: en
 status: open
 dependencies: {  }
@@ -8,31 +8,57 @@ close: null
 uid: 1
 template: false
 archive: false
-id: fm_day_2026_exhibitor
-title: 'FM-Day 2026 exhibitor'
+id: fm_day_2026_bulk
+title: 'FM-Day 2026 Bulk'
 description: ''
 categories:
-  - Event
-  - exhibitor
+  - visitor
+  - bulk
 elements: |-
-  company_name:
-    '#type': textfield
-    '#title': 'Company name'
-    '#required': true
-  first_name:
-    '#type': textfield
-    '#title': 'First name'
-    '#required': true
-  last_name:
-    '#type': textfield
-    '#title': 'Last name'
-    '#required': true
-  e_mail:
-    '#type': email
-    '#title': E-mail
-    '#required': true
-    '#unique': true
-    '#unique_entity': true
+  e_mailadres:
+    '#type': webform_wizard_page
+    '#title': E-mailadres
+    e_mail:
+      '#type': email
+      '#title': E-mail
+      '#required': true
+      '#unique': true
+      '#unique_entity': true
+  persoonlijke_gegevens:
+    '#type': webform_wizard_page
+    '#title': 'Persoonlijke gegevens'
+    last_name:
+      '#type': textfield
+      '#title': 'Last name'
+      '#required': true
+    first_name:
+      '#type': textfield
+      '#title': 'First name'
+      '#required': true
+    company_name:
+      '#type': textfield
+      '#title': 'Company name'
+      '#required': true
+    contact:
+      '#type': radios
+      '#title': Contact
+      '#description': '<p><b style="-webkit-text-stroke-width:0px;background-color:rgb(255, 255, 255);box-sizing:border-box;color:rgb(51, 51, 51);font-family:Roboto, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;;font-size:14px;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;"><strong>Mogen exposanten van dit event u na afloop contacteren met informatie over hun producten en diensten?</strong></b><span style="-webkit-text-stroke-width:0px;background-color:rgb(255, 255, 255);color:rgb(51, 51, 51);display:inline !important;float:none;font-family:Roboto, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;;font-size:14px;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;"> </span><span class="text-primary" style="-webkit-text-stroke-width:0px;background-color:rgb(255, 255, 255);box-sizing:border-box;color:rgb(10, 152, 132);font-family:Roboto, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;;font-size:14px;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">*</span></p>'
+      '#description_display': before
+      '#options':
+        contact_yes: 'Ja, ik geef toestemming dat mijn gegevens worden gedeeld met exposanten die relevant zijn voor mijn interesses.'
+        contact_no: 'Nee, ik wens niet gecontacteerd te worden door exposanten.'
+      '#required': true
+      '#required_error': 'Duid uw contactwens aan'
+    profile_custom:
+      '#type': radios
+      '#title': 'Mijn lidmaatschap'
+      '#description': '<p>Ik ben</p>'
+      '#description_display': before
+      '#options':
+        member: 'Lid belfa'
+        non_member: 'Geen lid belfa'
+      '#required': true
+      '#required_error': 'Lidmaatschap aanduiden verplicht'
 css: ''
 javascript: ''
 settings:
@@ -138,8 +164,8 @@ settings:
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
   confirmation_type: url_message
-  confirmation_url: '/exhibitor-registration/ticket/[webform_submission:sid]'
-  confirmation_title: ''
+  confirmation_url: /my-registration
+  confirmation_title: 'Succesvol geregistreerd'
   confirmation_message: ''
   confirmation_attributes: {  }
   confirmation_back: true
@@ -172,27 +198,19 @@ settings:
 access:
   create:
     roles:
-      - anonymous
-      - content_editor
-      - administrator
+      - authenticated
     users: {  }
     permissions: {  }
   view_any:
-    roles:
-      - content_editor
-      - administrator
+    roles: {  }
     users: {  }
     permissions: {  }
   update_any:
-    roles:
-      - content_editor
-      - administrator
+    roles: {  }
     users: {  }
     permissions: {  }
   delete_any:
-    roles:
-      - content_editor
-      - administrator
+    roles: {  }
     users: {  }
     permissions: {  }
   purge_any:
@@ -201,12 +219,12 @@ access:
     permissions: {  }
   view_own:
     roles:
-      - content_editor
-      - administrator
+      - authenticated
     users: {  }
     permissions: {  }
   update_own:
-    roles: {  }
+    roles:
+      - authenticated
     users: {  }
     permissions: {  }
   delete_own:
@@ -214,9 +232,7 @@ access:
     users: {  }
     permissions: {  }
   administer:
-    roles:
-      - content_editor
-      - administrator
+    roles: {  }
     users: {  }
     permissions: {  }
   test:
