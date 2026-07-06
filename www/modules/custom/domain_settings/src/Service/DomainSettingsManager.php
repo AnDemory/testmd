@@ -37,7 +37,7 @@ class DomainSettingsManager {
   /**
    * Returns settings for a specific domain, or current domain if omitted.
    */
-  public function getForDomain(?string $domain = NULL): ?array {
+  public function getSettingsForCurrentDomain(?string $domain = NULL): ?array {
     $domain = strtolower($domain ?: $this->getCurrentDomain());
 
     foreach ($this->getAll() as $settings) {
@@ -53,7 +53,7 @@ class DomainSettingsManager {
    * Returns configured mail for a domain.
    */
   public function getMail(?string $domain = NULL): ?string {
-    $settings = $this->getForDomain($domain);
+    $settings = $this->getSettingsForCurrentDomain($domain);
 
     return $settings['mail'] ?? NULL;
   }
@@ -62,7 +62,7 @@ class DomainSettingsManager {
    * Returns configured ticket Webform ID for a domain.
    */
   // public function getTicketWebformId(?string $domain = NULL): ?string {
-  //   $settings = $this->getForDomain($domain);
+  //   $settings = $this->getSettingsForCurrentDomain($domain);
 
   //   return $settings['ticket_webform_id'] ?? NULL;
   // }
@@ -82,27 +82,44 @@ class DomainSettingsManager {
 
   //   return $settings['ticket_webform_id'] ?? NULL;
   // }
-/**
- * Returns configured ticket Webform ID for a domain.
- */
-public function getTicketWebformId(?string $domain = NULL): ?string {
-  $settings = $this->getForDomain($domain);
-  // \Drupal::logger('DomainSettingsManager')->notice( $domain);
-  return $settings['ticket_webform_id'] ?? NULL;
-}
-/**
- * Returns configured ticket Webform ID for a domain.
- */
-public function getTicketExhibitorWebformId(?string $domain = NULL): ?string {
-  $settings = $this->getForDomain($domain);
+  /**
+   * Returns configured ticket Webform ID for a domain.
+   */
+  public function getTicketWebformId(?string $domain = NULL): ?string {
+    $settings = $this->getSettingsForCurrentDomain($domain);
+    // \Drupal::logger('DomainSettingsManager')->notice( $domain);
+    return $settings['ticket_webform_id'] ?? NULL;
+  }
+  /**
+   * Returns configured ticket Webform ID for a domain.
+   */
+  public function getTicketExhibitorWebformId(?string $domain = NULL): ?string {
+    $settings = $this->getSettingsForCurrentDomain($domain);
 
-  return $settings['ticket_exhibitor_webform_id'] ?? NULL;
-}
+    return $settings['ticket_exhibitor_webform_id'] ?? NULL;
+  }
+  /**
+   * Returns configured ticket Webform ID for a domain.
+   */
+  public function getDomainTicketWebformIds(?string $domain = NULL): ?array {
+    $settings = $this->getSettingsForCurrentDomain($domain);
+
+    $webform_ids = [];
+    if (!empty($settings['ticket_webform_id'])) {
+      $webform_ids[] = $settings['ticket_webform_id'];
+    }
+    if (!empty($settings['ticket_exhibitor_webform_id'])) {
+      $webform_ids[] = $settings['ticket_exhibitor_webform_id'];
+    }
+    // \Drupal::logger('DomainSettingsManager')->notice( $domain);
+    return $webform_ids;
+  }
+
   /**
    * Returns configured ticket template URI for a domain.
    */
   public function getTicketTemplate(?string $domain = NULL): ?string {
-    $settings = $this->getForDomain($domain);
+    $settings = $this->getSettingsForCurrentDomain($domain);
 
     return $settings['ticket_template'] ?? NULL;
   }
@@ -111,7 +128,7 @@ public function getTicketExhibitorWebformId(?string $domain = NULL): ?string {
    * Returns Lead Retrieval URL for a domain.
    */
   public function getLeadRetrievalUrl(?string $domain = NULL): ?string {
-    $settings = $this->getForDomain($domain);
+    $settings = $this->getSettingsForCurrentDomain($domain);
 
     return $settings['lead_retrieval_url'] ?? NULL;
   }
@@ -135,6 +152,34 @@ public function getTicketExhibitorWebformId(?string $domain = NULL): ?string {
 
   //   return $result;
   // }
+
+/**
+ * Returns configured ticket Webform IDs keyed by configured domain host.
+ */
+public function getAllTicketWebformIdsByDomain(): array {
+  $result = [];
+
+  foreach ($this->getAll() as $settings) {
+    $domain = strtolower($settings['domain'] ?? '');
+    $ticket_webform_id = $settings['ticket_webform_id'] ?? '';
+    $ticket_exhibitor_webform_id = $settings['ticket_exhibitor_webform_id'] ?? '';
+    $ticket_webform_ids = [];
+
+    if ($domain) {
+      if ($ticket_webform_id) {
+        $ticket_webform_ids[] = $ticket_webform_id;
+      }
+      if ($ticket_exhibitor_webform_id) {
+        $ticket_webform_ids[] = $ticket_exhibitor_webform_id;
+      }
+      $result[$domain] = $ticket_webform_ids;
+    }
+  }
+
+  return $result;
+}
+
+
 /**
  * Returns configured ticket Webform IDs keyed by configured domain host.
  */

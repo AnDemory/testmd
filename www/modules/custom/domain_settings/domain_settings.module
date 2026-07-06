@@ -10,6 +10,12 @@ use Drupal\webform\WebformInterface;
  * Webform access: only on the domain set in Domain Settings.
  */
 function domain_settings_webform_access(WebformInterface $webform, $operation, AccountInterface $account) {
+
+  $user = \Drupal::currentUser();
+  if (in_array('administrator', $user->getRoles(), TRUE)) {
+    return AccessResult::allowed();
+  }
+
   $restricted_operations = [
     'view',
     'submission_page',

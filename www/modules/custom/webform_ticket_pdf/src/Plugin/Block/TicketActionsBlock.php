@@ -26,10 +26,10 @@ class TicketActionsBlock extends BlockBase {
       return [];
     }
 
-    $configured_webform_id = \Drupal::service('domain_settings.manager')
-      ->getTicketWebformId();
+    $configured_webform_ids = \Drupal::service('domain_settings.manager')
+      ->getDomainTicketWebformIds();
 
-    if (!$configured_webform_id || $submission->getWebform()->id() !== $configured_webform_id) {
+    if (!$configured_webform_ids || !in_array($submission->getWebform()->id(), $configured_webform_ids)) {
       return [];
     }
 

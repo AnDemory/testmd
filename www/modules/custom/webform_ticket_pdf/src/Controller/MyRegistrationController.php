@@ -114,7 +114,7 @@ class MyRegistrationController extends ControllerBase {
     return new RedirectResponse($url);
   }
 
-  protected function getRegistrationType() {   
+  protected function getRegistrationType() {
     return 'visitor';
   }
 

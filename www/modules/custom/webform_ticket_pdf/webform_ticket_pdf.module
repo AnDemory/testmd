@@ -2,9 +2,70 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\user\UserInterface;
 use Drupal\webform\Entity\Webform;
+
+/**
+ * Implements hook_form_alter().
+ */
+function webform_ticket_pdf_form_webform_submission_fm_day_2026_bulk_add_form_alter(
+  array &$form,
+  FormStateInterface $form_state,
+  $form_id
+) {
+  \Drupal::logger('webform_ticket_pdf')->notice('Altering form: ' . $form_id);
+  _webform_ticket_pdf_prefill_company_name($form, $form_state);
+}
+
+
+
+
+function _webform_ticket_pdf_prefill_company_name(array &$form, FormStateInterface $form_state) {
+  // Only continue if the company name element exists on the current page.
+  if (empty($form['elements']['company_name'])) {
+    return;
+  }
+
+  // Get the current webform submission being filled in.
+  $webform_submission = $form_state->getFormObject()->getEntity();
+
+  if (!$webform_submission) {
+    return;
+  }
+
+  // Get data already entered on previous pages.
+  $data = $webform_submission->getData();
+
+  if (empty($data['email'])) {
+    return;
+  }
+
+  $email = trim(strtolower($data['email']));
+
+  if (!$email) {
+    return;
+  }
+
+  // Do not overwrite if the user already entered a company name.
+  if (!empty($data['company_name'])) {
+    return;
+  }
+
+  $company_name = _mymodule_find_company_name_by_email($email);
+
+  if (!$company_name) {
+    return;
+  }
+
+  // Set the default value on the second page field.
+  $form['elements']['company_name']['#default_value'] = $company_name;
+
+  // Also set it in the submission data.
+  $data['company_name'] = $company_name;
+  $webform_submission->setData($data);
+}
 
 /**
  * Implements hook_webform_submission_insert().
@@ -175,7 +236,7 @@ function webform_ticket_pdf_get_domain_for_submission(WebformSubmissionInterface
   $webform_id = $submission->getWebform()->id();
 
   $ticket_webform_ids_by_domain = \Drupal::service('domain_settings.manager')
-    ->getTicketWebformIdsByDomain();
+    ->getAllTicketWebformIdsByDomain();
 
   $domain = array_search($webform_id, $ticket_webform_ids_by_domain, TRUE);
   if ($domain !== FALSE) {
@@ -362,10 +423,14 @@ if ($first_key !== NULL) {
     return;
   }
 
-  $ticket_webform_ids = \Drupal::service('domain_settings.manager')
-  ->getTicketWebformIdsByDomain();
+  $webform_id = $webform->id();
 
-  if (!in_array($webform->id(), $ticket_webform_ids, TRUE)) {
+  $ticket_webform_ids = \Drupal::service('domain_settings.manager')
+  ->getAllTicketWebformIdsByDomain();
+
+  $flat_ids = array_merge(...array_values($ticket_webform_ids));
+
+  if (!in_array($webform->id(), $flat_ids, TRUE)) {
     return;
   }
 
@@ -394,7 +459,7 @@ if ($first_key !== NULL) {
           '#type' => 'link',
           '#title' => t('View'),
           '#url' => Url::fromRoute('webform_ticket_pdf.download_ticket', [
-            'webform' => $webform->id(),
+            'webform' => $webform_id,
             'webform_submission' => $sid,
           ]),
           '#attributes' => [
@@ -408,7 +473,7 @@ if ($first_key !== NULL) {
           '#type' => 'link',
           '#title' => t('Print'),
           '#url' => Url::fromRoute('webform_ticket_pdf.print_ticket', [
-            'webform' => $webform->id(),
+            'webform' => $webform_id,
             'webform_submission' => $sid,
           ]),
           '#attributes' => [
@@ -422,7 +487,7 @@ if ($first_key !== NULL) {
           '#type' => 'link',
           '#title' => t('Email'),
           '#url' => Url::fromRoute('webform_ticket_pdf.email_ticket', [
-            'webform' => $webform->id(),
+            'webform' => $webform_id,
             'webform_submission' => $sid,
           ], [
             'query' => [
@@ -437,8 +502,23 @@ if ($first_key !== NULL) {
     ];
   }
 
+  $form['actions']['add_submission'] = [
+    '#type' => 'link',
+    '#title' => t('Add submission'),
+    '#url' => Url::fromRoute('entity.webform.canonical', [
+      'webform' => $webform->id(),
+    ]),
+    '#attributes' => [
+      'class' => ['button', 'button--primary'],
+      'target' => '_blank',
+    ],
+  ];
 
-  _webform_ticket_pdf_add_user_columns_to_submissions_table($form);
+  $webform_type = webform_ticket_pdf_type($webform_id);
+  if ($webform_type === 'visitor') {
+    _webform_ticket_pdf_add_user_columns_to_submissions_table($form);
+  }
+
 }
 
 /**
