@@ -6,6 +6,7 @@ use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\user\UserInterface;
 use Drupal\webform\Entity\Webform;
+use Drupal\Core\Entity\EntityInterface;
 
 /**
  * Implements hook_form_alter().
@@ -270,7 +271,7 @@ function webform_ticket_pdf_type(string $webform_id): string {
     $categories = (array) $webform->get('categories');
     $type_categories = ['visitor', 'exhibitor'];
     $matched = array_intersect($type_categories, $categories);
-    $type = NULL;
+    $type = '';
 
     if ($matched) {
       $type = reset($matched); // visitor or exhibitor
