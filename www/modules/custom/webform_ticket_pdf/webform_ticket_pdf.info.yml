@@ -1,7 +1,7 @@
 name: Webform Ticket PDF
 type: module
 description: Generates ticket PDFs for Webform submissions.
-core_version_requirement: ^10 || ^11 
+core_version_requirement: ^10 || ^11
 package: Custom
 dependencies:
   - webform:webform

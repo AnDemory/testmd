@@ -1,0 +1,3 @@
+webform.handler.ticket_email:
+  type: webform.handler.email
+  label: 'Ticket email handler'

@@ -8,64 +8,110 @@ use Drupal\user\UserInterface;
 use Drupal\webform\Entity\Webform;
 use Drupal\Core\Entity\EntityInterface;
 
+
 /**
  * Implements hook_form_alter().
+ * Bulk visitor registration: fill company name field on page 2 based on email address entered on page 1.
  */
-function webform_ticket_pdf_form_webform_submission_fm_day_2026_bulk_add_form_alter(
+function webform_ticket_pdf_form_alter(
   array &$form,
   FormStateInterface $form_state,
   $form_id
 ) {
-  \Drupal::logger('webform_ticket_pdf')->notice('Altering form: ' . $form_id);
+  $form_object = $form_state->getFormObject();
+
+  if (!method_exists($form_object, 'getEntity')) {
+    return;
+  }
+
+  $entity = $form_object->getEntity();
+
+  if (!$entity instanceof \Drupal\webform\WebformSubmissionInterface) {
+    return;
+  }
+
+  $webform = $entity->getWebform();
+
+  if (!$webform) {
+    return;
+  }
+
+  $categories = (array) $webform->get('categories');
+
+  if (!in_array('bulk', $categories, TRUE)) {
+    return;
+  }
+
   _webform_ticket_pdf_prefill_company_name($form, $form_state);
 }
 
 
-
-
 function _webform_ticket_pdf_prefill_company_name(array &$form, FormStateInterface $form_state) {
-  // Only continue if the company name element exists on the current page.
-  if (empty($form['elements']['company_name'])) {
+  
+  if (empty($form['elements']['persoonlijke_gegevens']['company_name'])) {
     return;
   }
 
   // Get the current webform submission being filled in.
   $webform_submission = $form_state->getFormObject()->getEntity();
-
   if (!$webform_submission) {
     return;
   }
 
   // Get data already entered on previous pages.
   $data = $webform_submission->getData();
-
-  if (empty($data['email'])) {
+  if (empty($data['e_mail'])) {
     return;
   }
 
-  $email = trim(strtolower($data['email']));
-
+  $email = trim(strtolower($data['e_mail']));
   if (!$email) {
     return;
-  }
+  } 
 
   // Do not overwrite if the user already entered a company name.
   if (!empty($data['company_name'])) {
     return;
   }
 
-  $company_name = _mymodule_find_company_name_by_email($email);
-
+  $company_name = webform_ticket_pdf_find_company_name_by_email($email);
   if (!$company_name) {
     return;
   }
 
   // Set the default value on the second page field.
-  $form['elements']['company_name']['#default_value'] = $company_name;
+  $form['elements']['persoonlijke_gegevens']['company_name']['#default_value'] = $company_name;
+  $form['elements']['persoonlijke_gegevens']['company_name']['#attributes']['readonly'] = 'readonly';
 
   // Also set it in the submission data.
   $data['company_name'] = $company_name;
   $webform_submission->setData($data);
+}
+
+function webform_ticket_pdf_find_company_name_by_email(string $email): ?string {
+  $users = \Drupal::entityTypeManager()
+    ->getStorage('user')
+    ->loadByProperties([
+      'mail' => $email,
+    ]);
+
+  if (!$users) {
+    \Drupal::logger('webform_ticket_pdf')->notice('No user found with email: ' . $email);
+    return NULL;
+  }
+
+  /** @var \Drupal\user\UserInterface $user */
+  $user = reset($users);
+
+  if (!$user->hasField('field_company_name')) {
+   return NULL;
+  }
+
+  if ($user->get('field_company_name')->isEmpty()) {
+    return NULL;
+  }
+
+  return $user->get('field_company_name')->value;
 }
 
 /**
@@ -239,7 +285,15 @@ function webform_ticket_pdf_get_domain_for_submission(WebformSubmissionInterface
   $ticket_webform_ids_by_domain = \Drupal::service('domain_settings.manager')
     ->getAllTicketWebformIdsByDomain();
 
-  $domain = array_search($webform_id, $ticket_webform_ids_by_domain, TRUE);
+  $domain = FALSE;
+
+  foreach ($ticket_webform_ids_by_domain as $domain_name => $webform_ids) {
+    if (in_array($webform_id, $webform_ids, TRUE)) {
+      $domain = $domain_name;
+      break;
+    }
+  }
+  
   if ($domain !== FALSE) {
     return $domain;
   }
@@ -247,7 +301,13 @@ function webform_ticket_pdf_get_domain_for_submission(WebformSubmissionInterface
   $ticket_exhibitor_webform_ids_by_domain = \Drupal::service('domain_settings.manager')
     ->getTicketExhibitorWebformIdsByDomain();
 
-  $domain = array_search($webform_id, $ticket_exhibitor_webform_ids_by_domain, TRUE);
+ 
+  foreach ($ticket_exhibitor_webform_ids_by_domain as $domain_name => $webform_ids) {
+    if (in_array($webform_id, $webform_ids, TRUE)) {
+      $domain = $domain_name;
+      break;
+    }
+  }
 
   return $domain !== FALSE ? $domain : NULL;
 }
@@ -397,24 +457,24 @@ function webform_ticket_pdf_link_alter(&$variables) {
  * Adds ticket actions to each row on the Webform submissions overview page.
  */
 function webform_ticket_pdf_form_webform_submission_bulk_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-\Drupal::logger('webform_ticket_pdf')->notice('<pre>@items</pre>', [
-  '@items' => print_r(array_keys($form['items']), TRUE),
-]);
-
-
-$options = $form['items']['#options'] ?? [];
-
-\Drupal::logger('webform_ticket_pdf')->notice('Option keys: @keys', [
-  '@keys' => implode(', ', array_slice(array_keys($options), 0, 10)),
-]);
-
-$first_key = array_key_first($options);
-if ($first_key !== NULL) {
-  \Drupal::logger('webform_ticket_pdf')->notice('First option key: @key; columns: @columns', [
-    '@key' => $first_key,
-    '@columns' => implode(', ', array_keys($options[$first_key])),
+  \Drupal::logger('webform_ticket_pdf')->notice('<pre>@items</pre>', [
+    '@items' => print_r(array_keys($form['items']), TRUE),
   ]);
-}
+
+
+  $options = $form['items']['#options'] ?? [];
+
+  \Drupal::logger('webform_ticket_pdf')->notice('Option keys: @keys', [
+    '@keys' => implode(', ', array_slice(array_keys($options), 0, 10)),
+  ]);
+
+  $first_key = array_key_first($options);
+  if ($first_key !== NULL) {
+    \Drupal::logger('webform_ticket_pdf')->notice('First option key: @key; columns: @columns', [
+      '@key' => $first_key,
+      '@columns' => implode(', ', array_keys($options[$first_key])),
+    ]);
+  }
 
   $route_match = \Drupal::routeMatch();
 

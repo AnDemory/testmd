@@ -3,3 +3,10 @@ services:
     class: Drupal\webform_ticket_pdf\TicketPdfGenerator
     arguments:
       - '@file_system'
+  webform_ticket_pdf.webform_admin_theme_negotiator:
+    class: Drupal\webform_ticket_pdf\Theme\WebformAdminThemeNegotiator
+    arguments:
+      - '@current_user'
+      - '@config.factory'
+    tags:
+      - { name: theme_negotiator, priority: 1000 }

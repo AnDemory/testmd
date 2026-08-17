@@ -14,7 +14,7 @@ use Drupal\webform\WebformSubmissionInterface;
  *   category = @Translation("Notification"),
  *   description = @Translation("Sends a Webform email and attaches the generated ticket PDF."),
  *   cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_UNLIMITED,
- *   results = \Drupal\webform\Plugin\WebformHandlerInterface::RESULTS_PROCESSED,
+ *   results = \Drupal\webform\Plugin\WebformHandlerInterface::RESULTS_PROCESSED
  * )
  */
 class TicketEmailWebformHandler extends EmailWebformHandler {

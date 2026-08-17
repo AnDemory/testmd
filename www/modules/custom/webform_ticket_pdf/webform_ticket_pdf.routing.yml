@@ -25,17 +25,17 @@ webform_ticket_pdf.exhibitor_registration_ticket:
       webform_submission:
         type: entity:webform_submission
 
-
-
 webform_ticket_pdf.download_ticket:
   path: '/ticket/{webform}/submission/{webform_submission}'
   defaults:
     _controller: '\Drupal\webform_ticket_pdf\Controller\TicketDownloadController::download'
-  
+  requirements:
+    _custom_access: '\Drupal\webform_ticket_pdf\Controller\TicketDownloadController::access'
   options:
     parameters:
       webform_submission:
         type: entity:webform_submission
+
 webform_ticket_pdf.email_ticket:
   path: '/ticket/{webform}/submission/{webform_submission}/email'
   defaults:
@@ -47,6 +47,7 @@ webform_ticket_pdf.email_ticket:
     parameters:
       webform_submission:
         type: entity:webform_submission
+
 webform_ticket_pdf.print_ticket:
   path: '/ticket/submission/{webform_submission}/print'
   defaults:
@@ -58,3 +59,16 @@ webform_ticket_pdf.print_ticket:
     parameters:
       webform_submission:
         type: entity:webform_submission
+
+webform_ticket_pdf.admin_add_submission:
+  path: '/admin/webform/{webform}/submission/add'
+  defaults:
+    _controller: '\Drupal\webform\Controller\WebformEntityController::addForm'
+    _title_callback: '\Drupal\webform\Controller\WebformEntityController::title'
+  requirements:
+    _entity_access: 'webform.submission_page'
+  options:
+    _admin_route: TRUE
+    parameters:
+      webform:
+        type: 'entity:webform'
