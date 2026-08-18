@@ -7,12 +7,14 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Theme\ThemeNegotiatorInterface;
 use Drupal\webform\WebformSubmissionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class WebformAdminThemeNegotiator implements ThemeNegotiatorInterface {
 
   public function __construct(
     protected AccountProxyInterface $currentUser,
     protected ConfigFactoryInterface $configFactory,
+    protected RequestStack $requestStack,
   ) {}
 
   /**
@@ -22,6 +24,12 @@ class WebformAdminThemeNegotiator implements ThemeNegotiatorInterface {
     // Only administrators / Webform managers.
     if (!$this->currentUser->hasPermission('administer webform submission')) {
       return FALSE;
+    }
+
+    $request = $this->requestStack->getCurrentRequest();
+    // Matches /exhibitor-registration/ticket/54, but not extra path segments.
+    if (preg_match('#^/exhibitor-registration/ticket/\d+/?$#', $request->getPathInfo() )) {
+      return TRUE;
     }
 
     // A submission entity is present on submission edit/view routes.

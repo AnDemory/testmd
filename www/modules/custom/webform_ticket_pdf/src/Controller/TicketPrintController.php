@@ -11,6 +11,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class TicketPrintController extends ControllerBase {
 
   public function print(WebformSubmissionInterface $webform_submission) {
+    \Drupal::logger('TicketPrintController')->notice('TicketPrintController print called for submission ID: ' . $webform_submission->id());
     if (!function_exists('webform_ticket_pdf_get_domain_for_submission')) {
       throw new NotFoundHttpException('Ticket domain helper not available.');
     }

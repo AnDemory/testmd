@@ -11,8 +11,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MyRegistrationController extends ControllerBase {
 
-  public function page(WebformSubmissionInterface $webform_submission = NULL) {
-    $webform_id = $this->getWebformId(); //ExhibitorRegistrationController overrules this
+  public function page(?WebformSubmissionInterface $webform_submission = NULL,): array|RedirectResponse {
+    $webform_id = $webform_submission?->getWebform()->id() ?? $this->getWebformId();
 
     if (!$webform_id) {
       throw new NotFoundHttpException($this->getMissingWebformMessage());
@@ -41,15 +41,19 @@ class MyRegistrationController extends ControllerBase {
       $submission = WebformSubmission::load($sid);
     }
     else {
+      \Drupal::logger('webform_ticket_pdf')->notice('Submission ID');
       if ($webform_submission) {
+        \Drupal::logger('webform_ticket_pdf')->notice('Using provided submission ID: ' . $webform_submission->id());
         $submission = $webform_submission;
       }
       else {
+        \Drupal::logger('webform_ticket_pdf')->notice('No submission provided, redirecting to new submission.');
         return $this->getNewSubmissionResponse($webform_id);
       }
     }
 
     if (!$submission) {
+      \Drupal::logger('webform_ticket_pdf')->notice('No submission found, throwing NotFoundHttpException.');
       throw new NotFoundHttpException('Registration not found.');
     }
 
@@ -96,6 +100,7 @@ class MyRegistrationController extends ControllerBase {
       $build['form'] = $this->entityFormBuilder()
         ->getForm($submission, 'edit');
     }
+    \Drupal::logger('webform_ticket_pdf')->notice('Build array: ' . print_r($build, TRUE));
 
     return $build;
   }

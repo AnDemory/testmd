@@ -84,7 +84,7 @@ class TicketPdfGenerator {
       if (!webform_ticket_pdf_is_bulk($webform_id)) {
         $account = $submission->getOwner();
         $name = $account->get('field_first_name')->value . " ". $account->get('field_name')->value;
-        $company = $account->get('field_company_name')->value;
+        $company = $account->get('field_company_name')->value ?? '';
       } else {
         $name = $data['first_name'] ?? '';
         $name .= " " . ($data['last_name'] ?? '');

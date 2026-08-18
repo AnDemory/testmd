@@ -4,7 +4,7 @@ webform_ticket_pdf.my_registration:
     _controller: '\Drupal\webform_ticket_pdf\Controller\MyRegistrationController::page'
     _title: 'My registration'
   requirements:
-    _user_is_logged_in: 'TRUE'  
+    _user_is_logged_in: 'TRUE'
 
 
 webform_ticket_pdf.exhibitor_registration:
