@@ -22,8 +22,6 @@ elements: |-
       '#type': email
       '#title': E-mail
       '#required': true
-      '#unique': true
-      '#unique_entity': true
   persoonlijke_gegevens:
     '#type': webform_wizard_page
     '#title': 'Persoonlijke gegevens'
@@ -59,6 +57,15 @@ elements: |-
         non_member: 'Geen lid belfa'
       '#required': true
       '#required_error': 'Lidmaatschap aanduiden verplicht'
+  actions:
+    '#type': webform_actions
+    '#title': 'Submit button(s)'
+    '#access_create_roles':
+      - content_editor
+      - administrator
+    '#access_view_roles':
+      - content_editor
+      - administrator
 css: ''
 javascript: ''
 settings:
@@ -100,6 +107,7 @@ settings:
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
   form_file_limit: ''
+  form_file_limit_message: ''
   form_attributes: {  }
   form_method: ''
   form_action: ''
@@ -164,7 +172,7 @@ settings:
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
   confirmation_type: url_message
-  confirmation_url: /my-registration
+  confirmation_url: '/admin/structure/webform/manage/[webform:id]/results/submissions'
   confirmation_title: 'Succesvol geregistreerd'
   confirmation_message: ''
   confirmation_attributes: {  }

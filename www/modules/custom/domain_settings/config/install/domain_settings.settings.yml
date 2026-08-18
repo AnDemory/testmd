@@ -4,5 +4,6 @@ domains:
     mail: 'info@aquaramatradefair.be'
     ticket_webform_id: 'aquarama_trade_fair_2025'
     ticket_exhibitor_webform_id: 'fm_day_2026_exposant'
+    ticket_visitor_bulk_webform_id: 'fm_day_2026_exposant'
     ticket_template: 'private://templates/
     lead_retrieval_url: 'https://<event><year>-events.fcoffice.be/apps/lr/'

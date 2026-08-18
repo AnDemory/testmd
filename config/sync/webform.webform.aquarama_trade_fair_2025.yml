@@ -1,7 +1,9 @@
 uuid: 832602ed-6cef-46a2-a8c5-345b6e55144f
 langcode: en
 status: open
-dependencies: {  }
+dependencies:
+  module:
+    - webform_ticket_pdf
 weight: 0
 open: null
 close: null
@@ -142,6 +144,7 @@ settings:
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
   form_file_limit: ''
+  form_file_limit_message: ''
   form_attributes: {  }
   form_method: ''
   form_action: ''
@@ -205,8 +208,8 @@ settings:
   draft_loaded_message: ''
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
-  confirmation_type: page
-  confirmation_url: ''
+  confirmation_type: url_message
+  confirmation_url: /my-registration
   confirmation_title: ''
   confirmation_message: ''
   confirmation_attributes: {  }
@@ -291,7 +294,7 @@ handlers:
     handler_id: email
     label: Email
     notes: ''
-    status: false
+    status: true
     conditions: {  }
     weight: -49
     settings:
@@ -322,6 +325,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      langcode: ''
       parameters: {  }
       debug: false
   ticket_email:
@@ -338,28 +342,29 @@ handlers:
         - updated
       to_mail: '[current-user:mail]'
       to_options: {  }
-      cc_mail: ''
-      cc_options: {  }
       bcc_mail: ''
       bcc_options: {  }
+      cc_mail: ''
+      cc_options: {  }
       from_mail: '[domain-settings:mail]'
       from_options: {  }
       from_name: _default
-      subject: _default
-      body: '<p>[current-user:field_name:value] [current-user:field_first_name:value],<br><br>Wij hebben uw inschrijving voor de Aquarama Trade Fair 2025 goed ontvangen.<br><br>In de bijlage kunt u uw bestelde toegangsticket terugvinden. Dit toegangsticket geldt als badge en biedt u rechtstreeks toegang tot de beurs. Gelieve dit toegangsticket af te drukken en mee te brengen naar de ingang van de beurs. Uw registratie wijzigen en het toegangsticket downloaden kan steeds via uw profielpagina’s op onze website. (<a href="https://aquaramatradefair.ddev.site/my-registration">Klik hier</a>)<br><br><br><br><strong>Praktische info</strong><br>Aquarama Trade Fair 2025<br>Donderdag 23 oktober van 9u tot 18u<br>Brabanthal, Brabantlaan 1, 3001 Leuven<br><br>Bij ‘no show’ of afmelden minder dan 48u voor het congres is de toegangsprijs verschuldigd.&nbsp;<br><br><strong>Organisatie</strong><br>FCO Media<br>Boulevard des Canadiens 118<br>B - 7711 Dottignies<br>+32 (0)56 77 13 10<br><a href="mailto:info@aquarama.be">info@aquarama.be</a><br><a href="https://www.aquaramatradefair.be">www.aquaramatradefair.be</a></p><div id="eid-safari-extension-is-installed">&nbsp;</div><p><img src="https://www.aquaramatradefair.be/uploads/nieuws/images/full/atf20261200x800web2.jpg"></p>'
-      excluded_elements: {  }
-      ignore_access: 0
-      exclude_empty: true
-      exclude_empty_checkbox: 0
-      exclude_attachments: false
-      html: true
-      attachments: false
-      twig: false
-      debug: false
       reply_to: '[domain-settings:mail]'
       return_path: ''
       sender_mail: ''
       sender_name: ''
+      subject: _default
+      body: '<p>[current-user:field_name:value] [current-user:field_first_name:value],<br><br>Wij hebben uw inschrijving voor de Aquarama Trade Fair 2025 goed ontvangen.<br><br>In de bijlage kunt u uw bestelde toegangsticket terugvinden. Dit toegangsticket geldt als badge en biedt u rechtstreeks toegang tot de beurs. Gelieve dit toegangsticket af te drukken en mee te brengen naar de ingang van de beurs. Uw registratie wijzigen en het toegangsticket downloaden kan steeds via uw profielpagina’s op onze website. (<a href="https://aquaramatradefair.ddev.site/my-registration">Klik hier</a>)<br><br><br><br><strong>Praktische info</strong><br>Aquarama Trade Fair 2025<br>Donderdag 23 oktober van 9u tot 18u<br>Brabanthal, Brabantlaan 1, 3001 Leuven<br><br>Bij ‘no show’ of afmelden minder dan 48u voor het congres is de toegangsprijs verschuldigd.&nbsp;<br><br><strong>Organisatie</strong><br>FCO Media<br>Boulevard des Canadiens 118<br>B - 7711 Dottignies<br>+32 (0)56 77 13 10<br><a href="mailto:info@aquarama.be">info@aquarama.be</a><br><a href="https://www.aquaramatradefair.be">www.aquaramatradefair.be</a></p><div id="eid-safari-extension-is-installed">&nbsp;</div><p><img src="https://www.aquaramatradefair.be/uploads/nieuws/images/full/atf20261200x800web2.jpg"></p>'
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      exclude_attachments: false
+      html: true
+      attachments: false
+      twig: false
       theme_name: ''
+      langcode: ''
       parameters: {  }
+      debug: false
 variants: {  }

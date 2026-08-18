@@ -26,12 +26,16 @@ class TicketPdfGenerator {
       ->getTicketWebformId($domain);
 
     if ($configured_webform_id !== $webform_id) {
-
       $configured_webform_id = \Drupal::service('domain_settings.manager')
-        ->getTicketExhibitorWebformId($domain);
+        ->getTicketVisitorBulkWebformId($domain);
 
       if ($configured_webform_id !== $webform_id) {
-        throw new \RuntimeException('This Webform is not configured for ticket PDFs: ' . $configured_webform_id . '<->' .$webform_id);
+        $configured_webform_id = \Drupal::service('domain_settings.manager')
+          ->getTicketExhibitorWebformId($domain);
+
+        if ($configured_webform_id !== $webform_id) {
+          throw new \RuntimeException('This Webform is not configured for ticket PDFs: ' . $configured_webform_id . '<->' .$webform_id);
+        }
       }
 
     }
@@ -48,7 +52,6 @@ class TicketPdfGenerator {
 
     $webform_type = webform_ticket_pdf_type($webform_id);
     $template_uri .= "-" . $webform_type;
-
     if ($domain == 'fm-day.ddev.site' && 'visitor' === $webform_type) {
       $template_uri .= "-" . $data['profile_custom'];
     }
@@ -78,11 +81,15 @@ class TicketPdfGenerator {
 
     if ($is_visitor) {
 
-      $name = $data['name'] ?? 'An Demory';
-      $company = $data['company'] ?? 'FCO Media';
-      $account = $submission->getOwner();
-
-      $name = $account->get('field_first_name')->value . " ". $account->get('field_name')->value;
+      if (!webform_ticket_pdf_is_bulk($webform_id)) {
+        $account = $submission->getOwner();
+        $name = $account->get('field_first_name')->value . " ". $account->get('field_name')->value;
+        $company = $account->get('field_company_name')->value;
+      } else {
+        $name = $data['first_name'] ?? '';
+        $name .= " " . ($data['last_name'] ?? '');
+        $company = $data['company_name'] ?? '';
+      }
 
       $ean_type = "250";
       $base_id = $submission->id();

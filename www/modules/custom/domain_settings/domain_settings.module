@@ -73,6 +73,7 @@ function _domain_settings_get_domains_for_webform(string $webform_id, array $dom
     $configured_webform_ids = [
       trim((string) ($settings['ticket_webform_id'] ?? '')),
       trim((string) ($settings['ticket_exhibitor_webform_id'] ?? '')),
+      trim((string) ($settings['ticket_visitor_bulk_webform_id'] ?? '')),
     ];
 
     if (in_array($webform_id, $configured_webform_ids, TRUE)) {

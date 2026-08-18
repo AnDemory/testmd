@@ -21,6 +21,9 @@ domain_settings.settings:
           ticket_exhibitor_webform_id:
             type: string
             label: 'Ticket Exhibitor Webform ID'
+          ticket_visitor_bulk_webform_id:
+            type: string
+            label: 'Ticket Visitor Bulk Webform ID'
           ticket_template:
             type: string
             label: 'Ticket template'

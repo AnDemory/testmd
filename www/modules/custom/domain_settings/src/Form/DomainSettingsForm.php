@@ -45,6 +45,7 @@ class DomainSettingsForm extends ConfigFormBase {
         $this->t('Email address'),
         $this->t('Ticket Webform'),
         $this->t('Ticket Exhibitor Webform'),
+        $this->t('Ticket Visitor Bulk Webform'),
         $this->t('Ticket template'),
         $this->t('Lead Retrieval URL'),
       ],
@@ -95,6 +96,14 @@ class DomainSettingsForm extends ConfigFormBase {
         '#default_value' => $row['ticket_exhibitor_webform_id'] ?? '',
       ];
 
+      $form['domains'][$i]['ticket_visitor_bulk_webform_id'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Ticket Visitor Bulk Webform'),
+        '#title_display' => 'invisible',
+        '#options' => $webform_options,
+        '#default_value' => $row['ticket_visitor_bulk_webform_id'] ?? '',
+      ];
+
       $form['domains'][$i]['ticket_template'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Ticket template'),
@@ -126,11 +135,12 @@ class DomainSettingsForm extends ConfigFormBase {
       $mail = trim($row['mail'] ?? '');
       $ticket_webform_id = trim($row['ticket_webform_id'] ?? '');
       $ticket_exhibitor_webform_id = trim($row['ticket_exhibitor_webform_id'] ?? '');
+      $ticket_visitor_bulk_webform_id = trim($row['ticket_visitor_bulk_webform_id'] ?? '');
       $ticket_template = trim($row['ticket_template'] ?? '');
       $lead_retrieval_url = trim($row['lead_retrieval_url'] ?? '');
 
       // Ignore completely empty rows.
-      if ($domain === '' && $mail === '' && $ticket_webform_id === '' && $ticket_exhibitor_webform_id === '' && $lead_retrieval_url === '') {
+      if ($domain === '' && $mail === '' && $ticket_webform_id === '' && $ticket_exhibitor_webform_id === '' && $ticket_visitor_bulk_webform_id === '' && $lead_retrieval_url === '') {
         continue;
       }
 
@@ -165,11 +175,12 @@ class DomainSettingsForm extends ConfigFormBase {
       $mail = trim($row['mail'] ?? '');
       $ticket_webform_id = trim($row['ticket_webform_id'] ?? '');
       $ticket_exhibitor_webform_id = trim($row['ticket_exhibitor_webform_id'] ?? '');
+      $ticket_visitor_bulk_webform_id = trim($row['ticket_visitor_bulk_webform_id'] ?? '');
       $ticket_template = trim($row['ticket_template'] ?? '');
       $lead_retrieval_url = trim($row['lead_retrieval_url'] ?? '');
 
       // Ignore empty rows.
-      if ($domain === '' && $mail === '' && $ticket_webform_id && $ticket_exhibitor_webform_id === '' && $ticket_template === '' && $lead_retrieval_url === '') {
+      if ($domain === '' && $mail === '' && $ticket_webform_id === '' && $ticket_exhibitor_webform_id === ''  && $ticket_visitor_bulk_webform_id === '' && $ticket_template === '' && $lead_retrieval_url === '') {
         continue;
       }
 
@@ -178,6 +189,7 @@ class DomainSettingsForm extends ConfigFormBase {
         'mail' => $mail,
         'ticket_webform_id' => $ticket_webform_id,
         'ticket_exhibitor_webform_id' => $ticket_exhibitor_webform_id,
+        'ticket_visitor_bulk_webform_id' => $ticket_visitor_bulk_webform_id,
         'ticket_template' => $ticket_template,
         'lead_retrieval_url' => $lead_retrieval_url,
       ];

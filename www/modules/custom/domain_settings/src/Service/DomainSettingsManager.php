@@ -101,6 +101,14 @@ class DomainSettingsManager {
   /**
    * Returns configured ticket Webform ID for a domain.
    */
+  public function getTicketVisitorBulkWebformId(?string $domain = NULL): ?string {
+    $settings = $this->getSettingsForCurrentDomain($domain);
+
+    return $settings['ticket_visitor_bulk_webform_id'] ?? NULL;
+  }
+  /**
+   * Returns configured ticket Webform ID for a domain.
+   */
   public function getDomainTicketWebformIds(?string $domain = NULL): ?array {
     $settings = $this->getSettingsForCurrentDomain($domain);
 
@@ -110,6 +118,9 @@ class DomainSettingsManager {
     }
     if (!empty($settings['ticket_exhibitor_webform_id'])) {
       $webform_ids[] = $settings['ticket_exhibitor_webform_id'];
+    }
+    if (!empty($settings['ticket_visitor_bulk_webform_id'])) {
+      $webform_ids[] = $settings['ticket_visitor_bulk_webform_id'];
     }
     // \Drupal::logger('DomainSettingsManager')->notice( $domain);
     return $webform_ids;
@@ -163,6 +174,7 @@ public function getAllTicketWebformIdsByDomain(): array {
     $domain = strtolower($settings['domain'] ?? '');
     $ticket_webform_id = $settings['ticket_webform_id'] ?? '';
     $ticket_exhibitor_webform_id = $settings['ticket_exhibitor_webform_id'] ?? '';
+    $ticket_visitor_bulk_webform_id = $settings['ticket_visitor_bulk_webform_id'] ?? '';
     $ticket_webform_ids = [];
 
     if ($domain) {
@@ -171,6 +183,9 @@ public function getAllTicketWebformIdsByDomain(): array {
       }
       if ($ticket_exhibitor_webform_id) {
         $ticket_webform_ids[] = $ticket_exhibitor_webform_id;
+      }
+      if ($ticket_visitor_bulk_webform_id) {
+        $ticket_webform_ids[] = $ticket_visitor_bulk_webform_id;
       }
       $result[$domain] = $ticket_webform_ids;
     }
@@ -209,6 +224,23 @@ public function getTicketExhibitorWebformIdsByDomain(): array {
 
     if ($domain && $ticket_exhibitor_webform_id) {
       $result[$domain] = $ticket_exhibitor_webform_id;
+    }
+  }
+
+  return $result;
+}
+/**
+ * Returns configured ticket Webform IDs keyed by configured domain host.
+ */
+public function getTicketVisitorBulkWebformIdsByDomain(): array {
+  $result = [];
+
+  foreach ($this->getAll() as $settings) {
+    $domain = strtolower($settings['domain'] ?? '');
+    $ticket_visitor_bulk_webform_id = $settings['ticket_visitor_bulk_webform_id'] ?? '';
+
+    if ($domain && $ticket_visitor_bulk_webform_id) {
+      $result[$domain] = $ticket_visitor_bulk_webform_id;
     }
   }
 
