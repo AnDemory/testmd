@@ -41,23 +41,30 @@ class DomainSettingsForm extends ConfigFormBase {
     $form['domains'] = [
       '#type' => 'table',
       '#header' => [
-        $this->t('Domain'),
-        $this->t('Email address'),
-        $this->t('Ticket Webform'),
-        $this->t('Ticket Exhibitor Webform'),
-        $this->t('Ticket Visitor Bulk Webform'),
-        $this->t('Ticket template'),
-        $this->t('Lead Retrieval URL'),
+        ['data' => $this->t('Domain'), 'class' => ['col-domain']],
+        ['data' => $this->t('Email address'), 'class' => ['col-email']],
+        ['data' => $this->t('Ticket Webform'), 'class' => ['col-webform']],
+        ['data' => $this->t('Ticket Exhibitor Webform'), 'class' => ['col-webform']],
+        ['data' => $this->t('Ticket Visitor Bulk Webform'), 'class' => ['col-webform']],
+        ['data' => $this->t('Ticket template'), 'class' => ['col-template']],
+        ['data' => $this->t('Lead Retrieval URL'), 'class' => ['col-url']],
       ],
+      '#attributes' => [
+        'class' => ['domain-settings-table'],
+      ],
+      '#prefix' => '<div class="domain-settings-table-wrapper">',
+      '#suffix' => '</div>',
       '#tree' => TRUE,
       '#empty' => $this->t('No domain settings configured.'),
     ];
+
+    $form['#attached']['library'][] = 'domain_settings/admin';
 
     /*
      * Show existing rows plus a few empty rows for adding new domains.
      * Increase this number if you want more empty rows.
      */
-    $row_count = max(count($domains) + 5, 10);
+    $row_count = max(count($domains), 4);
 
     for ($i = 0; $i < $row_count; $i++) {
       $row = $domains[$i] ?? [];

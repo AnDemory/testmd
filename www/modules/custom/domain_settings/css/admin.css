@@ -1,0 +1,67 @@
+.domain-settings-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.domain-settings-table {
+  width: max-content;
+  min-width: 100%;
+  table-layout: auto;
+}
+
+.domain-settings-table {
+  width: 100%;
+  table-layout: auto;
+}
+
+/* Domain */
+.domain-settings-table th:nth-child(1),
+.domain-settings-table td:nth-child(1) {
+  min-width: 210px;
+}
+
+/* Email address */
+.domain-settings-table th:nth-child(2),
+.domain-settings-table td:nth-child(2) {
+  min-width: 260px;
+}
+
+/* Ticket Webform */
+.domain-settings-table th:nth-child(3),
+.domain-settings-table td:nth-child(3) {
+  min-width: 200px;
+}
+
+/* Ticket Exhibitor Webform */
+.domain-settings-table th:nth-child(4),
+.domain-settings-table td:nth-child(4) {
+  min-width: 220px;
+}
+
+/* Ticket Visitor Bulk Webform */
+.domain-settings-table th:nth-child(5),
+.domain-settings-table td:nth-child(5) {
+  min-width: 220px;
+}
+
+/* Ticket template */
+.domain-settings-table th:nth-child(6),
+.domain-settings-table td:nth-child(6) {
+  min-width: 350px;
+}
+
+/* Lead Retrieval URL */
+.domain-settings-table th:nth-child(7),
+.domain-settings-table td:nth-child(7) {
+  min-width: 380px;
+}
+
+/* Make form elements actually use the available column width. */
+.domain-settings-table input[type="text"],
+.domain-settings-table input[type="email"],
+.domain-settings-table input[type="url"],
+.domain-settings-table select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}

@@ -1,0 +1,9 @@
+name: Domain settings
+type: module
+description: Provides editable settings per domain
+core_version_requirement: ^10 || ^11 
+package: Custom
+
+dependencies:
+  - webform:webform
+  - domain_settings:domain_settings

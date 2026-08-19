@@ -96,11 +96,22 @@ class MyRegistrationController extends ControllerBase {
       ],
     ];
 
+    $build['actions']['print_ticket'] = [
+      '#type' => 'link',
+      '#title' => $this->t('Print ticket'),
+      '#url' => Url::fromRoute('webform_ticket_pdf.print_ticket', [
+        'webform_submission' => $submission->id(),
+      ]),
+      '#attributes' => [
+        'class' => ['button'],
+      ],
+    ];
+
     if ($isVisitor) {
       $build['form'] = $this->entityFormBuilder()
         ->getForm($submission, 'edit');
     }
-    \Drupal::logger('webform_ticket_pdf')->notice('Build array: ' . print_r($build, TRUE));
+    
 
     return $build;
   }
