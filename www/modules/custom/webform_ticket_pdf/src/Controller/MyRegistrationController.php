@@ -2,7 +2,9 @@
 
 namespace Drupal\webform_ticket_pdf\Controller;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\WebformSubmissionInterface;
@@ -111,7 +113,7 @@ class MyRegistrationController extends ControllerBase {
       $build['form'] = $this->entityFormBuilder()
         ->getForm($submission, 'edit');
     }
-    
+
 
     return $build;
   }
@@ -132,6 +134,38 @@ class MyRegistrationController extends ControllerBase {
 
   protected function getRegistrationType() {
     return 'visitor';
+  }
+
+  public function access(
+    WebformSubmissionInterface $webform_submission,
+    AccountInterface $account
+  ) {
+    // Administrators may always access tickets.
+    if ($account->hasPermission('administer webform submission')) {
+      return AccessResult::allowed();
+    }
+
+    // Do not treat uid 0 === uid 0 as ownership.
+    if (!$account->isAnonymous()) {
+      return AccessResult::forbidden();
+    }
+
+    $request = \Drupal::request();
+
+    if (!$request->hasSession()) {
+      return AccessResult::forbidden();
+    }
+
+    $submission_ids = $request->getSession()->get(
+      'webform_ticket_pdf.submissions',
+      []
+    );
+
+    if (!empty($submission_ids[(string) $webform_submission->id()])) {
+      return AccessResult::allowed();
+    }
+
+    return AccessResult::forbidden();
   }
 
 }

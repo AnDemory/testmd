@@ -55,4 +55,5 @@ class TicketEmailController extends ControllerBase {
 
     return new RedirectResponse($destination);
   }
+
 }

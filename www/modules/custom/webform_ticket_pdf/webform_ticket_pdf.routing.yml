@@ -19,7 +19,7 @@ webform_ticket_pdf.exhibitor_registration_ticket:
     _controller: '\Drupal\webform_ticket_pdf\Controller\ExhibitorRegistrationController::page'
     _title: 'Exhibitor ticket'
   requirements:
-    _access: 'TRUE'
+     _custom_access: '\Drupal\webform_ticket_pdf\Controller\MyRegistrationController::access'
   options:
     parameters:
       webform_submission:
@@ -30,7 +30,7 @@ webform_ticket_pdf.download_ticket:
   defaults:
     _controller: '\Drupal\webform_ticket_pdf\Controller\TicketDownloadController::download'
   requirements:
-    _custom_access: '\Drupal\webform_ticket_pdf\Controller\TicketDownloadController::access'
+    _custom_access: '\Drupal\webform_ticket_pdf\Controller\MyRegistrationController::access'
   options:
     parameters:
       webform_submission:
@@ -42,7 +42,7 @@ webform_ticket_pdf.email_ticket:
     _controller: '\Drupal\webform_ticket_pdf\Controller\TicketEmailController::send'
     _title: 'Email ticket'
   requirements:
-    _custom_access: '\Drupal\webform_ticket_pdf\Controller\TicketDownloadController::access'
+    _custom_access: '\Drupal\webform_ticket_pdf\Controller\MyRegistrationController::access'
   options:
     parameters:
       webform_submission:
@@ -54,7 +54,7 @@ webform_ticket_pdf.print_ticket:
     _controller: '\Drupal\webform_ticket_pdf\Controller\TicketPrintController::print'
     _title: 'Print ticket'
   requirements:
-    _custom_access: '\Drupal\webform_ticket_pdf\Controller\TicketDownloadController::access'
+    _custom_access: '\Drupal\webform_ticket_pdf\Controller\MyRegistrationController::access'
   options:
     parameters:
       webform_submission:

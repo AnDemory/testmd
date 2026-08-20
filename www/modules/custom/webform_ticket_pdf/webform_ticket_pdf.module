@@ -122,33 +122,28 @@ function webform_ticket_pdf_webform_submission_insert(
   WebformSubmissionInterface $submission
 ) {
 
-  // PDF is now generated on demand by TicketDownloadController.
+  $current_user = \Drupal::currentUser();
 
-  // $configured_webform_id = \Drupal::service('domain_settings.manager')
-  //   ->getTicketWebformId();
+  if ($current_user->isAnonymous()) {
+    $request = \Drupal::request();
 
-  // if (!$configured_webform_id) {
-  //   return;
-  // }
+    if ($request->hasSession()) {
+      $session = $request->getSession();
 
-  // if ($submission->getWebform()->id() !== $configured_webform_id) {
-  //   return;
-  // }
+      $submission_ids = $session->get(
+        'webform_ticket_pdf.submissions',
+        []
+      );
 
-  // $generator = \Drupal::service(
-  //   'webform_ticket_pdf.generator'
-  // );
+      $submission_ids[(string) $submission->id()] = TRUE;
 
-  // $pdf_uri = $generator->generate($submission);
+      $session->set(
+        'webform_ticket_pdf.submissions',
+        $submission_ids
+      );
+    }
+  }
 
-  // // Store PDF path in submission data.
-  // $data = $submission->getData();
-
-  // $data['ticket_pdf'] = $pdf_uri;
-
-  // $submission->setData($data);
-
-  // $submission->save();
 }
 
 /**
@@ -158,69 +153,8 @@ function webform_ticket_pdf_webform_submission_insert(
 function webform_ticket_pdf_webform_submission_update(
   WebformSubmissionInterface $submission
 ) {
-
-  // PDF is now generated on demand by TicketDownloadController.
-
-  // $configured_webform_id = \Drupal::service('domain_settings.manager')
-  //   ->getTicketWebformId();
-
-  // if (!$configured_webform_id) {
-  //   return;
-  // }
-
-  // if ($submission->getWebform()->id() !== $configured_webform_id) {
-  //   return;
-  // }
-
-  // $generator = \Drupal::service('webform_ticket_pdf.generator');
-
-  // $pdf_uri = $generator->generate($submission);
-
-
-  // $data = $submission->getData();
-  // $data['ticket_pdf'] = $pdf_uri;
-
-  // $submission->setData($data);
-
-  // Avoid infinite loop by not saving again here.
 }
 
-/**
- * Implements hook_entity_view().
- * Use only for adding a link to the PDF in the submission view, which is now deprecated in favor of on-demand generation in TicketDownloadController.
- */
-// function webform_ticket_pdf_entity_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
-//   if (!$entity instanceof WebformSubmissionInterface) {
-//     return;
-//   }
-
-//   $configured_webform_id = \Drupal::service('domain_settings.manager')
-//     ->getTicketWebformId();
-
-//   if (!$configured_webform_id) {
-//     return;
-//   }
-
-//   if ($entity->getWebform()->id() !== $configured_webform_id) {
-//     return;
-//   }
-
-//   $url = Url::fromRoute('webform_ticket_pdf.download_ticket', [
-//     'webform' => $entity->getWebform()->id(),
-//     'webform_submission' => $entity->id(),
-//   ]);
-
-//   $build['ticket_pdf_button'] = [
-//     '#type' => 'link',
-//     '#title' => t('Open entrance ticket'),
-//     '#url' => $url,
-//     '#attributes' => [
-//       'class' => ['button', 'button--primary'],
-//       'target' => '_blank',
-//     ],
-//     '#weight' => -10,
-//   ];
-// }
 
 /**
  * Implements hook_preprocess_menu().
@@ -399,88 +333,6 @@ function webform_ticket_pdf_link_alter(&$variables) {
   $variables['options']['attributes']['target'] = '_blank';
   $variables['options']['attributes']['rel'] = 'noopener noreferrer';
 }
-
-
-/**
- * Implements hook_form_FORM_ID_alter().
- *
- * Adds ticket actions to each row on the Webform submissions overview page.
- */
-// function webform_ticket_pdf_form_webform_submission_filter_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-//   \Drupal::logger('webform_ticket_pdf')->notice('Altering form: ' . $form_id);
-
-
-//   $route_match = \Drupal::routeMatch();
-
-//   $webform = $route_match->getParameter('webform');
-
-//   \Drupal::logger('webform_ticket_pdf')->notice('Altering form for webform ID: ' . $webform->id());
-//   if (!$webform || !method_exists($webform, 'id')) {
-//     return;
-//   }
-//   \Drupal::logger('webform_ticket_pdf')->notice('Webform ID: ' . $webform->id());
-//   if (empty($form['items'])) {
-//     return;
-//   }
-// \Drupal::logger('webform_ticket_pdf')->notice('Form has items to alter');
-//   // Add a new column to the overview table.
-//   if (!empty($form['items']['#header'])) {
-//     $form['items']['#header']['ticket_actions'] = t('Ticket');
-//   }
-
-//   foreach ($form['items'] as $sid => &$row) {
-//     if (!is_numeric($sid)) {
-//       continue;
-//     }
-// \Drupal::logger('webform_ticket_pdf')->notice('Altering row for submission ID: ' . $sid);
-//     $row['ticket_actions'] = [
-//       '#type' => 'container',
-//       '#attributes' => [
-//         'class' => ['ticket-actions'],
-//       ],
-
-//       'view' => [
-//         '#type' => 'link',
-//         '#title' => t('View'),
-//         '#url' => Url::fromRoute('webform_ticket_pdf.download_ticket', [
-//           'webform' => $webform->id(),
-//           'webform_submission' => $sid,
-//         ]),
-//         '#attributes' => [
-//           'class' => ['button', 'button--small'],
-//           'target' => '_blank',
-//           'rel' => 'noopener noreferrer',
-//         ],
-//       ],
-
-//       'print' => [
-//         '#type' => 'link',
-//         '#title' => t('Print'),
-//         '#url' => Url::fromRoute('webform_ticket_pdf.print_ticket', [
-//           'webform' => $webform->id(),
-//           'webform_submission' => $sid,
-//         ]),
-//         '#attributes' => [
-//           'class' => ['button', 'button--small'],
-//           'target' => '_blank',
-//           'rel' => 'noopener noreferrer',
-//         ],
-//       ],
-
-//       'email' => [
-//         '#type' => 'link',
-//         '#title' => t('Email'),
-//         '#url' => Url::fromRoute('webform_ticket_pdf.email_ticket', [
-//           'webform' => $webform->id(),
-//           'webform_submission' => $sid,
-//         ]),
-//         '#attributes' => [
-//           'class' => ['button', 'button--small'],
-//         ],
-//       ],
-//     ];
-//   }
-// }
 
 /**
  * Implements hook_form_FORM_ID_alter().
