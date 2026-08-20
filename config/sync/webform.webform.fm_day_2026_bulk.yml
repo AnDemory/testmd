@@ -206,7 +206,8 @@ settings:
 access:
   create:
     roles:
-      - authenticated
+      - content_editor
+      - administrator
     users: {  }
     permissions: {  }
   view_any:

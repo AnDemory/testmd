@@ -340,21 +340,21 @@ handlers:
       states:
         - completed
         - updated
-      to_mail: '[current-user:mail]'
+      to_mail: '[webform_submission:user:mail]'
       to_options: {  }
       bcc_mail: ''
       bcc_options: {  }
       cc_mail: ''
       cc_options: {  }
-      from_mail: '[domain-settings:mail]'
+      from_mail: info@aquaramatradefair.be
       from_options: {  }
       from_name: _default
-      reply_to: '[domain-settings:mail]'
+      reply_to: ''
       return_path: ''
       sender_mail: ''
       sender_name: ''
       subject: _default
-      body: '<p>[current-user:field_name:value] [current-user:field_first_name:value],<br><br>Wij hebben uw inschrijving voor de Aquarama Trade Fair 2025 goed ontvangen.<br><br>In de bijlage kunt u uw bestelde toegangsticket terugvinden. Dit toegangsticket geldt als badge en biedt u rechtstreeks toegang tot de beurs. Gelieve dit toegangsticket af te drukken en mee te brengen naar de ingang van de beurs. Uw registratie wijzigen en het toegangsticket downloaden kan steeds via uw profielpagina’s op onze website. (<a href="https://aquaramatradefair.ddev.site/my-registration">Klik hier</a>)<br><br><br><br><strong>Praktische info</strong><br>Aquarama Trade Fair 2025<br>Donderdag 23 oktober van 9u tot 18u<br>Brabanthal, Brabantlaan 1, 3001 Leuven<br><br>Bij ‘no show’ of afmelden minder dan 48u voor het congres is de toegangsprijs verschuldigd.&nbsp;<br><br><strong>Organisatie</strong><br>FCO Media<br>Boulevard des Canadiens 118<br>B - 7711 Dottignies<br>+32 (0)56 77 13 10<br><a href="mailto:info@aquarama.be">info@aquarama.be</a><br><a href="https://www.aquaramatradefair.be">www.aquaramatradefair.be</a></p><div id="eid-safari-extension-is-installed">&nbsp;</div><p><img src="https://www.aquaramatradefair.be/uploads/nieuws/images/full/atf20261200x800web2.jpg"></p>'
+      body: '<p>Beste [webform_submission:user:field_first_name] [webform_submission:user:field_name],<br><br>Wij hebben uw inschrijving voor de Aquarama Trade Fair 2025 goed ontvangen.<br><br>In de bijlage kunt u uw bestelde toegangsticket terugvinden. Dit toegangsticket geldt als badge en biedt u rechtstreeks toegang tot de beurs. Gelieve dit toegangsticket af te drukken en mee te brengen naar de ingang van de beurs. Uw registratie wijzigen en het toegangsticket downloaden kan steeds via uw profielpagina’s op onze website. (<a href="https://aquaramatradefair.ddev.site/my-registration">Klik hier</a>)<br><br><br><br><strong>Praktische info</strong><br>Aquarama Trade Fair 2025<br>Donderdag 23 oktober van 9u tot 18u<br>Brabanthal, Brabantlaan 1, 3001 Leuven<br><br>Bij ‘no show’ of afmelden minder dan 48u voor het congres is de toegangsprijs verschuldigd.&nbsp;<br><br><strong>Organisatie</strong><br>FCO Media<br>Boulevard des Canadiens 118<br>B - 7711 Dottignies<br>+32 (0)56 77 13 10<br><a href="mailto:info@aquarama.be">info@aquarama.be</a><br><a href="https://www.aquaramatradefair.be">www.aquaramatradefair.be</a></p><div id="eid-safari-extension-is-installed">&nbsp;</div><p><img src="https://www.aquaramatradefair.be/uploads/nieuws/images/full/atf20261200x800web2.jpg"></p>'
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true

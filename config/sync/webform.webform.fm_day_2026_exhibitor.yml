@@ -1,7 +1,9 @@
 uuid: b38aa3b6-be5e-4132-b100-d7e5fe92bf52
 langcode: en
 status: open
-dependencies: {  }
+dependencies:
+  module:
+    - webform_ticket_pdf
 weight: 0
 open: null
 close: null
@@ -227,5 +229,52 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
-handlers: {  }
+handlers:
+  ticket_email:
+    id: ticket_email
+    handler_id: ticket_email
+    label: 'Ticket email'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: 0
+    settings:
+      states:
+        - completed
+      to_mail: '[webform_submission:values:e_mail:raw]'
+      to_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      from_mail: info@fm-day.be
+      from_options: {  }
+      from_name: _default
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      subject: _default
+      body: _default
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      exclude_attachments: false
+      html: true
+      attachments: false
+      twig: false
+      theme_name: ''
+      langcode: ''
+      parameters: {  }
+      debug: false
+  print_ticket:
+    id: ticket_print
+    handler_id: print_ticket
+    label: 'Print ticket'
+    notes: ''
+    status: false
+    conditions: {  }
+    weight: 0
+    settings: {  }
 variants: {  }

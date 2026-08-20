@@ -1,7 +1,9 @@
 uuid: 6da609c3-3bfe-492a-ae51-5983bdbb6c13
 langcode: en
 status: open
-dependencies: {  }
+dependencies:
+  module:
+    - webform_ticket_pdf
 weight: 0
 open: null
 close: null
@@ -233,5 +235,43 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
-handlers: {  }
+handlers:
+  ticket_email:
+    id: ticket_email
+    handler_id: ticket_email
+    label: 'Ticket email'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: 0
+    settings:
+      states:
+        - completed
+      to_mail: '[webform_submission:user:mail]'
+      to_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      from_mail: info@fm-day.be
+      from_options: {  }
+      from_name: _default
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      subject: _default
+      body: '<p>Beste [webform_submission:user:field_first_name] [webform_submission:user:field_name],<br><br>Wij hebben uw inschrijving voor de netwerkdag op FM DAY 2026 goed ontvangen.<br><br>In de bijlage kunt u uw bestelde toegangsticket terugvinden. Dit toegangsticket geldt als badge en biedt u rechtstreeks toegang. Gelieve dit toegangsticket af te drukken en mee te brengen naar de ingang van het event.&nbsp;Uw registratie wijzigen en het toegangsticket downloaden kan steeds door opnieuw aan te melden op de eventsite.<br><br><strong>Praktische info</strong><br>FM-Day 2026<br>Donderdag 22 oktober 2026<br>- Netwerkdag doorlopend van 9u tot <strong>17u</strong><br>- belfa-congres van 9u tot 15u30 (betalend)<br>Brabanthal,&nbsp;Brabantlaan 1, B-3001 Leuven<br><br><em>FM-Day is een organisatie van belfa in samenwerking met FM Magazine &amp; Profacility.be.</em><br><br><strong>Info belfa-congres: </strong>belfa,&nbsp;Da Vincilaan 2, 1935 Zaventem, +32 468 13 81 25,&nbsp;<a href="mailto:office@belfa.be">office@belfa.be</a>, <a href="http://www.belfa.be">www.belfa.be</a><br><strong>Info netwerkdag:</strong> FCO Media,&nbsp;Boulevard des Canadiens 118,&nbsp;B - 7711 Dottignies,&nbsp;+32 (0)56 77 13 10,&nbsp;<a href="mailto:info@fcomedia.be">info@fcomedia.be</a>,&nbsp;<a href="https://www.fm-day.be">www.fm-day.be</a></p>'
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      exclude_attachments: false
+      html: true
+      attachments: false
+      twig: false
+      theme_name: ''
+      langcode: ''
+      parameters: {  }
+      debug: false
 variants: {  }
