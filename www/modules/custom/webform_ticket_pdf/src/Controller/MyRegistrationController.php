@@ -145,27 +145,54 @@ class MyRegistrationController extends ControllerBase {
       return AccessResult::allowed();
     }
 
-    // Do not treat uid 0 === uid 0 as ownership.
-    if (!$account->isAnonymous()) {
-      return AccessResult::forbidden();
-    }
-
     $request = \Drupal::request();
 
-    if (!$request->hasSession()) {
-      return AccessResult::forbidden();
-    }
+    if ($account->isAnonymous()) {
 
-    $submission_ids = $request->getSession()->get(
-      'webform_ticket_pdf.submissions',
-      []
-    );
+      if (!$request->hasSession()) {
+        return AccessResult::forbidden();
+      }
 
-    if (!empty($submission_ids[(string) $webform_submission->id()])) {
-      return AccessResult::allowed();
+      $submission_ids = $request->getSession()->get(
+        'webform_ticket_pdf.submissions',
+        []
+      );
+
+      if (!empty($submission_ids[(string) $webform_submission->id()])) {
+        return AccessResult::allowed();
+      }
+
+    } else {
+      if (
+        $account->hasPermission('view own webform submission')
+        && (int) $webform_submission->getOwnerId() === (int) $account->id()
+      ) {
+        return AccessResult::allowed();
+      }
     }
 
     return AccessResult::forbidden();
   }
 
 }
+
+
+  // public function access(WebformSubmissionInterface $webform_submission, AccountInterface $account) {
+  //   if ($account->hasPermission('administer webform submission')) {
+  //     return AccessResult::allowed();
+  //   }
+
+  //   if ($account->hasPermission('view any webform submission')) {
+  //     return AccessResult::allowed();
+  //   }
+
+  //   if ($account->hasPermission('view own webform submission')) {
+  //     return AccessResult::allowed();
+  //   }
+
+  //   if ($webform_submission->getOwnerId() == $account->id()) {
+  //     return AccessResult::allowed();
+  //   }
+
+  //   return AccessResult::forbidden();
+  // }

@@ -40,3 +40,4 @@ permissions:
   - 'use text format webform_default'
   - 'view media'
   - 'view own atf_registration_2025 registration'
+  - 'view own webform submission'
