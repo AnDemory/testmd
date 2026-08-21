@@ -1,0 +1,7 @@
+langswitch_toolbar:
+  css:
+    theme:
+      css/langswitch-toolbar.css: {}
+  dependencies:
+    - core/drupal
+    - core/once

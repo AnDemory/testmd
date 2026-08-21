@@ -1,6 +1,6 @@
 _core:
   default_config_hash: eZgcriT-utjDI1pjl-24jYFW2DmCxMXaFSnJd0XoU-0
-langcode: en
+langcode: nl
 settings:
   default_status: open
   default_categories: {  }

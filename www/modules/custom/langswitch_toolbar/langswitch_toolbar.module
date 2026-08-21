@@ -1,0 +1,64 @@
+<?php
+
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_toolbar().
+ *
+ * Adds a single toolbar item with inline language links (no tray).
+ */
+function langswitch_toolbar_toolbar(): array {
+  $language_manager = \Drupal::languageManager();
+  $languages = $language_manager->getLanguages();
+
+  if (count($languages) < 2) {
+    return [];
+  }
+
+  $current_langcode = $language_manager
+    ->getCurrentLanguage(LanguageInterface::TYPE_URL)
+    ->getId();
+
+  $links = [];
+  foreach ($languages as $langcode => $language) {
+    $links[] = [
+      '#type' => 'link',
+      '#title' => strtoupper($langcode),
+      '#url' => Url::fromRoute('<current>', [], ['language' => $language]),
+      '#attributes' => [
+        'class' => [
+          'langswitch-inline__link',
+          ($langcode === $current_langcode) ? 'is-active' : '',
+        ],
+        'title' => $language->getName(),
+      ],
+    ];
+  }
+
+  return [
+    'langswitch_inline' => [
+      '#type' => 'toolbar_item',
+      '#weight' => 195,
+      '#attached' => [
+        'library' => ['langswitch_toolbar/langswitch_toolbar'],
+      ],
+      // IMPORTANT: Use markup for tab so it stays a single toolbar item.
+      'tab' => [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['toolbar-tab', 'langswitch-inline'],
+        ],
+        'label' => [
+          '#markup' => '<span class="langswitch-inline__icon" aria-hidden="true"></span>'
+            . '<span class="visually-hidden">' . t('Switch language') . '</span>',
+        ],
+        'links' => [
+          '#theme' => 'item_list',
+          '#items' => $links,
+          '#attributes' => ['class' => ['langswitch-inline__list']],
+        ],
+      ],
+    ],
+  ];
+}

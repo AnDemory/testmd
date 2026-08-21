@@ -3,6 +3,7 @@
 namespace Drupal\webform_ticket_pdf;
 
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\webform\WebformSubmissionInterface;
 use TCPDF;
 
@@ -56,8 +57,13 @@ class TicketPdfGenerator {
       $template_uri .= "-" . $data['profile_custom'];
     }
 
+    // get language from URL, default to 'nl' if not found
+    $language = \Drupal::languageManager()
+      ->getCurrentLanguage(LanguageInterface::TYPE_URL)
+      ->getId();
+
     // add parameters to add to template name, depending on data values. For example, if there's a "language" field, you could do:
-    $template_uri .= "-" . ($data['language'] ?? 'nl') . ".jpg";
+    $template_uri .= "-" . ($language ?? 'nl') . ".jpg";
 
      \Drupal::logger('webform_ticket_pdf')->notice('Resolved ticket template URI: ' . $template_uri);
 

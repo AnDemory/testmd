@@ -1,0 +1,8 @@
+name: 'Language switcher in Toolbar'
+type: module
+description: 'Adds a language switcher dropdown to the Drupal admin toolbar.'
+core_version_requirement: ^10 || ^11
+package: Custom
+dependencies:
+  - drupal:toolbar
+  - drupal:language

@@ -76,6 +76,7 @@ settings:
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
   form_file_limit: ''
+  form_file_limit_message: ''
   form_attributes: {  }
   form_method: ''
   form_action: ''
@@ -140,8 +141,8 @@ settings:
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
   confirmation_type: url_message
-  confirmation_url: '/exhibitor-registration/ticket/[webform_submission:sid]'
-  confirmation_title: ''
+  confirmation_url: '[language:prefix]/exhibitor-registration/ticket/[webform_submission:sid]'
+  confirmation_title: 'Succesfully registered'
   confirmation_message: ''
   confirmation_attributes: {  }
   confirmation_back: true
@@ -249,13 +250,13 @@ handlers:
       cc_options: {  }
       from_mail: info@fm-day.be
       from_options: {  }
-      from_name: _default
+      from_name: 'FM DAY 2026'
       reply_to: ''
       return_path: ''
       sender_mail: ''
       sender_name: ''
       subject: _default
-      body: _default
+      body: '<p>Dear [webform_submission:values:first_name]<br>[webform_submission:values:last_name],<br><br>Wij hebben uw inschrijving als exposant&nbsp;voor de FM-Day 2026 goed ontvangen.&nbsp;<br><br>In de bijlage kunt u uw toegangsticket terugvinden, dit geldt als badge en biedt u rechtstreeks toegang. Hou deze goed bij. Gelieve dit toegangsticket af te drukken (bij voorkeur in kleur) en mee te brengen naar de ingang van het event (open vanaf 8u).<br><br><u>PRAKTISCHE INFO</u><br><br>FM-Day 20256<br>Donderdag <strong>22 oktober 2026</strong><br>doorlopend van 9u tot 17u<br><strong>Brabanthal</strong>, Brabantlaan 1, B-3001 Leuven</p><p><a href="https://www.fm-magazine.be/nl/fmday/editie/2025/home" data-cke-saved-href="https://www.fm-magazine.be/nl/fmday/editie/2025/home">www.fmday.be</a></p><p><em>Organisatie:&nbsp;FCO Media,&nbsp;Boulevard des Canadiens 118,&nbsp;B - 7711 Dottignies,&nbsp;+32 (0)56 77 13 10,&nbsp;</em><a href="mailto:info@fcomedia.be" data-cke-saved-href="mailto:info@fcomedia.be"><em>info@fcomedia.be</em></a></p>'
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true

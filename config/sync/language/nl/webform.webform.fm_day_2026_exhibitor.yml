@@ -1,0 +1,8 @@
+title: 'FM-Day 2026 exposant'
+elements: |
+  company_name:
+    '#title': 'Naam bedrijf'
+  first_name:
+    '#title': Voornaam
+  last_name:
+    '#title': Achteraam

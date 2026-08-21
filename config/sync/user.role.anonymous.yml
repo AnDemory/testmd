@@ -1,5 +1,5 @@
 uuid: 443f1e24-4a25-44ae-bc21-67781e7d1ccd
-langcode: en
+langcode: nl
 status: true
 dependencies:
   config:

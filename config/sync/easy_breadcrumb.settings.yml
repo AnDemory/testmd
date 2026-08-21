@@ -1,6 +1,6 @@
 _core:
   default_config_hash: TA0Gr1ENpR0kj3J9ZK4M04nzYU5Ou5xPsas2_StoIMU
-langcode: en
+langcode: nl
 applies_admin_routes: true
 include_invalid_paths: false
 excluded_paths: ''

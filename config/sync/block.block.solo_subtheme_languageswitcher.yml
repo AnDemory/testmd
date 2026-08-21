@@ -1,0 +1,29 @@
+uuid: 718abb50-225c-413b-9dcc-a1d9373671d5
+langcode: en
+status: true
+dependencies:
+  module:
+    - language
+  theme:
+    - solo_subtheme
+id: solo_subtheme_languageswitcher
+theme: solo_subtheme
+region: header
+weight: -7
+provider: null
+plugin: 'language_block:language_interface'
+settings:
+  id: 'language_block:language_interface'
+  label: 'Language switcher'
+  label_display: '0'
+  provider: language
+visibility:
+  language:
+    id: language
+    negate: false
+    context_mapping:
+      language: '@language.current_language_context:language_interface'
+    langcodes:
+      nl: nl
+      fr: fr
+      en: en
