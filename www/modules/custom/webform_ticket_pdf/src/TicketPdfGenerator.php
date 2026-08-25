@@ -53,7 +53,7 @@ class TicketPdfGenerator {
 
     $webform_type = webform_ticket_pdf_type($webform_id);
     $template_uri .= "-" . $webform_type;
-    if ($domain == 'fm-day.ddev.site' && 'visitor' === $webform_type) {
+    if ($domain == 'fm-day' && 'visitor' === $webform_type) {
       $template_uri .= "-" . $data['profile_custom'];
     }
 

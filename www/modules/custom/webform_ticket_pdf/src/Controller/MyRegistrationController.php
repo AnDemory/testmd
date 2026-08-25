@@ -14,7 +14,16 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class MyRegistrationController extends ControllerBase {
 
   public function page(?WebformSubmissionInterface $webform_submission = NULL,): array|RedirectResponse {
+
     $webform_id = $webform_submission?->getWebform()->id() ?? $this->getWebformId();
+
+    if (!$webform_id) {
+      return $this->redirectToHomepage();
+    }
+
+    if ($this->currentUser()->isAnonymous()) {
+      return $this->redirectToLogin();
+    }
 
     if (!$webform_id) {
       throw new NotFoundHttpException($this->getMissingWebformMessage());
@@ -174,7 +183,31 @@ class MyRegistrationController extends ControllerBase {
     return AccessResult::forbidden();
   }
 
+  /**
+   * Redirects to the homepage.
+   */
+  protected function redirectToHomepage(): RedirectResponse {
+    return $this->redirect('<front>');
+  }
+
+  /**
+   * Redirects anonymous visitors to login.
+   */
+  protected function redirectToLogin(): RedirectResponse {
+    $destination = Url::fromRoute(
+      'webform_ticket_pdf.my_registration'
+    )->toString();
+
+    return $this->redirect('user.login', [], [
+      'query' => [
+        'destination' => $destination,
+      ],
+    ]);
+  }
+
 }
+
+
 
 
   // public function access(WebformSubmissionInterface $webform_submission, AccountInterface $account) {

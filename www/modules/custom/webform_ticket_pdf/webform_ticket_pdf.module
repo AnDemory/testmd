@@ -160,35 +160,38 @@ function webform_ticket_pdf_webform_submission_update(
  * Implements hook_preprocess_menu().
  * Updates the "My registration" menu item title if the user already has a submission, to avoid confusion about whether they can submit again.
  */
-function webform_ticket_pdf_preprocess_menu(array &$variables) {
+function webform_ticket_pdf_preprocess_menu(array &$variables): void {
   $current_user = \Drupal::currentUser();
 
-  if ($current_user->isAnonymous()) {
-    return;
-  }
+  $manager = \Drupal::service('domain_settings.manager');
+  $domain = $manager->getCurrentDomain();
+  $webform_id = $manager->getTicketWebformId($domain);
 
-  $webform_id = \Drupal::service('domain_settings.manager')
-    ->getTicketWebformId();
+  $has_submission = $webform_id
+    && !$current_user->isAnonymous()
+    && webform_ticket_pdf_user_has_submission(
+      $webform_id,
+      (int) $current_user->id()
+    );
 
-  if (!$webform_id) {
-    return;
-  }
-
-  $has_submission = webform_ticket_pdf_user_has_submission(
-    $webform_id,
-    $current_user->id()
-  );
-
-  foreach ($variables['items'] as &$item) {
-    if (empty($item['url'])) {
+  foreach ($variables['items'] as $key => &$item) {
+    if (
+      empty($item['url'])
+      || !$item['url']->isRouted()
+      || $item['url']->getRouteName()
+        !== 'webform_ticket_pdf.my_registration'
+    ) {
       continue;
     }
 
-    if ($item['url']->toString() === '/my-registration') {
-      $item['title'] = $has_submission
-        ? t('My registration')
-        : t('Registration');
+    if (!$webform_id) {
+      unset($variables['items'][$key]);
+      continue;
     }
+
+    $item['title'] = $has_submission
+      ? t('My registration')
+      : t('Registration');
   }
 }
 
@@ -208,7 +211,6 @@ function webform_ticket_pdf_user_has_submission(string $webform_id, int $uid): b
 
   return !empty($ids);
 }
-
 
 /**
  * Gets the domain ID linked to a ticket submission.
