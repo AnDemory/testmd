@@ -1,0 +1,4 @@
+/* Hide the Next button on the language-selection page. */
+.webform-language-selection + #edit-actions {
+  display: none;
+}

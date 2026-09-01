@@ -1,6 +1,6 @@
 uuid: 832602ed-6cef-46a2-a8c5-345b6e55144f
 langcode: en
-status: open
+status: closed
 dependencies:
   module:
     - webform_ticket_pdf
@@ -9,7 +9,7 @@ open: null
 close: null
 uid: 1
 template: false
-archive: false
+archive: true
 id: aquarama_trade_fair_2025
 title: 'Aquarama Trade Fair 2025'
 description: '<p>Aquarama Trade Fair 2025</p>'
@@ -20,14 +20,6 @@ elements: |-
     '#type': processed_text
     '#text': '<p>Registreer u hieronder als bezoeker van de Aquarama Trade Fair 2026. Na de registratie ontvangt u een e-mail met uw toegangsticket in bijlage ter bevestiging.</p><p><em>Iedere bezoeker dient zich apart te registreren!</em></p><p><strong>Organisatie:&nbsp;</strong> FCO Media, +32 (0)56 77 13 10, <a href="mailto:info@aquarama.be">info@aquarama.be</a>&nbsp;</p>'
     '#format': basic_html
-  gratis_beursbezoek:
-    '#type': checkbox
-    '#title': 'GRATIS beursbezoek'
-    '#description': '<p>09:00 - 18:00</p>'
-    '#required': true
-    '#default_value': true
-    '#access_create_roles':
-      - authenticated
   mijn_congres:
     '#type': checkboxes
     '#title': 'Mijn congres'
@@ -103,6 +95,18 @@ elements: |-
     '#hide_empty': true
     '#store': true
     '#ajax': true
+  mijjn_beursbezoek:
+    '#type': radios
+    '#title': 'Mijjn beursbezoek'
+    '#options':
+      visit: 'GRATIS beursbezoek -- 09:30 - 18:00'
+    '#required': true
+  mijn_beursbezoek:
+    '#type': radios
+    '#title': 'Mijn beursbezoek'
+    '#options':
+      visit: 'GRATIS beursbezoek -- 09:30 - 18:00'
+    '#required': true
 css: ''
 javascript: ''
 settings:

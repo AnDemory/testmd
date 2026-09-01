@@ -4,11 +4,11 @@ domains:
   -
     domain: aquaramatradefair.ddev.site
     mail: info@aquaramatradefair.be
-    ticket_webform_id: aquarama_trade_fair_2025
-    ticket_exhibitor_webform_id: ''
-    ticket_visitor_bulk_webform_id: ''
-    ticket_template: 'private://templates/ATF/2025/ATF2025'
-    lead_retrieval_url: ''
+    ticket_webform_id: aquarama_trade_fair_2026
+    ticket_exhibitor_webform_id: aquarama_trade_fair_2026_exhibit
+    ticket_visitor_bulk_webform_id: aquarama_trade_fair_2026_bulk
+    ticket_template: 'private://templates/ATF/2026/ATF2026'
+    lead_retrieval_url: 'https://atf2026-events.fcoffice.local:444/apps/lr/'
   -
     domain: fm-day.ddev.site
     mail: info@fm-day.be

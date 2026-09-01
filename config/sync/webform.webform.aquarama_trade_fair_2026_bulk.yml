@@ -1,5 +1,5 @@
-uuid: 96ef6bef-22ed-4277-8850-c5ac5d892631
-langcode: en
+uuid: 26ec6ca7-f56b-4536-8f98-f5a2c4587506
+langcode: nl
 status: open
 dependencies: {  }
 weight: 0
@@ -8,13 +8,12 @@ close: null
 uid: 1
 template: false
 archive: false
-id: fm_day_2026_bulk
-title: 'FM-Day 2026 Bulk'
+id: aquarama_trade_fair_2026_bulk
+title: 'Aquarama Trade Fair 2026 Bulk'
 description: ''
 categories:
   - bulk
   - visitor
-  - domain_fm
 elements: |-
   taal:
     '#type': webform_wizard_page
@@ -28,8 +27,12 @@ elements: |-
       '#options':
         nl: NL
         fr: FR
+        en: EN
       '#options_display': buttons_horizontal
       '#required': true
+      '#format_attributes':
+        class:
+          - webform-language-selection
   e_mailadres:
     '#type': webform_wizard_page
     '#title': E-mailadres
@@ -62,16 +65,6 @@ elements: |-
         contact_no: 'Nee, ik wens niet gecontacteerd te worden door exposanten.'
       '#required': true
       '#required_error': 'Duid uw contactwens aan'
-    profile_custom:
-      '#type': radios
-      '#title': 'Mijn lidmaatschap'
-      '#description': '<p>Ik ben</p>'
-      '#description_display': before
-      '#options':
-        member: 'Lid belfa'
-        non_member: 'Geen lid belfa'
-      '#required': true
-      '#required_error': 'Lidmaatschap aanduiden verplicht'
   actions:
     '#type': webform_actions
     '#title': 'Submit button(s)'

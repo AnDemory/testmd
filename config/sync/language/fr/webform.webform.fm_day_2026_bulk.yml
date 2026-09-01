@@ -1,0 +1,5 @@
+elements: |
+  e_mailadres:
+    '#title': '(FR) E-mailadres'
+  persoonlijke_gegevens:
+    '#title': '(FR) Persoonlijke gegevens'

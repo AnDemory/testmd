@@ -1,5 +1,5 @@
-uuid: 6da609c3-3bfe-492a-ae51-5983bdbb6c13
-langcode: en
+uuid: 3595a6e8-a391-4c01-9a9a-c88a935ce30b
+langcode: nl
 status: open
 dependencies:
   module:
@@ -10,48 +10,105 @@ close: null
 uid: 1
 template: false
 archive: false
-id: fm_day_2026
-title: 'FM-Day 2026'
-description: ''
+id: aquarama_trade_fair_2026
+title: 'Aquarama Trade Fair 2026'
+description: '<p>Aquarama Trade Fair 2026</p>'
 categories:
-  - domain_fm
   - visitor
 elements: |-
   intro_text:
     '#type': processed_text
-    '#text': '<p>Registratie bezoek netwerkdag FM DAY 2026</p><p>Registreer u hieronder als bezoeker van de FM DAY - donderdag 22 oktober 2026. Na de registratie ontvangt u een e-mail met uw toegangsticket in bijlage ter bevestiging. Gelieve dat toegangsticket af te drukken en mee te brengen bij uw bezoek aan FM DAY 2026.</p><p><em>Iedere bezoeker dient zich apart te registreren!</em></p><p><em>Tijdens het evenement&nbsp;gebruiken we een QR code die verbonden is met uw contactgegevens (naam bedrijf, naam en e mail) die u heeft ingevuld tijdens uw registratie. Deze QR code kan ingescand worden door de exposant op de door u bezochte stand.&nbsp;</em></p><p><strong>Organisatie: </strong>FCO Media, +32 (0)56 77 13 10, <a href="mailto:info@fcomedia.be">info@fcomedia.be</a></p><p>&nbsp;</p><p>&nbsp;</p>'
+    '#text': '<p>Registreer u hieronder als bezoeker van de Aquarama Trade Fair 2026. Na de registratie ontvangt u een e-mail met uw toegangsticket in bijlage ter bevestiging.</p><p><em>Iedere bezoeker dient zich apart te registreren!</em></p><p><strong>Organisatie:&nbsp;</strong> FCO Media, +32 (0)56 77 13 10, <a href="mailto:info@aquarama.be">info@aquarama.be</a>&nbsp;</p>'
     '#format': basic_html
-  visit:
+  mijjn_beursbezoek:
     '#type': radios
-    '#title': 'Mijn beursbezoek'
+    '#title': 'Mijjn beursbezoek'
     '#options':
-      visit: 'GRATIS bezoek netwerkdag -- Donderdag 22 oktober 2026 van 9u tot 17u'
+      visit: 'GRATIS beursbezoek -- 09:30 - 18:00'
     '#required': true
     '#default_value': visit
-  profile_custom:
-    '#type': radios
-    '#title': 'Mijn lidmaatschap'
-    '#description': '<p>Ik ben</p>'
-    '#description_display': before
+  mijn_congres:
+    '#type': checkboxes
+    '#title': 'Mijn congres'
     '#options':
-      member: 'Lid belfa'
-      non_member: 'Geen lid belfa'
+      'Watercircle.be - VMx': |-
+        Watercircle.be - VMx -- 09:30 - 13:00
+        Studenten: €25, Watercircle.be-leden: €50, VMX-leden: €75; niet-leden: €100
+        <br>Betaling na ontvangst factuur. Inschrijving is pas definitief na betaling.
+      Vlario: |-
+        Vlario -- 10:15 - 16:00
+        <br>Gratis, no show: € 50
+      AquaFlanders: 'AquaFlanders -- 14:00 - 16:00 <br>Gratis, no show: €50'
+      Cebedeau: |-
+        Cebedeau -- 13:30 - 15:00
+        <br>Gratis, no show: €50
+      'Interreg NEW WATER': |-
+        Interreg NEW WATER -- 14:00 - 15:00
+        <br>Gratis, no show: €50
+      B-IWA: |-
+        B-IWA -- 15:00 - 16:15
+        <br>B-IWA- members: free, non-members: €50, now show: €50
+  mijn_lidmaatschap:
+    '#type': checkboxes
+    '#title': 'Mijn lidmaatschap'
+    '#options':
+      'Lid watercircle.be': 'Lid watercircle.be'
+      'Lid VMX': 'Lid VMX'
+      'Lid B-IWA': 'Lid B-IWA'
+      Student: 'Student -- U bent student bachelor of master, een inschrijvingsbewijs kan opgevraagd worden'
+    '#options_none': true
+    '#options_none_value': 'Geen van bovenstaande'
+    '#options_none_text': 'Geen van bovenstaande'
     '#required': true
-    '#required_error': 'Lidmaatschap aanduiden verplicht'
+  uw_prijs:
+    '#type': webform_computed_twig
+    '#title': 'Uw prijs'
+    '#template': |-
+      {% set congressen = data.mijn_congres|default([]) %}
+      {% set lidmaatschap = data.mijn_lidmaatschap|default([]) %}
+
+      {% set is_student = 'Student' in lidmaatschap %}
+      {% set is_member_watercircle = 'Lid watercircle.be' in lidmaatschap %}
+      {% set is_member_vmx = 'Lid VMX' in lidmaatschap %}
+      {% set is_member_biwa = 'Lid B-IWA' in lidmaatschap %}
+
+      {% set total = 0 %}
+
+      {# Watercircle.be - VMx #}
+      {% if 'Watercircle.be - VMx' in congressen %}
+        {% if is_student %}
+          {% set total = total + 25 %}
+        {% elseif is_member_watercircle %}
+          {% set total = total + 50 %}
+        {% elseif is_member_vmx %}
+          {% set total = total + 75 %}
+        {% else %}
+          {% set total = total + 100 %}
+        {% endif %}
+      {% endif %}
+
+      {# B-IWA #}
+      {% if 'B-IWA' in congressen %}
+        {% if is_member_biwa %}
+          {% set total = total + 0 %}
+        {% else %}
+          {% set total = total + 50 %}
+        {% endif %}
+      {% endif %}
+
+      €{{ total }}
+    '#whitespace': spaceless
+    '#hide_empty': true
+    '#store': true
+    '#ajax': true
   contact:
     '#type': radios
-    '#title': Contact
-    '#description': '<p><b style="-webkit-text-stroke-width:0px;background-color:rgb(255, 255, 255);box-sizing:border-box;color:rgb(51, 51, 51);font-family:Roboto, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;;font-size:14px;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;"><strong>Mogen exposanten van dit event u na afloop contacteren met informatie over hun producten en diensten?</strong></b><span style="-webkit-text-stroke-width:0px;background-color:rgb(255, 255, 255);color:rgb(51, 51, 51);display:inline !important;float:none;font-family:Roboto, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;;font-size:14px;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;"> </span><span class="text-primary" style="-webkit-text-stroke-width:0px;background-color:rgb(255, 255, 255);box-sizing:border-box;color:rgb(10, 152, 132);font-family:Roboto, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;;font-size:14px;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">*</span></p>'
-    '#description_display': before
+    '#title': 'Mogen exposanten van dit event u na afloop contacteren met informatie over hun producten en diensten?'
     '#options':
       contact_yes: 'Ja, ik geef toestemming dat mijn gegevens worden gedeeld met exposanten die relevant zijn voor mijn interesses.'
       contact_no: 'Nee, ik wens niet gecontacteerd te worden door exposanten.'
     '#required': true
-    '#required_error': 'Duid uw contactwens aan'
-  processed_text:
-    '#type': processed_text
-    '#text': '<ul><li data-list-item-id="e2b64c6bf27e40a01e3b4117facf926bf">Iedere bezoeker dient zich met een <strong>eigen account (e-mailadres)</strong> te registreren.</li><li data-list-item-id="ef2083c6cc668fc0443868520fbed23af">Gelieve elke wijziging aan uw registratie <strong>eerst op te slaan</strong> voordat u het toegangsticket opnieuw downloadt of verzendt.</li></ul>'
-    '#format': basic_html
+    '#required_error': 'Duid uw contactvoorkeur aan'
 css: ''
 javascript: ''
 settings:
@@ -80,7 +137,7 @@ settings:
   form_prepopulate_source_entity_type: ''
   form_unsaved: false
   form_disable_back: true
-  form_submit_back: true
+  form_submit_back: false
   form_disable_autocomplete: false
   form_novalidate: false
   form_disable_inline_errors: false
@@ -159,7 +216,7 @@ settings:
   draft_pending_multiple_message: ''
   confirmation_type: url_message
   confirmation_url: /my-registration
-  confirmation_title: 'Succesvol geregistreerd'
+  confirmation_title: ''
   confirmation_message: ''
   confirmation_attributes: {  }
   confirmation_back: true
@@ -245,17 +302,18 @@ handlers:
     notes: ''
     status: true
     conditions: {  }
-    weight: 0
+    weight: -50
     settings:
       states:
         - completed
+        - updated
       to_mail: '[webform_submission:user:mail]'
       to_options: {  }
       bcc_mail: ''
       bcc_options: {  }
       cc_mail: ''
       cc_options: {  }
-      from_mail: info@fm-day.be
+      from_mail: info@aquaramatradefair.be
       from_options: {  }
       from_name: _default
       reply_to: ''
@@ -263,7 +321,7 @@ handlers:
       sender_mail: ''
       sender_name: ''
       subject: _default
-      body: '<p>Beste [webform_submission:user:field_first_name] [webform_submission:user:field_name],<br><br>Wij hebben uw inschrijving voor de netwerkdag op FM DAY 2026 goed ontvangen.<br><br>In de bijlage kunt u uw bestelde toegangsticket terugvinden. Dit toegangsticket geldt als badge en biedt u rechtstreeks toegang. Gelieve dit toegangsticket af te drukken en mee te brengen naar de ingang van het event.&nbsp;Uw registratie wijzigen en het toegangsticket downloaden kan steeds door opnieuw aan te melden op de eventsite.<br><br><strong>Praktische info</strong><br>FM-Day 2026<br>Donderdag 22 oktober 2026<br>- Netwerkdag doorlopend van 9u tot <strong>17u</strong><br>- belfa-congres van 9u tot 15u30 (betalend)<br>Brabanthal,&nbsp;Brabantlaan 1, B-3001 Leuven<br><br><em>FM-Day is een organisatie van belfa in samenwerking met FM Magazine &amp; Profacility.be.</em><br><br><strong>Info belfa-congres: </strong>belfa,&nbsp;Da Vincilaan 2, 1935 Zaventem, +32 468 13 81 25,&nbsp;<a href="mailto:office@belfa.be">office@belfa.be</a>, <a href="http://www.belfa.be">www.belfa.be</a><br><strong>Info netwerkdag:</strong> FCO Media,&nbsp;Boulevard des Canadiens 118,&nbsp;B - 7711 Dottignies,&nbsp;+32 (0)56 77 13 10,&nbsp;<a href="mailto:info@fcomedia.be">info@fcomedia.be</a>,&nbsp;<a href="https://www.fm-day.be">www.fm-day.be</a></p>'
+      body: '<p>Beste [webform_submission:user:field_first_name] [webform_submission:user:field_name],<br><br>Wij hebben uw inschrijving voor de Aquarama Trade Fair 2026 goed ontvangen.<br><br>In de bijlage kunt u uw bestelde toegangsticket terugvinden. Dit toegangsticket geldt als badge en biedt u rechtstreeks toegang tot de beurs. Gelieve dit toegangsticket af te drukken en mee te brengen naar de ingang van de beurs. Uw registratie wijzigen en het toegangsticket downloaden kan steeds via uw profielpagina’s op onze website. (<a href="https://aquaramatradefair.ddev.site/my-registration">Klik hier</a>)<br><br><br><br><strong>Praktische info</strong><br>Aquarama Trade Fair 2026<br>Donderdag 23 oktober van 9u tot 18u<br>Brabanthal, Brabantlaan 1, 3001 Leuven<br><br>Bij ‘no show’ of afmelden minder dan 48u voor het congres is de toegangsprijs verschuldigd.&nbsp;<br><br><strong>Organisatie</strong><br>FCO Media<br>Boulevard des Canadiens 118<br>B - 7711 Dottignies<br>+32 (0)56 77 13 10<br><a href="mailto:info@aquarama.be">info@aquarama.be</a><br><a href="https://www.aquaramatradefair.be">www.aquaramatradefair.be</a></p><div id="eid-safari-extension-is-installed">&nbsp;</div><p><img src="https://www.aquaramatradefair.be/uploads/nieuws/images/full/atf20261200x800web2.jpg"></p>'
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true

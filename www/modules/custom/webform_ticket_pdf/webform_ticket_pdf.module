@@ -18,6 +18,7 @@ function webform_ticket_pdf_form_alter(
   FormStateInterface $form_state,
   $form_id
 ) {
+
   $form_object = $form_state->getFormObject();
 
   if (!method_exists($form_object, 'getEntity')) {
@@ -42,6 +43,9 @@ function webform_ticket_pdf_form_alter(
     return;
   }
 
+  # Add a library for the language switcher functionality.
+  $form['#attached']['library'][] = 'webform_ticket_pdf/webform_language_switcher';
+  # Add a custom submit handler to prefill the company name field based on the email address entered on page 1.
   _webform_ticket_pdf_prefill_company_name($form, $form_state);
 }
 

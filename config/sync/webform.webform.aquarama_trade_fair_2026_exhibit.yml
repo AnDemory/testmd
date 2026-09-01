@@ -1,86 +1,39 @@
-uuid: 96ef6bef-22ed-4277-8850-c5ac5d892631
-langcode: en
+uuid: 83c741aa-93ad-448a-94b5-e5f719481d36
+langcode: nl
 status: open
-dependencies: {  }
+dependencies:
+  module:
+    - webform_ticket_pdf
 weight: 0
 open: null
 close: null
 uid: 1
 template: false
 archive: false
-id: fm_day_2026_bulk
-title: 'FM-Day 2026 Bulk'
+id: aquarama_trade_fair_2026_exhibit
+title: 'Aquarama Trade Fair 2026 exhibitor'
 description: ''
 categories:
-  - bulk
-  - visitor
-  - domain_fm
+  - exhibitor
 elements: |-
-  taal:
-    '#type': webform_wizard_page
-    '#title': Taal
-    '#attributes':
-      class:
-        - webform-language-selection
-    language:
-      '#type': radios
-      '#title': Language
-      '#options':
-        nl: NL
-        fr: FR
-      '#options_display': buttons_horizontal
-      '#required': true
-  e_mailadres:
-    '#type': webform_wizard_page
-    '#title': E-mailadres
-    e_mail:
-      '#type': email
-      '#title': E-mail
-      '#required': true
-  persoonlijke_gegevens:
-    '#type': webform_wizard_page
-    '#title': 'Persoonlijke gegevens'
-    last_name:
-      '#type': textfield
-      '#title': 'Last name'
-      '#required': true
-    first_name:
-      '#type': textfield
-      '#title': 'First name'
-      '#required': true
-    company_name:
-      '#type': textfield
-      '#title': 'Company name'
-      '#required': true
-    contact:
-      '#type': radios
-      '#title': Contact
-      '#description': '<p><b style="-webkit-text-stroke-width:0px;background-color:rgb(255, 255, 255);box-sizing:border-box;color:rgb(51, 51, 51);font-family:Roboto, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;;font-size:14px;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;"><strong>Mogen exposanten van dit event u na afloop contacteren met informatie over hun producten en diensten?</strong></b><span style="-webkit-text-stroke-width:0px;background-color:rgb(255, 255, 255);color:rgb(51, 51, 51);display:inline !important;float:none;font-family:Roboto, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;;font-size:14px;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;"> </span><span class="text-primary" style="-webkit-text-stroke-width:0px;background-color:rgb(255, 255, 255);box-sizing:border-box;color:rgb(10, 152, 132);font-family:Roboto, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;;font-size:14px;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">*</span></p>'
-      '#description_display': before
-      '#options':
-        contact_yes: 'Ja, ik geef toestemming dat mijn gegevens worden gedeeld met exposanten die relevant zijn voor mijn interesses.'
-        contact_no: 'Nee, ik wens niet gecontacteerd te worden door exposanten.'
-      '#required': true
-      '#required_error': 'Duid uw contactwens aan'
-    profile_custom:
-      '#type': radios
-      '#title': 'Mijn lidmaatschap'
-      '#description': '<p>Ik ben</p>'
-      '#description_display': before
-      '#options':
-        member: 'Lid belfa'
-        non_member: 'Geen lid belfa'
-      '#required': true
-      '#required_error': 'Lidmaatschap aanduiden verplicht'
-  actions:
-    '#type': webform_actions
-    '#title': 'Submit button(s)'
-    '#access_create_roles':
-      - content_editor
-      - administrator
-    '#access_view_roles':
-      - content_editor
-      - administrator
+  company_name:
+    '#type': textfield
+    '#title': Bedrijf
+    '#required': true
+  first_name:
+    '#type': textfield
+    '#title': Voornaam
+    '#required': true
+  last_name:
+    '#type': textfield
+    '#title': Achternaam
+    '#required': true
+  e_mail:
+    '#type': email
+    '#title': E-mail
+    '#required': true
+    '#unique': true
+    '#unique_entity': true
 css: ''
 javascript: ''
 settings:
@@ -98,7 +51,7 @@ settings:
   form_open_message: ''
   form_close_message: ''
   form_exception_message: ''
-  form_previous_submissions: true
+  form_previous_submissions: false
   form_confidential: false
   form_confidential_message: ''
   form_disable_remote_addr: false
@@ -187,9 +140,9 @@ settings:
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
   confirmation_type: url_message
-  confirmation_url: '/admin/structure/webform/manage/[webform:id]/results/submissions'
-  confirmation_title: 'Succesvol geregistreerd'
-  confirmation_message: ''
+  confirmation_url: '[language:prefix]/exhibitor-registration/ticket/[webform_submission:sid]'
+  confirmation_title: 'Succesfully registered'
+  confirmation_message: '<p>[webform_submission:values:html]</p>'
   confirmation_attributes: {  }
   confirmation_back: true
   confirmation_back_label: ''
@@ -214,27 +167,34 @@ settings:
   results_disabled: false
   results_disabled_ignore: false
   results_customize: false
-  token_view: false
+  token_view: true
   token_update: false
   token_delete: false
   serial_disabled: false
 access:
   create:
     roles:
+      - anonymous
       - content_editor
       - administrator
     users: {  }
     permissions: {  }
   view_any:
-    roles: {  }
+    roles:
+      - content_editor
+      - administrator
     users: {  }
     permissions: {  }
   update_any:
-    roles: {  }
+    roles:
+      - content_editor
+      - administrator
     users: {  }
     permissions: {  }
   delete_any:
-    roles: {  }
+    roles:
+      - content_editor
+      - administrator
     users: {  }
     permissions: {  }
   purge_any:
@@ -243,12 +203,12 @@ access:
     permissions: {  }
   view_own:
     roles:
-      - authenticated
+      - content_editor
+      - administrator
     users: {  }
     permissions: {  }
   update_own:
-    roles:
-      - authenticated
+    roles: {  }
     users: {  }
     permissions: {  }
   delete_own:
@@ -256,7 +216,9 @@ access:
     users: {  }
     permissions: {  }
   administer:
-    roles: {  }
+    roles:
+      - content_editor
+      - administrator
     users: {  }
     permissions: {  }
   test:
@@ -267,5 +229,52 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
-handlers: {  }
+handlers:
+  ticket_email:
+    id: ticket_email
+    handler_id: ticket_email
+    label: 'Ticket email'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: 0
+    settings:
+      states:
+        - completed
+      to_mail: '[webform_submission:values:e_mail:raw]'
+      to_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      from_mail: info@fm-day.be
+      from_options: {  }
+      from_name: 'FM DAY 2026'
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      subject: _default
+      body: '<p>Dear [webform_submission:values:first_name]<br>[webform_submission:values:last_name],<br><br>Wij hebben uw inschrijving als exposant&nbsp;voor de FM-Day 2026 goed ontvangen.&nbsp;<br><br>In de bijlage kunt u uw toegangsticket terugvinden, dit geldt als badge en biedt u rechtstreeks toegang. Hou deze goed bij. Gelieve dit toegangsticket af te drukken (bij voorkeur in kleur) en mee te brengen naar de ingang van het event (open vanaf 8u).<br><br><u>PRAKTISCHE INFO</u><br><br>FM-Day 20256<br>Donderdag <strong>22 oktober 2026</strong><br>doorlopend van 9u tot 17u<br><strong>Brabanthal</strong>, Brabantlaan 1, B-3001 Leuven</p><p><a href="https://www.fm-magazine.be/nl/fmday/editie/2025/home" data-cke-saved-href="https://www.fm-magazine.be/nl/fmday/editie/2025/home">www.fmday.be</a></p><p><em>Organisatie:&nbsp;FCO Media,&nbsp;Boulevard des Canadiens 118,&nbsp;B - 7711 Dottignies,&nbsp;+32 (0)56 77 13 10,&nbsp;</em><a href="mailto:info@fcomedia.be" data-cke-saved-href="mailto:info@fcomedia.be"><em>info@fcomedia.be</em></a></p>'
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      exclude_attachments: false
+      html: true
+      attachments: false
+      twig: false
+      theme_name: ''
+      langcode: ''
+      parameters: {  }
+      debug: false
+  print_ticket:
+    id: ticket_print
+    handler_id: print_ticket
+    label: 'Print ticket'
+    notes: ''
+    status: false
+    conditions: {  }
+    weight: 0
+    settings: {  }
 variants: {  }

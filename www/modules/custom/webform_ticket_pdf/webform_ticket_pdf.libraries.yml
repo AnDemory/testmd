@@ -1,0 +1,9 @@
+webform_language_switcher:
+  css:
+    theme:
+      css/webform-language-switcher.css: {}
+  js:
+    js/webform-language-switcher.js: {}
+  dependencies:
+    - core/drupal
+    - core/once

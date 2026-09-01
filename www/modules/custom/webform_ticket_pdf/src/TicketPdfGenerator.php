@@ -5,6 +5,7 @@ namespace Drupal\webform_ticket_pdf;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\webform\WebformSubmissionInterface;
+use Drupal\webform\Entity\Webform;
 use TCPDF;
 
 use Endroid\QrCode\QrCode;
@@ -52,15 +53,22 @@ class TicketPdfGenerator {
     }
 
     $webform_type = webform_ticket_pdf_type($webform_id);
+    $webform = Webform::load($webform_id);
+    $categories = (array) $webform->get('categories');
     $template_uri .= "-" . $webform_type;
-    if ($domain == 'fm-day' && 'visitor' === $webform_type) {
+    if (in_array('domain_fm', $categories) && 'visitor' === $webform_type) {
       $template_uri .= "-" . $data['profile_custom'];
     }
-
+    //\Drupal::logger('webform_ticket_pdf')->notice('Bulk submission data: ' . print_r($data, TRUE));
     // get language from URL, default to 'nl' if not found
-    $language = \Drupal::languageManager()
-      ->getCurrentLanguage(LanguageInterface::TYPE_URL)
-      ->getId();
+    if (!webform_ticket_pdf_is_bulk($webform_id)) {
+      $language = \Drupal::languageManager()
+        ->getCurrentLanguage(LanguageInterface::TYPE_URL)
+        ->getId();
+    } else {
+
+      $language = $data['language'] ?? 'nl';
+    }
 
     // add parameters to add to template name, depending on data values. For example, if there's a "language" field, you could do:
     $template_uri .= "-" . ($language ?? 'nl') . ".jpg";

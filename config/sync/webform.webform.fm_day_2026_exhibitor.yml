@@ -14,7 +14,7 @@ id: fm_day_2026_exhibitor
 title: 'FM-Day 2026 exhibitor'
 description: ''
 categories:
-  - Event
+  - domain_fm
   - exhibitor
 elements: |-
   company_name:
