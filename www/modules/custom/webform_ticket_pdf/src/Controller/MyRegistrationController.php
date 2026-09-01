@@ -21,10 +21,6 @@ class MyRegistrationController extends ControllerBase {
       return $this->redirectToHomepage();
     }
 
-    if ($this->currentUser()->isAnonymous()) {
-      return $this->redirectToLogin();
-    }
-
     if (!$webform_id) {
       throw new NotFoundHttpException($this->getMissingWebformMessage());
     }
@@ -32,6 +28,11 @@ class MyRegistrationController extends ControllerBase {
     $isVisitor = 'visitor' === webform_ticket_pdf_type($webform_id) ? true : false;
 
     if ($isVisitor) {
+
+      if ($this->currentUser()->isAnonymous()) {
+        return $this->redirectToLogin();
+      }
+
       $uid = $this->currentUser()->id();
       $storage = $this->entityTypeManager()
         ->getStorage('webform_submission');
