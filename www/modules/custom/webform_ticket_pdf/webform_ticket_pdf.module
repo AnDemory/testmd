@@ -11,7 +11,7 @@ use Drupal\Core\Entity\EntityInterface;
 
 /**
  * Implements hook_form_alter().
- * Bulk visitor registration: fill company name field on page 2 based on email address entered on page 1.
+ * Bulk visitor registration: Choose language + fill company name field on page 2 based on email address entered on page 1.
  */
 function webform_ticket_pdf_form_alter(
   array &$form,
@@ -120,11 +120,32 @@ function webform_ticket_pdf_find_company_name_by_email(string $email): ?string {
 
 /**
  * Implements hook_webform_submission_insert().
- * Use only for physical PDF generation on submission, which is now deprecated in favor of on-demand generation in TicketDownloadController.
+ * Used for physical PDF generation on submission, which is now deprecated in favor of on-demand generation in TicketDownloadController.
+ * Only used to track anonymous users' submissions in the session, so they can be redirected to the ticket download page after submission.
  */
 function webform_ticket_pdf_webform_submission_insert(
   WebformSubmissionInterface $submission
 ) {
+
+  if (webform_ticket_pdf_is_ticket_submission($submission)) {
+    $data = $submission->getData();
+
+    if (empty($data['eancode'])) {
+      $webform_id = $submission->getWebform()->id();
+
+      $prefix = webform_ticket_pdf_type($webform_id) === 'exhibitor'
+        ? '251'
+        : '250';
+
+      $data['ean_code'] = webform_ticket_pdf_generate_ean(
+        (int) $submission->id(),
+        $prefix
+      );
+
+      $submission->setData($data);
+      $submission->save();
+    }
+  }
 
   $current_user = \Drupal::currentUser();
 
@@ -555,3 +576,24 @@ function _webform_ticket_pdf_user_field_value(UserInterface $user, string $field
 
   return (string) $field->value;
 }
+
+function webform_ticket_pdf_generate_ean( $sid, $prefix = '250' ) {
+
+    $ean       = $prefix . str_pad( (int) $sid, 9, '0', STR_PAD_LEFT );
+    $weightflag = true;
+    $sum        = 0;
+
+    // Weight for a digit in the checksum is 3, 1, 3.. starting from the last digit.
+    // loop backwards to make the loop length-agnostic. The same basic functionality
+    // will work for codes of different lengths.
+    for ( $i = strlen( $ean ) - 1; $i >= 0; $i-- ) {
+
+      $sum += (int) $ean[ $i ] * ( $weightflag ? 3 : 1 );
+
+      $weightflag = ! $weightflag;
+    }
+
+    $ean .= ( 10 - ( $sum % 10 ) ) % 10;
+
+    return $ean;
+  }

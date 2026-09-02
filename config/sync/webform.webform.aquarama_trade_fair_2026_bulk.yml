@@ -65,6 +65,9 @@ elements: |-
         contact_no: 'Nee, ik wens niet gecontacteerd te worden door exposanten.'
       '#required': true
       '#required_error': 'Duid uw contactwens aan'
+  ean_code:
+    '#type': hidden
+    '#title': 'EAN code'
   actions:
     '#type': webform_actions
     '#title': 'Submit button(s)'

@@ -52,6 +52,9 @@ elements: |-
     '#type': processed_text
     '#text': '<ul><li data-list-item-id="e2b64c6bf27e40a01e3b4117facf926bf">Iedere bezoeker dient zich met een <strong>eigen account (e-mailadres)</strong> te registreren.</li><li data-list-item-id="ef2083c6cc668fc0443868520fbed23af">Gelieve elke wijziging aan uw registratie <strong>eerst op te slaan</strong> voordat u het toegangsticket opnieuw downloadt of verzendt.</li></ul>'
     '#format': basic_html
+  ean_code:
+    '#type': hidden
+    '#title': 'EAN code'
 css: ''
 javascript: ''
 settings:

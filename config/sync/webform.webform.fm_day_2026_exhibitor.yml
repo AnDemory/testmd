@@ -35,6 +35,9 @@ elements: |-
     '#required': true
     '#unique': true
     '#unique_entity': true
+  ean_code:
+    '#type': hidden
+    '#title': 'EAN code'
 css: ''
 javascript: ''
 settings:

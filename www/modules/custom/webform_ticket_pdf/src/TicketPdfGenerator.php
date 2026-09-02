@@ -155,7 +155,7 @@ class TicketPdfGenerator {
     // GENERATE BARCODE
     // -------------------------------------------------
 
-    $eancode = $this->generateEAN($base_id, $ean_type);
+    $eancode = $data['ean_code'] ?? webform_ticket_pdf_generate_ean($base_id, $ean_type);
     $barcode_path = $this->generateBarcode($eancode);
 
     // -------------------------------------------------
@@ -425,26 +425,7 @@ class TicketPdfGenerator {
     return $path;
   }
 
-  protected function generateEAN( $sid, $prefix = '250' ) {
-
-    $ean       = $prefix . str_pad( (int) $sid, 9, '0', STR_PAD_LEFT );
-    $weightflag = true;
-    $sum        = 0;
-
-    // Weight for a digit in the checksum is 3, 1, 3.. starting from the last digit.
-    // loop backwards to make the loop length-agnostic. The same basic functionality
-    // will work for codes of different lengths.
-    for ( $i = strlen( $ean ) - 1; $i >= 0; $i-- ) {
-
-      $sum += (int) $ean[ $i ] * ( $weightflag ? 3 : 1 );
-
-      $weightflag = ! $weightflag;
-    }
-
-    $ean .= ( 10 - ( $sum % 10 ) ) % 10;
-
-    return $ean;
-  }
+  
 
 }
 

@@ -72,6 +72,9 @@ elements: |-
         non_member: 'Geen lid belfa'
       '#required': true
       '#required_error': 'Lidmaatschap aanduiden verplicht'
+  ean_code:
+    '#type': hidden
+    '#title': 'EAN code'
   actions:
     '#type': webform_actions
     '#title': 'Submit button(s)'
