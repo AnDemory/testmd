@@ -27,6 +27,7 @@
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/field_group": "^4.0",
         "drupal/mail_login": "^4.2",
+        "drupal/mailchimp": "^3.1",
         "drupal/mailsystem": "^4.5",
         "drupal/mimemail": "^2.0",
         "drupal/paragraphs": "^1.20",
