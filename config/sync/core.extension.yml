@@ -12,6 +12,7 @@ module:
   comment: 0
   conditional_fields: 0
   config: 0
+  config_ignore: 0
   config_translation: 0
   contact: 0
   contextual: 0
@@ -41,6 +42,8 @@ module:
   link: 0
   locale: 0
   mail_login: 0
+  mailchimp: 0
+  mailchimp_lists: 0
   mailsystem: 0
   media: 0
   media_library: 0
@@ -70,6 +73,7 @@ module:
   user: 0
   views_ui: 0
   webform: 0
+  webform_mailchimp: 0
   webform_ticket_pdf: 0
   webform_ui: 0
   workflows: 0

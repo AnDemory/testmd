@@ -15,44 +15,50 @@
 }
 
 /* Domain */
-.domain-settings-table th:nth-child(1),
+.domain-settings-table th.col-domain,
 .domain-settings-table td:nth-child(1) {
   min-width: 210px;
 }
 
-/* Email address */
+/* Domain */
 .domain-settings-table th:nth-child(2),
 .domain-settings-table td:nth-child(2) {
+  min-width: 60px;
+}
+
+/* Email address */
+.domain-settings-table th:nth-child(3),
+.domain-settings-table td:nth-child(3) {
   min-width: 260px;
 }
 
 /* Ticket Webform */
-.domain-settings-table th:nth-child(3),
-.domain-settings-table td:nth-child(3) {
+.domain-settings-table th:nth-child(4),
+.domain-settings-table td:nth-child(4) {
   min-width: 200px;
 }
 
 /* Ticket Exhibitor Webform */
-.domain-settings-table th:nth-child(4),
-.domain-settings-table td:nth-child(4) {
-  min-width: 220px;
-}
-
-/* Ticket Visitor Bulk Webform */
 .domain-settings-table th:nth-child(5),
 .domain-settings-table td:nth-child(5) {
   min-width: 220px;
 }
 
-/* Ticket template */
+/* Ticket Visitor Bulk Webform */
 .domain-settings-table th:nth-child(6),
 .domain-settings-table td:nth-child(6) {
+  min-width: 220px;
+}
+
+/* Ticket template */
+.domain-settings-table th:nth-child(7),
+.domain-settings-table td:nth-child(7) {
   min-width: 350px;
 }
 
 /* Lead Retrieval URL */
-.domain-settings-table th:nth-child(7),
-.domain-settings-table td:nth-child(7) {
+.domain-settings-table th:nth-child(8),
+.domain-settings-table td:nth-child(8) {
   min-width: 380px;
 }
 

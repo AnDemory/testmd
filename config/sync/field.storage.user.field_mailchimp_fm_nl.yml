@@ -1,0 +1,22 @@
+uuid: 76d272d4-c28f-421d-9149-b676626b6549
+langcode: nl
+status: true
+dependencies:
+  module:
+    - mailchimp_lists
+    - user
+id: user.field_mailchimp_fm_nl
+field_name: field_mailchimp_fm_nl
+entity_type: user
+type: mailchimp_lists_subscription
+settings:
+  mc_list_id: 0fe49c5767
+  double_opt_in: false
+  send_welcome: false
+module: mailchimp_lists
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

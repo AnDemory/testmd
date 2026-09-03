@@ -1,0 +1,66 @@
+label: 'Content registration summary'
+description: 'Manage registration settings for content.'
+display:
+  default:
+    display_title: Default
+    display_options:
+      title: 'Content registration summary'
+      fields:
+        title:
+          label: Title
+          separator: ', '
+        status:
+          label: Status
+          separator: ', '
+        capacity:
+          label: Capacity
+          separator: ', '
+        count:
+          label: Usage
+          separator: ','
+          format_plural_string: !!binary MQNAY291bnQ=
+        open:
+          label: 'Open date'
+          separator: ', '
+        close:
+          label: 'Close date'
+          separator: ', '
+        settings_operations:
+          label: Operations
+      pager:
+        options:
+          tags:
+            next: ››
+            previous: ‹‹
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page_label: 'Items per page'
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      filters:
+        title:
+          expose:
+            label: Title
+        status_1:
+          expose:
+            label: Status
+          group_info:
+            label: Status
+            group_items:
+              1:
+                title: Enabled
+              2:
+                title: Disabled
+  page_1:
+    display_title: Page
+    display_options:
+      menu:
+        title: 'Registration summary'

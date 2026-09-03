@@ -899,7 +899,7 @@ display:
       path: admin/people/list
       menu:
         type: 'default tab'
-        title: List
+        title: Lijst
         description: 'Find and manage people interacting with your site.'
         weight: -10
         menu_name: admin

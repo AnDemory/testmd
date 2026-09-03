@@ -1,0 +1,18 @@
+label: Registration
+type_settings:
+  states:
+    canceled:
+      label: Canceled
+    complete:
+      label: Complete
+    held:
+      label: Held
+    pending:
+      label: Pending
+  transitions:
+    complete:
+      label: Complete
+    hold:
+      label: Hold
+    cancel:
+      label: Cancel

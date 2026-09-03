@@ -162,7 +162,7 @@ display:
           entity_type: registration
           entity_field: mail
           plugin_id: field
-          label: Email
+          label: E-mail
           exclude: false
           alter:
             alter_text: false

@@ -1,0 +1,44 @@
+uuid: a9ed1df8-8638-43ac-9a76-8020e0c0ada3
+langcode: nl
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_mailchimp_aquarama_nl
+  module:
+    - mailchimp_lists
+    - user
+id: user.user.field_mailchimp_aquarama_nl
+field_name: field_mailchimp_aquarama_nl
+entity_type: user
+bundle: user
+label: 'Ik wens mij in te schrijven voor de nieuwsbrief van Aquarama'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  subscribe_checkbox_label: Subscribe
+  show_interest_groups: false
+  hide_subscribe_checkbox: false
+  interest_groups_hidden: false
+  interest_groups_label: 'Interest Groups'
+  merge_fields:
+    EMAIL: mail
+    ADDRESS: ''
+    FNAME: field_first_name
+    LNAME: field_name
+    MMERGE10: ''
+    MMERGE11: ''
+    MMERGE12: ''
+    MMERGE13: ''
+    MMERGE14: ''
+    MMERGE15: ''
+    MMERGE5: ''
+    MMERGE6: field_company_name
+    MMERGE7: ''
+    MMERGE8: ''
+    MMERGE9: ''
+    PHONE: ''
+  unsubscribe_on_delete: false
+field_type: mailchimp_lists_subscription

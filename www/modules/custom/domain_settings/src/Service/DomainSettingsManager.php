@@ -135,6 +135,15 @@ class DomainSettingsManager {
     return $settings['ticket_template'] ?? NULL;
   }
 
+  /**
+   * Returns configured ticket template URI for a domain.
+   */
+  public function getDomainId(?string $domain = NULL): ?string {
+    $settings = $this->getSettingsForCurrentDomain($domain);
+
+    return $settings['domain_id'] ?? NULL;
+  }
+
    /**
    * Returns Lead Retrieval URL for a domain.
    */

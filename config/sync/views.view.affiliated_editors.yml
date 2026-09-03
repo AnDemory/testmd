@@ -1071,7 +1071,7 @@ display:
       path: admin/content/domain-editors/%
       menu:
         type: none
-        title: List
+        title: Lijst
         description: 'Find and manage people interacting with your site.'
         weight: -10
         expanded: false

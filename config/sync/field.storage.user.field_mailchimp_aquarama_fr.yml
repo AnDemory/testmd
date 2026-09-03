@@ -1,0 +1,22 @@
+uuid: 4f8fd2a9-7213-4afc-b639-ac07aeb00a19
+langcode: nl
+status: true
+dependencies:
+  module:
+    - mailchimp_lists
+    - user
+id: user.field_mailchimp_aquarama_fr
+field_name: field_mailchimp_aquarama_fr
+entity_type: user
+type: mailchimp_lists_subscription
+settings:
+  mc_list_id: 2fd6f8fb99
+  double_opt_in: false
+  send_welcome: false
+module: mailchimp_lists
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

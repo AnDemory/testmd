@@ -3,6 +3,7 @@ _core:
 domains:
   -
     domain: aquaramatradefair.ddev.site
+    domain_id: aquarama
     mail: info@aquaramatradefair.be
     ticket_webform_id: aquarama_trade_fair_2026
     ticket_exhibitor_webform_id: aquarama_trade_fair_2026_exhibit
@@ -11,6 +12,7 @@ domains:
     lead_retrieval_url: 'https://atf2026-events.fcoffice.local:444/apps/lr/'
   -
     domain: fm-day.ddev.site
+    domain_id: fm
     mail: info@fm-day.be
     ticket_webform_id: fm_day_2026
     ticket_exhibitor_webform_id: fm_day_2026_exhibitor

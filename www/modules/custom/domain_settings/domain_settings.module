@@ -4,6 +4,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\webform\WebformInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_ENTITY_TYPE_access() for webform entities.
@@ -141,4 +142,31 @@ function domain_settings_tokens($type, $tokens, array $data, array $options, Bub
   }
 
   return $replacements;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function domain_settings_form_user_register_form_alter(
+  array &$form,
+  FormStateInterface $form_state
+): void {
+
+  // Get your current domain id, e.g. "aquarama" or "fm".
+  $domain_id = \Drupal::service('domain_settings.manager')
+    ->getDomainId();
+
+  // Current URL/interface language, e.g. "nl" or "fr".
+  $langcode = \Drupal::languageManager()
+    ->getCurrentLanguage()
+    ->getId();
+
+
+  $active_field = 'field_mailchimp_' . $domain_id . '_' . $langcode;
+
+  foreach ($form as $key => &$element) {
+    if (str_starts_with($key, 'field_mailchimp_')) {
+      $element['#access'] = ($key === $active_field);
+    }
+  }
 }

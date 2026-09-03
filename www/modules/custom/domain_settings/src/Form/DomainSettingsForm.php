@@ -42,6 +42,7 @@ class DomainSettingsForm extends ConfigFormBase {
       '#type' => 'table',
       '#header' => [
         ['data' => $this->t('Domain'), 'class' => ['col-domain']],
+        ['data' => $this->t('Domain ID'), 'class' => ['col-domain-id']],
         ['data' => $this->t('Email address'), 'class' => ['col-email']],
         ['data' => $this->t('Ticket Webform'), 'class' => ['col-webform']],
         ['data' => $this->t('Ticket Exhibitor Webform'), 'class' => ['col-webform']],
@@ -75,6 +76,15 @@ class DomainSettingsForm extends ConfigFormBase {
         '#title_display' => 'invisible',
         '#default_value' => $row['domain'] ?? '',
         '#placeholder' => 'example.com',
+        '#size' => 35,
+      ];
+
+      $form['domains'][$i]['domain_id'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Domain ID'),
+        '#title_display' => 'invisible',
+        '#default_value' => $row['domain_id'] ?? '',
+        '#placeholder' => 'Domain ID',
         '#size' => 35,
       ];
 
@@ -139,6 +149,7 @@ class DomainSettingsForm extends ConfigFormBase {
 
     foreach ($domains as $index => $row) {
       $domain = strtolower(trim($row['domain'] ?? ''));
+      $domain_id = trim($row['domain_id'] ?? '');
       $mail = trim($row['mail'] ?? '');
       $ticket_webform_id = trim($row['ticket_webform_id'] ?? '');
       $ticket_exhibitor_webform_id = trim($row['ticket_exhibitor_webform_id'] ?? '');
@@ -147,7 +158,7 @@ class DomainSettingsForm extends ConfigFormBase {
       $lead_retrieval_url = trim($row['lead_retrieval_url'] ?? '');
 
       // Ignore completely empty rows.
-      if ($domain === '' && $mail === '' && $ticket_webform_id === '' && $ticket_exhibitor_webform_id === '' && $ticket_visitor_bulk_webform_id === '' && $lead_retrieval_url === '') {
+      if ($domain === '' && $domain_id === '' && $mail === '' && $ticket_webform_id === '' && $ticket_exhibitor_webform_id === '' && $ticket_visitor_bulk_webform_id === '' && $ticket_template === '' && $lead_retrieval_url === '') {
         continue;
       }
 
@@ -179,6 +190,7 @@ class DomainSettingsForm extends ConfigFormBase {
 
     foreach ($domains as $row) {
       $domain = strtolower(trim($row['domain'] ?? ''));
+      $domain_id = trim($row['domain_id'] ?? '');
       $mail = trim($row['mail'] ?? '');
       $ticket_webform_id = trim($row['ticket_webform_id'] ?? '');
       $ticket_exhibitor_webform_id = trim($row['ticket_exhibitor_webform_id'] ?? '');
@@ -187,12 +199,13 @@ class DomainSettingsForm extends ConfigFormBase {
       $lead_retrieval_url = trim($row['lead_retrieval_url'] ?? '');
 
       // Ignore empty rows.
-      if ($domain === '' && $mail === '' && $ticket_webform_id === '' && $ticket_exhibitor_webform_id === ''  && $ticket_visitor_bulk_webform_id === '' && $ticket_template === '' && $lead_retrieval_url === '') {
+      if ($domain === '' && $domain_id === '' && $mail === '' && $ticket_webform_id === '' && $ticket_exhibitor_webform_id === ''  && $ticket_visitor_bulk_webform_id === '' && $ticket_template === '' && $lead_retrieval_url === '') {
         continue;
       }
 
       $clean_domains[] = [
         'domain' => $domain,
+        'domain_id' => $domain_id,
         'mail' => $mail,
         'ticket_webform_id' => $ticket_webform_id,
         'ticket_exhibitor_webform_id' => $ticket_exhibitor_webform_id,

@@ -12,6 +12,9 @@ domain_settings.settings:
           domain:
             type: string
             label: 'Domain'
+          domain_id:
+            type: string
+            label: 'Domain ID'
           mail:
             type: email
             label: 'Email address'

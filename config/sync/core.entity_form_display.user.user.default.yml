@@ -9,6 +9,9 @@ dependencies:
     - field.field.user.user.field_domain_admin
     - field.field.user.user.field_domain_all_affiliates
     - field.field.user.user.field_first_name
+    - field.field.user.user.field_mailchimp_aquarama_fr
+    - field.field.user.user.field_mailchimp_aquarama_nl
+    - field.field.user.user.field_mailchimp_fm_nl
     - field.field.user.user.field_name
     - field.field.user.user.field_vat_number
     - field.field.user.user.user_picture
@@ -16,6 +19,7 @@ dependencies:
   module:
     - conditional_fields
     - image
+    - mailchimp_lists
     - path
     - user
 _core:
@@ -112,6 +116,24 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  field_mailchimp_aquarama_fr:
+    type: mailchimp_lists_select
+    weight: 57
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_mailchimp_aquarama_nl:
+    type: mailchimp_lists_select
+    weight: 56
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_mailchimp_fm_nl:
+    type: mailchimp_lists_select
+    weight: 58
+    region: content
+    settings: {  }
     third_party_settings: {  }
   field_name:
     type: string_textfield

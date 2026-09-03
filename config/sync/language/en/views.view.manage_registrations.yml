@@ -1,0 +1,62 @@
+label: 'Manage registrations'
+description: 'Manage registrations for a host entity.'
+display:
+  default:
+    display_title: Default
+    display_options:
+      title: 'Manage registrations'
+      fields:
+        registration_id:
+          label: ID
+          separator: ', '
+        mail:
+          label: Email
+          separator: ', '
+        user_uid:
+          label: User
+          separator: ', '
+        author_uid:
+          label: 'Created By'
+          separator: ', '
+        count:
+          label: Spaces
+          separator: ', '
+        created:
+          label: Created
+          separator: ', '
+        state:
+          label: Status
+          separator: ', '
+        operations:
+          label: Operations
+      pager:
+        options:
+          tags:
+            next: 'Next ›'
+            previous: '‹ Previous'
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page_label: 'Items per page'
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
+      exposed_form:
+        options:
+          submit_button: Find
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      arguments:
+        entity_type_id:
+          exception:
+            title: All
+        entity_id:
+          exception:
+            title: All
+      filters:
+        mail:
+          expose:
+            label: Email
+  block_1:
+    display_title: Block

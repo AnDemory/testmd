@@ -1,0 +1,39 @@
+label: 'User registrations'
+description: 'Registrations for a single user.'
+display:
+  default:
+    display_title: Default
+    display_options:
+      fields:
+        registration_id:
+          label: ID
+          separator: ', '
+        type:
+          label: Type
+          separator: ', '
+        host_entity:
+          label: Event
+        count:
+          label: Spaces
+          separator: ', '
+        created:
+          label: Created
+          separator: ', '
+        state:
+          label: Status
+          separator: ', '
+        operations:
+          label: Operations
+      exposed_form:
+        options:
+          submit_button: Apply
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      arguments:
+        user_uid:
+          exception:
+            title: All
+  block_1:
+    display_title: Block

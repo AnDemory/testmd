@@ -112,6 +112,10 @@ elements: |-
   ean_code:
     '#type': hidden
     '#title': 'EAN code'
+  language:
+    '#type': hidden
+    '#title': Language
+    '#default_value': '[language:langcode]'
 css: ''
 javascript: ''
 settings:
