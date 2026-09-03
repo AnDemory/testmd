@@ -161,7 +161,6 @@ function domain_settings_form_user_register_form_alter(
     ->getCurrentLanguage()
     ->getId();
 
-
   $active_field = 'field_mailchimp_' . $domain_id . '_' . $langcode;
 
   foreach ($form as $key => &$element) {
