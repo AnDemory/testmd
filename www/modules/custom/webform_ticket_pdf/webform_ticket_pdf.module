@@ -78,7 +78,7 @@ function _webform_ticket_pdf_prefill_company_name(array &$form, FormStateInterfa
     return;
   }
 
-  $company_name = webform_ticket_pdf_find_company_name_by_email($email);
+  $company_name = webform_ticket_pdf_find_company_name_by_email($email, $form);
   if (!$company_name) {
     return;
   }
@@ -92,7 +92,7 @@ function _webform_ticket_pdf_prefill_company_name(array &$form, FormStateInterfa
   $webform_submission->setData($data);
 }
 
-function webform_ticket_pdf_find_company_name_by_email(string $email): ?string {
+function webform_ticket_pdf_find_company_name_by_email(string $email, array $form): ?string {
   $users = \Drupal::entityTypeManager()
     ->getStorage('user')
     ->loadByProperties([
@@ -106,6 +106,16 @@ function webform_ticket_pdf_find_company_name_by_email(string $email): ?string {
 
   /** @var \Drupal\user\UserInterface $user */
   $user = reset($users);
+
+  /*
+   * An account already exists, so Mailchimp consent must not be displayed.
+   * Adjust this path if the element is on another wizard page.
+   */
+  if (isset(
+    $form['elements']['persoonlijke_gegevens']['mailchimp_consent']
+  )) {
+    $form['elements']['persoonlijke_gegevens']['mailchimp_consent']['#access'] = FALSE;
+  }
 
   if (!$user->hasField('field_company_name')) {
    return NULL;

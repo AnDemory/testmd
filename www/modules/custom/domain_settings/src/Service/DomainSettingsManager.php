@@ -173,86 +173,135 @@ class DomainSettingsManager {
   //   return $result;
   // }
 
-/**
- * Returns configured ticket Webform IDs keyed by configured domain host.
- */
-public function getAllTicketWebformIdsByDomain(): array {
-  $result = [];
+  /**
+   * Returns configured ticket Webform IDs keyed by configured domain host.
+   */
+  public function getAllTicketWebformIdsByDomain(): array {
+    $result = [];
 
-  foreach ($this->getAll() as $settings) {
-    $domain = strtolower($settings['domain'] ?? '');
-    $ticket_webform_id = $settings['ticket_webform_id'] ?? '';
-    $ticket_exhibitor_webform_id = $settings['ticket_exhibitor_webform_id'] ?? '';
-    $ticket_visitor_bulk_webform_id = $settings['ticket_visitor_bulk_webform_id'] ?? '';
-    $ticket_webform_ids = [];
+    foreach ($this->getAll() as $settings) {
+      $domain = strtolower($settings['domain'] ?? '');
+      $ticket_webform_id = $settings['ticket_webform_id'] ?? '';
+      $ticket_exhibitor_webform_id = $settings['ticket_exhibitor_webform_id'] ?? '';
+      $ticket_visitor_bulk_webform_id = $settings['ticket_visitor_bulk_webform_id'] ?? '';
+      $ticket_webform_ids = [];
 
-    if ($domain) {
-      if ($ticket_webform_id) {
-        $ticket_webform_ids[] = $ticket_webform_id;
+      if ($domain) {
+        if ($ticket_webform_id) {
+          $ticket_webform_ids[] = $ticket_webform_id;
+        }
+        if ($ticket_exhibitor_webform_id) {
+          $ticket_webform_ids[] = $ticket_exhibitor_webform_id;
+        }
+        if ($ticket_visitor_bulk_webform_id) {
+          $ticket_webform_ids[] = $ticket_visitor_bulk_webform_id;
+        }
+        $result[$domain] = $ticket_webform_ids;
       }
-      if ($ticket_exhibitor_webform_id) {
-        $ticket_webform_ids[] = $ticket_exhibitor_webform_id;
+    }
+
+    return $result;
+  }
+
+
+  /**
+   * Returns configured ticket Webform IDs keyed by configured domain host.
+   */
+  public function getTicketWebformIdsByDomain(): array {
+    $result = [];
+
+    foreach ($this->getAll() as $settings) {
+      $domain = strtolower($settings['domain'] ?? '');
+      $ticket_webform_id = $settings['ticket_webform_id'] ?? '';
+
+      if ($domain && $ticket_webform_id) {
+        $result[$domain] = $ticket_webform_id;
       }
-      if ($ticket_visitor_bulk_webform_id) {
-        $ticket_webform_ids[] = $ticket_visitor_bulk_webform_id;
+    }
+
+    return $result;
+  }
+  /**
+   * Returns configured ticket Webform IDs keyed by configured domain host.
+   */
+  public function getTicketExhibitorWebformIdsByDomain(): array {
+    $result = [];
+
+    foreach ($this->getAll() as $settings) {
+      $domain = strtolower($settings['domain'] ?? '');
+      $ticket_exhibitor_webform_id = $settings['ticket_exhibitor_webform_id'] ?? '';
+
+      if ($domain && $ticket_exhibitor_webform_id) {
+        $result[$domain] = $ticket_exhibitor_webform_id;
       }
-      $result[$domain] = $ticket_webform_ids;
     }
+
+    return $result;
+  }
+  /**
+   * Returns configured ticket Webform IDs keyed by configured domain host.
+   */
+  public function getTicketVisitorBulkWebformIdsByDomain(): array {
+    $result = [];
+
+    foreach ($this->getAll() as $settings) {
+      $domain = strtolower($settings['domain'] ?? '');
+      $ticket_visitor_bulk_webform_id = $settings['ticket_visitor_bulk_webform_id'] ?? '';
+
+      if ($domain && $ticket_visitor_bulk_webform_id) {
+        $result[$domain] = $ticket_visitor_bulk_webform_id;
+      }
+    }
+
+    return $result;
   }
 
-  return $result;
-}
+  /**
+   * Returns the settings row belonging to a Webform.
+   */
+  public function getSettingsForWebform(string $webform_id): ?array {
+    foreach ($this->getAll() as $settings) {
+      $webform_ids = array_filter([
+        $settings['ticket_webform_id'] ?? '',
+        $settings['ticket_exhibitor_webform_id'] ?? '',
+        $settings['ticket_visitor_bulk_webform_id'] ?? '',
+      ]);
 
-
-/**
- * Returns configured ticket Webform IDs keyed by configured domain host.
- */
-public function getTicketWebformIdsByDomain(): array {
-  $result = [];
-
-  foreach ($this->getAll() as $settings) {
-    $domain = strtolower($settings['domain'] ?? '');
-    $ticket_webform_id = $settings['ticket_webform_id'] ?? '';
-
-    if ($domain && $ticket_webform_id) {
-      $result[$domain] = $ticket_webform_id;
+      if (in_array($webform_id, $webform_ids, TRUE)) {
+        return $settings;
+      }
     }
+
+    return NULL;
   }
 
-  return $result;
-}
-/**
- * Returns configured ticket Webform IDs keyed by configured domain host.
- */
-public function getTicketExhibitorWebformIdsByDomain(): array {
-  $result = [];
+  /**
+   * Returns the Domain Access domain ID belonging to a Webform.
+   */
+  public function getDomainIdForWebform(string $webform_id): ?string {
+    $settings = $this->getSettingsForWebform($webform_id);
 
-  foreach ($this->getAll() as $settings) {
-    $domain = strtolower($settings['domain'] ?? '');
-    $ticket_exhibitor_webform_id = $settings['ticket_exhibitor_webform_id'] ?? '';
-
-    if ($domain && $ticket_exhibitor_webform_id) {
-      $result[$domain] = $ticket_exhibitor_webform_id;
+    if (!$settings) {
+      return NULL;
     }
+
+    $domain_id = trim((string) ($settings['domain_id'] ?? ''));
+
+    return $domain_id !== '' ? $domain_id : NULL;
   }
 
-  return $result;
-}
-/**
- * Returns configured ticket Webform IDs keyed by configured domain host.
- */
-public function getTicketVisitorBulkWebformIdsByDomain(): array {
-  $result = [];
+  /**
+   * Returns the hostname belonging to a Webform.
+   */
+  public function getDomainForWebform(string $webform_id): ?string {
+    $settings = $this->getSettingsForWebform($webform_id);
 
-  foreach ($this->getAll() as $settings) {
-    $domain = strtolower($settings['domain'] ?? '');
-    $ticket_visitor_bulk_webform_id = $settings['ticket_visitor_bulk_webform_id'] ?? '';
-
-    if ($domain && $ticket_visitor_bulk_webform_id) {
-      $result[$domain] = $ticket_visitor_bulk_webform_id;
+    if (!$settings) {
+      return NULL;
     }
-  }
 
-  return $result;
-}
+    $domain = strtolower(trim((string) ($settings['domain'] ?? '')));
+
+    return $domain !== '' ? $domain : NULL;
+  }
 }

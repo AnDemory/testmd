@@ -6,3 +6,6 @@ package: Custom
 dependencies:
   - webform:webform
   - domain_settings:domain_settings
+  - domain:domain
+  - mailchimp:mailchimp
+  - mailchimp:mailchimp_lists

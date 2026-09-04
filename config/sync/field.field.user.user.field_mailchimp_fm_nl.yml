@@ -26,7 +26,7 @@ settings:
   merge_fields:
     EMAIL: mail
     FNAME: field_first_name
-    LNAME: name
+    LNAME: field_name
     MMERGE3: ''
     MMERGE6: field_company_name
   unsubscribe_on_delete: false

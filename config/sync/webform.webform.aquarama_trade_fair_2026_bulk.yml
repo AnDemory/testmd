@@ -1,7 +1,9 @@
 uuid: 26ec6ca7-f56b-4536-8f98-f5a2c4587506
 langcode: nl
 status: open
-dependencies: {  }
+dependencies:
+  module:
+    - webform_ticket_pdf
 weight: 0
 open: null
 close: null
@@ -65,6 +67,9 @@ elements: |-
         contact_no: 'Nee, ik wens niet gecontacteerd te worden door exposanten.'
       '#required': true
       '#required_error': 'Duid uw contactwens aan'
+    mailchimp_consent:
+      '#type': checkbox
+      '#title': 'Ik wens mij in te schrijven voor de newsletter van Aquarama'
   ean_code:
     '#type': hidden
     '#title': 'EAN code'
@@ -263,5 +268,23 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
-handlers: {  }
+handlers:
+  create_account_and_subscribe_to_mailchimp:
+    id: create_account_mailchimp
+    handler_id: create_account_and_subscribe_to_mailchimp
+    label: 'Create account and subscribe to Mailchimp'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: 0
+    settings: {  }
+  toegangsticket_afdrukken:
+    id: ticket_print
+    handler_id: toegangsticket_afdrukken
+    label: 'Toegangsticket afdrukken'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: 0
+    settings: {  }
 variants: {  }
