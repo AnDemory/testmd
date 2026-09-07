@@ -12,6 +12,7 @@ dependencies:
     - field.field.user.user.field_first_name
     - field.field.user.user.field_mailchimp_aquarama_fr
     - field.field.user.user.field_mailchimp_aquarama_nl
+    - field.field.user.user.field_mailchimp_fm_fr
     - field.field.user.user.field_mailchimp_fm_nl
     - field.field.user.user.field_name
     - field.field.user.user.field_vat_number
@@ -47,6 +48,7 @@ hidden:
   field_first_name: true
   field_mailchimp_aquarama_fr: true
   field_mailchimp_aquarama_nl: true
+  field_mailchimp_fm_fr: true
   field_mailchimp_fm_nl: true
   field_name: true
   field_vat_number: true

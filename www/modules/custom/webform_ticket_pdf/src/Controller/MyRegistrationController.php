@@ -115,9 +115,11 @@ class MyRegistrationController extends ControllerBase {
         'webform_submission' => $submission->id(),
       ]),
       '#attributes' => [
-        'class' => ['button'],
+        'class' => ['button','ticket-print-button'],
       ],
     ];
+
+    $build['#attached']['library'][] = 'webform_ticket_pdf/print_after_submission';
 
     if ($isVisitor) {
       $build['form'] = $this->entityFormBuilder()

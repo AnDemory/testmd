@@ -121,9 +121,12 @@ class TicketPdfGenerator {
       // GENERATE IDENTIFY QR CODE
       // -------------------------------------------------
 
-      define( 'FCO_APP_VENDOR_OPTIMUS_PRIME', 1514780639 );
-      define( 'FCO_APP_VENDOR_OPTIMUS_INVERSE', 422888479 );
-      define( 'FCO_APP_VENDOR_OPTIMUS_RANDOM', 1459426347 );
+      if (!defined('FCO_APP_VENDOR_OPTIMUS_PRIME')) {
+        define( 'FCO_APP_VENDOR_OPTIMUS_PRIME', 1514780639 );
+        define( 'FCO_APP_VENDOR_OPTIMUS_INVERSE', 422888479 );
+        define( 'FCO_APP_VENDOR_OPTIMUS_RANDOM', 1459426347 );
+      }
+
       # init optimus encryption library
       $optimus = new \Jenssegers\Optimus\Optimus(
         \FCO_APP_VENDOR_OPTIMUS_PRIME,
@@ -425,7 +428,7 @@ class TicketPdfGenerator {
     return $path;
   }
 
-  
+
 
 }
 

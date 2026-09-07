@@ -11,6 +11,7 @@ dependencies:
     - field.field.user.user.field_first_name
     - field.field.user.user.field_mailchimp_aquarama_fr
     - field.field.user.user.field_mailchimp_aquarama_nl
+    - field.field.user.user.field_mailchimp_fm_fr
     - field.field.user.user.field_mailchimp_fm_nl
     - field.field.user.user.field_name
     - field.field.user.user.field_vat_number
@@ -68,6 +69,14 @@ content:
       show_interest_groups: false
     third_party_settings: {  }
     weight: 11
+    region: content
+  field_mailchimp_fm_fr:
+    type: mailchimp_lists_subscribe_default
+    label: above
+    settings:
+      show_interest_groups: false
+    third_party_settings: {  }
+    weight: 14
     region: content
   field_mailchimp_fm_nl:
     type: mailchimp_lists_subscribe_default

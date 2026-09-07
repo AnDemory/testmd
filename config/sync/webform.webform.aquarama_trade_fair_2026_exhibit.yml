@@ -276,7 +276,7 @@ handlers:
     handler_id: print_ticket
     label: 'Print ticket'
     notes: ''
-    status: false
+    status: true
     conditions: {  }
     weight: 0
     settings: {  }

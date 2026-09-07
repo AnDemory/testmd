@@ -28,6 +28,33 @@ class TicketPrintWebformHandler extends WebformHandlerBase {
     FormStateInterface $form_state,
     WebformSubmissionInterface $webform_submission,
   ): void {
+
+    // Automatic printing is only for administrators.
+    if (
+      !\Drupal::currentUser()
+        ->hasPermission('administer webform submission')
+    ) {
+      return;
+    }
+
+    if (
+      !$webform_submission->isCompleted()
+      || !$this->appliesToSubmission($webform_submission)
+      || !$webform_submission->id()
+    ) {
+      return;
+    }
+
+    $request = \Drupal::request();
+
+    if (!$request->hasSession()) {
+      return;
+    }
+
+    $request->getSession()->set(
+      'webform_ticket_pdf.print_submission',
+      (int) $webform_submission->id()
+    );
     // Do not print drafts, updates, or incomplete submissions.
 
     // if (!$webform_submission->isCompleted()) {

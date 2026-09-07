@@ -27,10 +27,16 @@ class WebformAdminThemeNegotiator implements ThemeNegotiatorInterface {
     }
 
     $request = $this->requestStack->getCurrentRequest();
+
+    \Drupal::logger('webform_ticket_pdf')->notice('<pre>@path</pre>', [
+      '@path' => $request->getPathInfo(),
+    ]);
+
     // Matches /exhibitor-registration/ticket/54, but not extra path segments.
-    if (preg_match('#^/exhibitor-registration/ticket/\d+/?$#', $request->getPathInfo() )) {
+    if (preg_match('#^/(?:[a-z]{2}/)?exhibitor-registration/ticket/\d+/?$#', $request->getPathInfo() )) {
       return TRUE;
     }
+
 
     // A submission entity is present on submission edit/view routes.
     $submission = $route_match->getParameter('webform_submission');
