@@ -51,7 +51,6 @@ elements: |-
     company_name:
       '#type': textfield
       '#title': 'Company name'
-      '#required': true
     contact:
       '#type': radios
       '#title': Contact

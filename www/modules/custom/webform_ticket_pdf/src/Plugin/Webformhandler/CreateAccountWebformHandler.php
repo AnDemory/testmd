@@ -198,6 +198,11 @@ class CreateAccountWebformHandler extends WebformHandlerBase {
 
       $value = trim((string) ($data[$webform_key] ?? ''));
 
+      if ($user_field === 'field_company_name') {
+        $value === '' ? $account_type = "private" : $account_type = "business";
+        $account->set('field_account_type', $account_type);
+      }
+
       if ($value === '') {
         continue;
       }
@@ -207,6 +212,7 @@ class CreateAccountWebformHandler extends WebformHandlerBase {
       }
 
       $account->set($user_field, $value);
+
     }
   }
 

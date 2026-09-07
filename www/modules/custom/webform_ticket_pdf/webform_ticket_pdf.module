@@ -33,9 +33,11 @@ function webform_ticket_pdf_form_alter(
 
   $webform = $entity->getWebform();
 
-  if (!$webform) {
-    return;
-  }
+  _webform_ticket_pdf_form_bulk_alter($form, $form_state, $webform);
+
+}
+
+function _webform_ticket_pdf_form_bulk_alter(array &$form, FormStateInterface $form_state, Webform $webform): void {
 
   $categories = (array) $webform->get('categories');
 
@@ -43,56 +45,54 @@ function webform_ticket_pdf_form_alter(
     return;
   }
 
-  # Add a library for the language switcher functionality.
-  $form['#attached']['library'][] = 'webform_ticket_pdf/webform_language_switcher';
-  # Add a custom submit handler to prefill the company name field based on the email address entered on page 1.
-  _webform_ticket_pdf_prefill_company_name($form, $form_state);
+  # Check if we're on the first page of the bulk form, add language switcher if so
+  if (!isset($form['elements']['language'])) {
+    _webform_ticket_pdf_form_bulk_alter_add_language_switcher($form, $form_state, $webform);
+  }
+
+  # Check if we're on the second page of the bulk form, and if so, check if the user already has an account based on the email address entered on the first page, and prefill the company name field if so
+  if (!empty($form['elements']['persoonlijke_gegevens']['company_name'])) {
+    if (_webform_ticket_pdf_form_bulk_alter_check_existing_account($form, $form_state)) {
+      _webform_ticket_pdf_form_bulk_alter_prefill_company_name($form, $form_state);
+      $form['#after_build'][] = '_webform_ticket_pdf_form_bulk_alter_after_build';
+    }
+  }
+
+  return;
+
 }
 
+function _webform_ticket_pdf_form_bulk_alter_add_language_switcher(array &$form, FormStateInterface $form_state, Webform $webform): void {
 
-function _webform_ticket_pdf_prefill_company_name(array &$form, FormStateInterface $form_state) {
-
-  if (empty($form['elements']['persoonlijke_gegevens']['company_name'])) {
-    return;
+  // Add a language switcher to the form.
+  if (!isset($form['#attached']['library'])) {
+    $form['#attached']['library'] = [];
   }
+  $form['#attached']['library'][] = 'webform_ticket_pdf/webform_language_switcher';
+}
 
-  // Get the current webform submission being filled in.
+function _webform_ticket_pdf_form_bulk_alter_check_existing_account(array &$form, FormStateInterface $form_state): bool {
   $webform_submission = $form_state->getFormObject()->getEntity();
-  if (!$webform_submission) {
-    return;
+
+  if (!$webform_submission instanceof WebformSubmissionInterface) {
+    return false;
   }
+
+  // if (!webform_ticket_pdf_is_ticket_submission($webform_submission)) {
+  //   return;
+  // }
 
   // Get data already entered on previous pages.
   $data = $webform_submission->getData();
   if (empty($data['e_mail'])) {
-    return;
+    return false;
   }
 
   $email = trim(strtolower($data['e_mail']));
   if (!$email) {
-    return;
+    return false;
   }
 
-  // Do not overwrite if the user already entered a company name.
-  if (!empty($data['company_name'])) {
-    return;
-  }
-
-  $company_name = webform_ticket_pdf_find_company_name_by_email($email, $form);
-  if (!$company_name) {
-    return;
-  }
-
-  // Set the default value on the second page field.
-  $form['elements']['persoonlijke_gegevens']['company_name']['#default_value'] = $company_name;
-  $form['elements']['persoonlijke_gegevens']['company_name']['#attributes']['readonly'] = 'readonly';
-
-  // Also set it in the submission data.
-  $data['company_name'] = $company_name;
-  $webform_submission->setData($data);
-}
-
-function webform_ticket_pdf_find_company_name_by_email(string $email, array $form): ?string {
   $users = \Drupal::entityTypeManager()
     ->getStorage('user')
     ->loadByProperties([
@@ -100,32 +100,69 @@ function webform_ticket_pdf_find_company_name_by_email(string $email, array $for
     ]);
 
   if (!$users) {
-    \Drupal::logger('webform_ticket_pdf')->notice('No user found with email: ' . $email);
-    return NULL;
+    $form_state->set('webform_ticket_pdf_existing_account', FALSE);
+    return false;
   }
 
   /** @var \Drupal\user\UserInterface $user */
   $user = reset($users);
 
-  /*
-   * An account already exists, so Mailchimp consent must not be displayed.
-   * Adjust this path if the element is on another wizard page.
-   */
-  if (isset(
-    $form['elements']['persoonlijke_gegevens']['mailchimp_consent']
-  )) {
-    $form['elements']['persoonlijke_gegevens']['mailchimp_consent']['#access'] = FALSE;
-  }
+  $form_state->set('webform_ticket_pdf_existing_account', $user ? $user : 0);
+
+  return $user instanceof UserInterface;
+
+}
+
+function _webform_ticket_pdf_form_bulk_alter_prefill_company_name(array &$form, FormStateInterface $form_state) {
+
+  // // Do not overwrite if the user already entered a company name.
+  // if (!empty($data['company_name'])) {
+  //   return;
+  // }
+  $user = $form_state->get(
+    'webform_ticket_pdf_existing_account',
+  );
 
   if (!$user->hasField('field_company_name')) {
-   return NULL;
+    return NULL;
   }
 
   if ($user->get('field_company_name')->isEmpty()) {
     return NULL;
   }
 
-  return $user->get('field_company_name')->value;
+  $company_name = $user->get('field_company_name')->value;
+
+  // Set the default value on the second page field.
+  $form['elements']['persoonlijke_gegevens']['company_name']['#default_value'] = $company_name;
+  $form['elements']['persoonlijke_gegevens']['company_name']['#attributes']['readonly'] = 'readonly';
+
+  // Also set it in the submission data.
+  $data['company_name'] = $company_name;
+  $webform_submission = $form_state->getFormObject()->getEntity();
+
+  if ($webform_submission instanceof WebformSubmissionInterface) {
+    $webform_submission->setData($data);
+  }
+
+}
+
+
+
+function _webform_ticket_pdf_form_bulk_alter_after_build(array $form, FormStateInterface $form_state): array {
+  $user = $form_state->get(
+    'webform_ticket_pdf_existing_account',
+  );
+
+  if (!$user instanceof UserInterface) {
+    return $form;
+  }
+
+  if (isset($form['elements']['persoonlijke_gegevens']['mailchimp_consent'] )) {
+    $form['elements']['persoonlijke_gegevens']['mailchimp_consent']['#access'] = FALSE;
+  }
+
+  return $form;
 }
 
 /**
