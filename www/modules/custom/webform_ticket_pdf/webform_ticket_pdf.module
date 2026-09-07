@@ -644,43 +644,26 @@ function webform_ticket_pdf_generate_ean( $sid, $prefix = '250' ) {
   return $ean;
 }
 
+
 /**
- * Implements hook_page_attachments().
+ * Implements hook_webform_submission_presave().
  */
-function webform_ticket_pdf_page_attachments(array &$attachments): void {
-  $request = \Drupal::request();
-  $sid = $request->query->get('print_submission');
+function webform_ticket_pdf_webform_submission_presave( WebformSubmissionInterface $webform_submission): void {
+  $webform = $webform_submission->getWebform();
+  $categories = (array) $webform->get('categories');
 
-  if (!$sid || !ctype_digit((string) $sid)) {
+  // Only lock submissions belonging to a webform in the "bulk" category.
+  if (!in_array('bulk', $categories, TRUE)) {
     return;
   }
 
+  // Keep drafts unlocked and avoid unnecessary changes.
   if (
-    \Drupal::routeMatch()->getRouteName()
-    !== 'entity.webform.results_submissions'
+    !$webform_submission->isDraft()
+    && !$webform_submission->isLocked()
   ) {
-    return;
+    $webform_submission->setLocked(TRUE);
   }
-
-  $submission = WebformSubmission::load($sid);
-
-  if (
-    !$submission instanceof WebformSubmissionInterface
-    || !webform_ticket_pdf_is_ticket_submission($submission)
-  ) {
-    return;
-  }
-
-  $print_url = Url::fromRoute(
-    'webform_ticket_pdf.print_ticket',
-    [
-      'webform_submission' => $submission->id(),
-    ]
-  )->toString();
-
-  $attachments['#attached']['library'][] =
-    'webform_ticket_pdf/print_after_submission';
-
-  $attachments['#attached']['drupalSettings']['webformTicketPdf']['printUrl'] =
-    $print_url;
 }
+
+
