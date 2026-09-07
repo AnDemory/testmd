@@ -7,3 +7,10 @@ webform_language_switcher:
   dependencies:
     - core/drupal
     - core/once
+print_after_submission:
+  js:
+    js/print-after-submission.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+    - core/drupalSettings

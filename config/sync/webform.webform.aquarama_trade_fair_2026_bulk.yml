@@ -188,7 +188,7 @@ settings:
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
   confirmation_type: url_message
-  confirmation_url: '/admin/structure/webform/manage/[webform:id]/results/submissions'
+  confirmation_url: '/admin/structure/webform/manage/[webform:id]/results/submissions?print_submission=[webform_submission:sid]'
   confirmation_title: 'Succesvol geregistreerd'
   confirmation_message: ''
   confirmation_attributes: {  }

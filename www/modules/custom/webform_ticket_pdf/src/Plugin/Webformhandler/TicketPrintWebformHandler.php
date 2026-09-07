@@ -29,24 +29,24 @@ class TicketPrintWebformHandler extends WebformHandlerBase {
     WebformSubmissionInterface $webform_submission,
   ): void {
     // Do not print drafts, updates, or incomplete submissions.
-    
-    if (!$webform_submission->isCompleted()) {
-      return;
-    }
 
-    if (!$this->appliesToSubmission($webform_submission)) {
-      return;
-    }
+    // if (!$webform_submission->isCompleted()) {
+    //   return;
+    // }
 
-    if (!$webform_submission->id()) {
-      return;
-    }
-    $url = Url::fromRoute('webform_ticket_pdf.print_ticket', [
-      'webform_submission' => $webform_submission->id(),
-    ])->toString();
+    // if (!$this->appliesToSubmission($webform_submission)) {
+    //   return;
+    // }
 
-    $form_state->setResponse(new RedirectResponse($url));
-    
+    // if (!$webform_submission->id()) {
+    //   return;
+    // }
+    // $url = Url::fromRoute('webform_ticket_pdf.print_ticket', [
+    //   'webform_submission' => $webform_submission->id(),
+    // ])->toString();
+
+    // $form_state->setResponse(new RedirectResponse($url));
+
   }
 
 
