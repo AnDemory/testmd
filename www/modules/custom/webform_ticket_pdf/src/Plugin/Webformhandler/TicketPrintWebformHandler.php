@@ -30,12 +30,7 @@ class TicketPrintWebformHandler extends WebformHandlerBase {
   ): void {
 
     // Automatic printing is only for administrators.
-    if (
-      !\Drupal::currentUser()
-        ->hasPermission('administer webform submission')
-    ) {
-      return;
-    }
+
 
     if (
       !$webform_submission->isCompleted()
@@ -57,22 +52,22 @@ class TicketPrintWebformHandler extends WebformHandlerBase {
     );
     // Do not print drafts, updates, or incomplete submissions.
 
-    // if (!$webform_submission->isCompleted()) {
-    //   return;
-    // }
+    if (!$webform_submission->isCompleted()) {
+      return;
+    }
 
-    // if (!$this->appliesToSubmission($webform_submission)) {
-    //   return;
-    // }
+    if (!$this->appliesToSubmission($webform_submission)) {
+      return;
+    }
 
-    // if (!$webform_submission->id()) {
-    //   return;
-    // }
-    // $url = Url::fromRoute('webform_ticket_pdf.print_ticket', [
-    //   'webform_submission' => $webform_submission->id(),
-    // ])->toString();
+    if (!$webform_submission->id()) {
+      return;
+    }
+    $url = Url::fromRoute('webform_ticket_pdf.print_ticket', [
+      'webform_submission' => $webform_submission->id(),
+    ])->toString();
 
-    // $form_state->setResponse(new RedirectResponse($url));
+    $form_state->setResponse(new RedirectResponse($url));
 
   }
 

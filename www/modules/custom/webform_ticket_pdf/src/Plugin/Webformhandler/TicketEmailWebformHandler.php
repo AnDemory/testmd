@@ -179,7 +179,19 @@ class TicketEmailWebformHandler extends EmailWebformHandler {
   }
 
 
+  public function postSave(
+    WebformSubmissionInterface $webform_submission,
+    $update = TRUE
+  ): void {
+    // Automatic ticket emails are only sent during anonymous requests.
 
+
+    if (webform_ticket_pdf_suppress_ticket_email()) {
+      return;
+    }
+
+    parent::postSave($webform_submission, $update);
+  }
 
 }
 

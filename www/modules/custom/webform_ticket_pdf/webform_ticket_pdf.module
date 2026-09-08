@@ -177,7 +177,7 @@ function webform_ticket_pdf_webform_submission_insert(
   if (webform_ticket_pdf_is_ticket_submission($submission)) {
     $data = $submission->getData();
 
-    if (empty($data['eancode'])) {
+    if (empty($data['ean_code'])) {
       $webform_id = $submission->getWebform()->id();
 
       $prefix = webform_ticket_pdf_type($webform_id) === 'exhibitor'
@@ -190,7 +190,15 @@ function webform_ticket_pdf_webform_submission_insert(
       );
 
       $submission->setData($data);
-      $submission->save();
+
+      webform_ticket_pdf_suppress_ticket_email(TRUE);
+
+      try {
+        $submission->save();
+      }
+      finally {
+        webform_ticket_pdf_suppress_ticket_email(FALSE);
+      }
     }
   }
 
@@ -664,6 +672,17 @@ function webform_ticket_pdf_webform_submission_presave( WebformSubmissionInterfa
   ) {
     $webform_submission->setLocked(TRUE);
   }
+}
+
+
+function webform_ticket_pdf_suppress_ticket_email(?bool $value = NULL): bool {
+  static $suppressed = FALSE;
+
+  if ($value !== NULL) {
+    $suppressed = $value;
+  }
+
+  return $suppressed;
 }
 
 

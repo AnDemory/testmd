@@ -37,6 +37,11 @@ elements: |-
   ean_code:
     '#type': hidden
     '#title': 'EAN code'
+  user_roles:
+    '#type': webform_computed_token
+    '#title': 'User roles'
+    '#display_on': none
+    '#template': '[current-user:roles]'
 css: ''
 javascript: ''
 settings:
@@ -239,7 +244,10 @@ handlers:
     label: 'Ticket email'
     notes: ''
     status: true
-    conditions: {  }
+    conditions:
+      enabled:
+        ':input[name="user_roles"]':
+          empty: true
     weight: 0
     settings:
       states:
@@ -277,7 +285,11 @@ handlers:
     label: 'Print ticket'
     notes: ''
     status: true
-    conditions: {  }
+    conditions:
+      enabled:
+        ':input[name="user_roles"]':
+          value:
+            pattern: '(^|,\s*)administrator(\s*,|$)'
     weight: 0
     settings: {  }
 variants: {  }
