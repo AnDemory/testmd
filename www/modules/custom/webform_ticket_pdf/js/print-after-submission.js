@@ -55,6 +55,7 @@
 
         printTicket(printUrl);
 
+         // Prevent printing again when the overview is refreshed.
         const currentUrl = new URL(window.location.href);
         currentUrl.searchParams.delete('print_submission');
 

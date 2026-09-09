@@ -423,7 +423,7 @@ function webform_ticket_pdf_link_alter(&$variables) {
  */
 function webform_ticket_pdf_form_webform_submission_bulk_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
 
-  $form['#attached']['library'][] = 'webform_ticket_pdf/print_after_submission';
+ 
 
 
   $options = $form['items']['#options'] ?? [];
@@ -457,6 +457,55 @@ function webform_ticket_pdf_form_webform_submission_bulk_form_alter(array &$form
 
   if (!in_array($webform->id(), $flat_ids, TRUE)) {
     return;
+  }
+
+  # Add a library for the print button functionality.
+
+  $form['#attached']['library'][] = 'webform_ticket_pdf/print_after_submission';
+
+  
+
+   /*
+   * Check whether TicketPrintWebformHandler stored a newly created submission in the session.
+   * If so, attach a drupalSettings variable with the print URL to the form, so that the ticket can be printed automatically after submission.
+   * Remove the session variable after attaching the URL, so that refreshing the results overview will not print again.
+   * This is only for submissions created by an administrator, so that they can print tickets for visitors without having to log in as them.
+   * The "Print ticket" button is still available for visitors to print their own tickets, but they will not be automatically printed after submission.
+   */
+  $request = \Drupal::request();
+
+  if ($request->hasSession()) {
+    $session = $request->getSession();
+
+    $print_sid = $session->get(
+      'webform_ticket_pdf.print_submission'
+    );
+
+    if ($print_sid) {
+      $print_submission = WebformSubmission::load($print_sid);
+
+      if (
+        $print_submission instanceof WebformSubmissionInterface
+        && $print_submission->getWebform()->id() === $webform_id
+        && webform_ticket_pdf_is_ticket_submission($print_submission)
+      ) {
+        $form['#attached']['drupalSettings']
+          ['webformTicketPdf']['printUrl'] = Url::fromRoute(
+            'webform_ticket_pdf.print_ticket',
+            [
+              'webform_submission' => $print_submission->id(),
+            ]
+          )->toString();
+
+        /*
+         * Remove it only after successfully attaching the URL.
+         * Refreshing the results overview will then not print again.
+         */
+        $session->remove(
+          'webform_ticket_pdf.print_submission'
+        );
+      }
+    }
   }
 
   if (!isset($form['items']['#options'])) {

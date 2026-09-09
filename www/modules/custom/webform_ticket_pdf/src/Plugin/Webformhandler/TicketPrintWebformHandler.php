@@ -29,9 +29,16 @@ class TicketPrintWebformHandler extends WebformHandlerBase {
     WebformSubmissionInterface $webform_submission,
   ): void {
 
-    // Automatic printing is only for administrators.
+    // Only automatically print submissions created by an administrator.
+    // if (
+    //   !$current_user->hasPermission(
+    //     'administer webform submission'
+    //   )
+    // ) {
+    //   return;
+    // }
 
-
+    // Do not print drafts, incomplete submissions or updates.
     if (
       !$webform_submission->isCompleted()
       || !$this->appliesToSubmission($webform_submission)
@@ -46,28 +53,39 @@ class TicketPrintWebformHandler extends WebformHandlerBase {
       return;
     }
 
+    // The results overview reads and removes this value.
     $request->getSession()->set(
       'webform_ticket_pdf.print_submission',
       (int) $webform_submission->id()
     );
-    // Do not print drafts, updates, or incomplete submissions.
 
-    if (!$webform_submission->isCompleted()) {
-      return;
-    }
+    // Automatic printing is only for administrators.
 
-    if (!$this->appliesToSubmission($webform_submission)) {
-      return;
-    }
 
-    if (!$webform_submission->id()) {
-      return;
-    }
-    $url = Url::fromRoute('webform_ticket_pdf.print_ticket', [
-      'webform_submission' => $webform_submission->id(),
-    ])->toString();
+    // if (
+    //   !$webform_submission->isCompleted()
+    //   || !$this->appliesToSubmission($webform_submission)
+    //   || !$webform_submission->id()
+    // ) {
+    //   return;
+    // }
 
-    $form_state->setResponse(new RedirectResponse($url));
+    // $request = \Drupal::request();
+
+    // if (!$request->hasSession()) {
+    //   return;
+    // }
+
+    // $request->getSession()->set(
+    //   'webform_ticket_pdf.print_submission',
+    //   (int) $webform_submission->id()
+    // );
+    
+    // $url = Url::fromRoute('webform_ticket_pdf.print_ticket', [
+    //   'webform_submission' => $webform_submission->id(),
+    // ])->toString();
+
+    // $form_state->setResponse(new RedirectResponse($url));
 
   }
 
