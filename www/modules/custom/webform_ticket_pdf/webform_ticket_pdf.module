@@ -423,7 +423,7 @@ function webform_ticket_pdf_link_alter(&$variables) {
  */
 function webform_ticket_pdf_form_webform_submission_bulk_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
 
- 
+
 
 
   $options = $form['items']['#options'] ?? [];
@@ -463,7 +463,7 @@ function webform_ticket_pdf_form_webform_submission_bulk_form_alter(array &$form
 
   $form['#attached']['library'][] = 'webform_ticket_pdf/print_after_submission';
 
-  
+
 
    /*
    * Check whether TicketPrintWebformHandler stored a newly created submission in the session.

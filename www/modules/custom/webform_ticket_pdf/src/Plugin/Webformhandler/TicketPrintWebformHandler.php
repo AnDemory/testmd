@@ -23,13 +23,15 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class TicketPrintWebformHandler extends WebformHandlerBase {
 
+
+
   public function confirmForm(
     array &$form,
     FormStateInterface $form_state,
     WebformSubmissionInterface $webform_submission,
   ): void {
 
-    // Only automatically print submissions created by an administrator.
+    // Only automatically print submissions created by an administrator. This check is already done by setting a condition in the webform handler settings, but we also check here to be safe.
     // if (
     //   !$current_user->hasPermission(
     //     'administer webform submission'
@@ -53,39 +55,32 @@ class TicketPrintWebformHandler extends WebformHandlerBase {
       return;
     }
 
-    // The results overview reads and removes this value.
+    $submission_id = (int) $webform_submission->id();
+
+    // Store the SID for the print-dialog logic.
     $request->getSession()->set(
       'webform_ticket_pdf.print_submission',
-      (int) $webform_submission->id()
+      $submission_id
     );
 
-    // Automatic printing is only for administrators.
+    $webform_id = $webform_submission->getWebform()->id();
 
+    // Redirect to the results overview page with a query parameter to trigger printing.
+    $url = Url::fromRoute(
+      'entity.webform.results_submissions',
+      [
+        'webform' => $webform_id,
+      ],
+      [
+        'query' => [
+          'print_submission' => $submission_id,
+        ],
+      ]
+    );
 
-    // if (
-    //   !$webform_submission->isCompleted()
-    //   || !$this->appliesToSubmission($webform_submission)
-    //   || !$webform_submission->id()
-    // ) {
-    //   return;
-    // }
-
-    // $request = \Drupal::request();
-
-    // if (!$request->hasSession()) {
-    //   return;
-    // }
-
-    // $request->getSession()->set(
-    //   'webform_ticket_pdf.print_submission',
-    //   (int) $webform_submission->id()
-    // );
-    
-    // $url = Url::fromRoute('webform_ticket_pdf.print_ticket', [
-    //   'webform_submission' => $webform_submission->id(),
-    // ])->toString();
-
-    // $form_state->setResponse(new RedirectResponse($url));
+    $form_state->setResponse(
+      new RedirectResponse($url->toString())
+    );
 
   }
 
