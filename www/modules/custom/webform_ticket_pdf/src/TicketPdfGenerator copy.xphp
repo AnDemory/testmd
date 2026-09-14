@@ -15,7 +15,7 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
 use Jenssegers\Optimus\Optimus;
 
 
-class TicketPdfGenerator {
+class TicketPdfGeneratorX {
 
   protected FileSystemInterface $fileSystem;
 
@@ -87,15 +87,8 @@ class TicketPdfGenerator {
     return $template_path;
   }
 
-  public function generate(WebformSubmissionInterface $submission, ?string $domain = NULL): string {
-    $pdf = $this->builPDF($submission, $domain);
-
-    // Return PDF as string, do not save file
-    return $pdf->Output('', 'S');
-  }
-
   //public function generate(WebformSubmissionInterface $submission): string {
-  private function builPDF(WebformSubmissionInterface $submission, ?string $domain = NULL): \TCPDF {
+  public function generate(WebformSubmissionInterface $submission, ?string $domain = NULL): string {
 
     $data = $submission->getData();
     $webform_id = $submission->getWebform()->id();
@@ -388,8 +381,7 @@ class TicketPdfGenerator {
     // RETURN PDF AS STRING, DO NOT SAVE FILE
     // -------------------------------------------------
 
-    // return $pdf->Output('', 'S');
-    return $pdf;
+    return $pdf->Output('', 'S');
   }
 
   // =====================================================
@@ -439,30 +431,7 @@ class TicketPdfGenerator {
     return $path;
   }
 
-  public function save(
-    WebformSubmissionInterface $submission,
-    string $destination,
-  ): string {
-    $pdf = $this->buildPdf($submission);
 
-    $directory = dirname($destination);
-
-    if (!is_dir($directory) || !is_writable($directory)) {
-      throw new \RuntimeException(
-        "PDF directory is not writable: $directory"
-      );
-    }
-
-    $pdf->Output($destination, 'F');
-
-    if (!is_file($destination)) {
-      throw new \RuntimeException(
-        "PDF was not created: $destination"
-      );
-    }
-
-    return $destination;
-  }
 
 }
 

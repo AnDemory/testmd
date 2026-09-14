@@ -1,0 +1,30 @@
+elements: |
+  intro_text:
+    '#text': "<p>Inscrivez-vous ci-dessous en tant que visiteur du Aquarama Trade Fair 2026. Après l'inscription vous allez recevoir un e-mail de confirmation avec un ticket d'entrée en annex. Veuillez imprimer ce ticket d'entrée et le présenter à l'entrée du salon.</p><p><em>Pendant les salons professionnels, nous utilisons un code QR qui est relié à vos coordonnées (nom de l’entreprise, nom et e-mail)&nbsp; que vous avez remplies lors de votre inscription. Ce QR code peut être scanné par l’exposant sur le stand que vous visitez, sous réserve de votre consentement oral.</em></p><p><br><em>Chaque visiteur doit s’inscrire&nbsp;séparément.&nbsp;</em></p><p><strong>Organisation:&nbsp;</strong> FCO Media, +32 (0)56 77 13 10, <a href=\"mailto:info@aquarama.be\">info@aquarama.be</a>&nbsp;</p>"
+  mijjn_beursbezoek:
+    '#title': 'Ma visite du salon'
+    '#options':
+      visit: 'Visite GRATUITE du salon -- 09:30 - 18:00'
+  mijn_congres:
+    '#title': 'Mon congres'
+    '#options':
+      'Watercircle.be - VMx': "Watercircle.be - VMx -- 09:30 - 13:00<br>Etudiants : € 25, membres de watercircle.be : € 50, membres de VMX : € 75, non-membres : € 100, défection : € 50<br>Paiement à la réception de la facture. L'inscription ne sera définitive qu’après paiement."
+      Vlario: 'Vlario -- 10:15 - 16:00<br>Gratuit, défection : € 50'
+      AquaFlanders: 'AquaFlanders -- 14:00 - 16:00 <br>Gratuit, défection : € 50'
+      Cebedeau: 'Cebedeau -- 13:30 - 15:00<br>Gratuit, défection : € 50'
+      'Interreg NEW WATER': 'Interreg NEW WATER -- 14:00 - 15:00<br>Gratuit, défection : € 50'
+      B-IWA: 'B-IWA -- 15:00 - 16:15<br>B-IWA members : gratuit, non-members: € 50, défection: € 50'
+  mijn_lidmaatschap:
+    '#title': 'Mon adhésion'
+    '#options':
+      'Lid watercircle.be': 'Membre de watercircle.be'
+      'Lid VMX': 'Membre de VMX'
+      'Lid B-IWA': 'Membre de B-IWA'
+      Student: 'Etudiant -- Vous êtes un étudiant Bachelier ou Master, un justificatif d’inscription pourra vous être demandé.'
+    '#options_none_text': 'Aucune des réponses ci-dessus'
+  uw_prijs:
+    '#title': 'Votre prix'
+handlers:
+  ticket_email:
+    settings:
+      body: '<p>Cher, [webform_submission:user:field_first_name] [webform_submission:user:field_name],<br><br>Wij hebben uw inschrijving voor de Aquarama Trade Fair 2026 goed ontvangen.<br><br>In de bijlage kunt u uw bestelde toegangsticket terugvinden. Dit toegangsticket geldt als badge en biedt u rechtstreeks toegang tot de beurs. Gelieve dit toegangsticket af te drukken en mee te brengen naar de ingang van de beurs. Uw registratie wijzigen en het toegangsticket downloaden kan steeds via uw profielpagina’s op onze website. (<a href="https://aquaramatradefair.ddev.site/my-registration">Klik hier</a>)<br><br><br><br><strong>Praktische info</strong><br>Aquarama Trade Fair 2026<br>Donderdag 23 oktober van 9u tot 18u<br>Brabanthal, Brabantlaan 1, 3001 Leuven<br><br>Bij ‘no show’ of afmelden minder dan 48u voor het congres is de toegangsprijs verschuldigd.&nbsp;<br><br><strong>Organisatie</strong><br>FCO Media<br>Boulevard des Canadiens 118<br>B - 7711 Dottignies<br>+32 (0)56 77 13 10<br><a href="mailto:info@aquarama.be">info@aquarama.be</a><br><a href="https://www.aquaramatradefair.be">www.aquaramatradefair.be</a></p><div id="eid-safari-extension-is-installed">&nbsp;</div><p><img src="https://www.aquaramatradefair.be/uploads/nieuws/images/full/atf20261200x800web2.jpg"></p>'

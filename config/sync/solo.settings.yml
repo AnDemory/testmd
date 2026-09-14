@@ -90,7 +90,7 @@ enable_per_type_layout_bottom: false
 enable_per_type_layout_footer: false
 main_2col: solo-col-2-1
 main_3col: solo-col-1-2-1
-count_main: 2
+count_main: 1
 count_top: 0
 count_bottom: 0
 count_footer: 0

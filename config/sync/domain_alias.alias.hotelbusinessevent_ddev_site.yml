@@ -1,0 +1,9 @@
+uuid: b88e6520-9ac6-4972-9bcf-5ac639d8fdc2
+langcode: nl
+status: true
+dependencies: {  }
+id: hotelbusinessevent_ddev_site
+domain_id: www_hotelbusinessevent_be
+pattern: hotelbusinessevent.ddev.site
+redirect: 0
+environment: local

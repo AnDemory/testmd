@@ -1,0 +1,7 @@
+name: 'Hotel Business Event'
+mail: admin@example.com
+slogan: ''
+page:
+  403: ''
+  404: ''
+  front: /node/8

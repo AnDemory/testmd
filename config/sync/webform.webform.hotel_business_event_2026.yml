@@ -1,0 +1,332 @@
+uuid: e79be551-d70e-4304-a37c-8f26da0b62c9
+langcode: nl
+status: open
+dependencies:
+  module:
+    - webform_ticket_pdf
+weight: 0
+open: null
+close: null
+uid: 1
+template: false
+archive: false
+id: hotel_business_event_2026
+title: 'Hotel Business Event 2026'
+description: '<p>Hotel Business Event 2026</p>'
+categories:
+  - visitor
+  - domain_hb
+elements: |-
+  intro_text:
+    '#type': processed_text
+    '#text': '<p>Registreer u hieronder als bezoeker van Hotel Business Event 2026 - donderdag 22 oktober 2026. Na de registratie ontvangt u een e-mail met uw toegangsticket in bijlage ter bevestiging. Gelieve dat toegangsticket af te drukken en mee te brengen bij uw bezoek aan Hotel Business Event 2026.</p><p><em>Iedere bezoeker dient zich apart te registreren!</em></p><p><em>Tijdens het evenement&nbsp;gebruiken we een QR code die verbonden is met uw contactgegevens (naam bedrijf, naam en e mail) die u heeft ingevuld tijdens uw registratie. Deze QR code kan ingescand worden door de exposant op de door u bezochte stand.</em></p><p><strong>Organisatie:&nbsp;</strong> FCO Media, +32 (0)56 77 13 10, <a href="mailto:info@aquarama.be">info@aquarama.be</a>&nbsp;</p>'
+    '#format': basic_html
+  mijn_profiel:
+    '#type': radios
+    '#title': 'Mijn profiel'
+    '#options':
+      Owner: 'Eigenaar van een hotel of logies'
+      Manager: 'Manager van een hotel of logies'
+      Active: 'Werkzaam in een hotel of logies'
+      Consultant: Consultant
+      Supplier: 'Toeleverancies of hotel- of logiessector'
+    '#required': true
+  price_message_free:
+    '#type': webform_message
+    '#states':
+      invisible:
+        - ':input[name="mijn_profiel"]':
+            unchecked: true
+        - or
+        - ':input[name="mijn_profiel"]':
+            value: Supplier
+    '#display_on': both
+    '#message_type': info
+    '#message_message': '<p>Uw deelname is gratis.<br>Let op: kosteloos annuleren is mogelijk tot en met 19 oktober 2026. Bij te late annulering or afwezigheid zonder kennisgeving worden no-showkosten van 95 euro in rekening gebracht.</p>'
+  price_message_pay:
+    '#type': webform_message
+    '#states':
+      visible:
+        ':input[name="mijn_profiel"]':
+          value: Supplier
+    '#display_on': both
+    '#message_type': warning
+    '#message_message': '<p>Toeleveranciers die geen exposant zijn betalen een bijdrage van 250 euro (excl. btw) per persoon voor toegang tot het netwerkevent.<br>Let op: kosteloos annuleren kan tot en met 19 oktober 2026</p>'
+  mijjn_beursbezoek:
+    '#type': radios
+    '#title': 'Mijn beursbezoek'
+    '#options':
+      visit: |-
+        Bezoek exporuimte -- 09:00 - 17:00
+        <br>Donderdag 22 oktober 2026 van 9u tot 17u - Brabanthal Leuven
+    '#required': true
+    '#default_value': visit
+  mijn_congres:
+    '#type': checkboxes
+    '#title': 'Mijn congres'
+    '#description': '<h4 style="-webkit-text-stroke-width:0px;background-color:rgb(255, 255, 255);box-sizing:border-box;color:rgb(51, 51, 51);font-family:Roboto, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;;font-size:18px;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:500;letter-spacing:normal;line-height:1.1;margin-bottom:10px;margin-top:10px;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">FUTURE-PROOF HOSPITALITY</h4><p><span style="-webkit-text-stroke-width:0px;background-color:rgb(255, 255, 255);color:rgb(51, 51, 51);display:inline !important;float:none;font-family:Roboto, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;;font-size:14px;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-decoration-color:initial;text-decoration-style:initial;text-decoration-thickness:initial;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;">Inschrijven voor één of meerdere sessies is inclusief netwerklunch.</span></p>'
+    '#title_display': before
+    '#description_display': before
+    '#options':
+      'Hotelconcepten in de praktijk': 'Hotelconcepten in de praktijk<br>Paul Suy -- 10:00 - 11:00'
+      'De financiële weerbaarheid van hotels': 'De financiële weerbaarheid van hotels<br>Stef Driessen - ABN AMRO -- 11:00 - 12:00'
+      'Guestology: de wetenschap achter de gastbeleving': 'Guestology: de wetenschap achter de gastbeleving<br>Goof Lukken -- 13:15 - 14:15'
+      'Van SEO naar GEO: zichtbaar blijven in het AI-tijdperk': 'Van SEO naar GEO: zichtbaar blijven in het AI-tijdperk<br>Rachel Persoon -- 14:15 - 15:15'
+  uw_prijs:
+    '#type': webform_computed_twig
+    '#title': 'Uw prijs'
+    '#template': |-
+      {% set profiel = data.mijn_profiel|default([]) %}
+
+      {% set is_supplier = 'Supplier' in profiel %}
+      {% set total = 0 %}
+
+      {% if is_supplier %}
+        {% set total = total + 250 %}
+      {% endif %}
+
+      €{{ total }}
+    '#whitespace': spaceless
+    '#hide_empty': true
+    '#store': true
+    '#ajax': true
+  contact:
+    '#type': radios
+    '#title': 'Mogen exposanten van dit event u na afloop contacteren met informatie over hun producten en diensten?'
+    '#options':
+      contact_yes: 'Ja, ik geef toestemming dat mijn gegevens worden gedeeld met exposanten die relevant zijn voor mijn interesses.'
+      contact_no: 'Nee, ik wens niet gecontacteerd te worden door exposanten.'
+    '#required': true
+    '#required_error': 'Duid uw contactvoorkeur aan'
+  ean_code:
+    '#type': hidden
+    '#title': 'EAN code'
+  language:
+    '#type': hidden
+    '#title': Language
+    '#default_value': '[language:langcode]'
+css: ''
+javascript: ''
+settings:
+  ajax: false
+  ajax_scroll_top: form
+  ajax_progress_type: ''
+  ajax_effect: ''
+  ajax_speed: null
+  page: true
+  page_submit_path: ''
+  page_confirm_path: ''
+  page_theme_name: ''
+  form_title: source_entity_webform
+  form_submit_once: true
+  form_open_message: ''
+  form_close_message: ''
+  form_exception_message: ''
+  form_previous_submissions: true
+  form_confidential: false
+  form_confidential_message: ''
+  form_disable_remote_addr: false
+  form_convert_anonymous: false
+  form_prepopulate: false
+  form_prepopulate_source_entity: false
+  form_prepopulate_source_entity_required: false
+  form_prepopulate_source_entity_type: ''
+  form_unsaved: false
+  form_disable_back: true
+  form_submit_back: false
+  form_disable_autocomplete: false
+  form_novalidate: false
+  form_disable_inline_errors: false
+  form_required: false
+  form_autofocus: false
+  form_details_toggle: false
+  form_reset: false
+  form_access_denied: default
+  form_access_denied_title: ''
+  form_access_denied_message: ''
+  form_access_denied_attributes: {  }
+  form_file_limit: ''
+  form_file_limit_message: ''
+  form_attributes: {  }
+  form_method: ''
+  form_action: ''
+  share: false
+  share_node: false
+  share_theme_name: ''
+  share_title: true
+  share_page_body_attributes: {  }
+  submission_label: ''
+  submission_exception_message: ''
+  submission_locked_message: ''
+  submission_log: false
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
+  submission_views: {  }
+  submission_views_replace: {  }
+  submission_user_columns: {  }
+  submission_user_duplicate: false
+  submission_access_denied: default
+  submission_access_denied_title: ''
+  submission_access_denied_message: ''
+  submission_access_denied_attributes: {  }
+  previous_submission_message: ''
+  previous_submissions_message: ''
+  autofill: false
+  autofill_message: ''
+  autofill_excluded_elements: {  }
+  wizard_progress_bar: true
+  wizard_progress_pages: false
+  wizard_progress_percentage: false
+  wizard_progress_link: false
+  wizard_progress_states: false
+  wizard_start_label: ''
+  wizard_preview_link: false
+  wizard_confirmation: true
+  wizard_confirmation_label: ''
+  wizard_auto_forward: true
+  wizard_auto_forward_hide_next_button: false
+  wizard_keyboard: true
+  wizard_track: ''
+  wizard_prev_button_label: ''
+  wizard_next_button_label: ''
+  wizard_toggle: false
+  wizard_toggle_show_label: ''
+  wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
+  preview: 0
+  preview_label: ''
+  preview_title: ''
+  preview_message: ''
+  preview_attributes: {  }
+  preview_excluded_elements: {  }
+  preview_exclude_empty: true
+  preview_exclude_empty_checkbox: false
+  draft: none
+  draft_multiple: false
+  draft_auto_save: false
+  draft_saved_message: ''
+  draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
+  confirmation_type: url_message
+  confirmation_url: /my-registration
+  confirmation_title: ''
+  confirmation_message: ''
+  confirmation_attributes: {  }
+  confirmation_back: true
+  confirmation_back_label: ''
+  confirmation_back_attributes: {  }
+  confirmation_exclude_query: false
+  confirmation_exclude_token: false
+  confirmation_update: false
+  limit_total: null
+  limit_total_interval: null
+  limit_total_message: ''
+  limit_total_unique: false
+  limit_user: null
+  limit_user_interval: null
+  limit_user_message: ''
+  limit_user_unique: false
+  entity_limit_total: null
+  entity_limit_total_interval: null
+  entity_limit_user: null
+  entity_limit_user_interval: null
+  purge: none
+  purge_days: null
+  results_disabled: false
+  results_disabled_ignore: false
+  results_customize: false
+  token_view: false
+  token_update: false
+  token_delete: false
+  serial_disabled: false
+access:
+  create:
+    roles:
+      - authenticated
+    users: {  }
+    permissions: {  }
+  view_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  purge_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  view_own:
+    roles:
+      - authenticated
+    users: {  }
+    permissions: {  }
+  update_own:
+    roles:
+      - authenticated
+    users: {  }
+    permissions: {  }
+  delete_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  administer:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+handlers:
+  ticket_email:
+    id: ticket_email
+    handler_id: ticket_email
+    label: 'Ticket email'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: -50
+    settings:
+      states:
+        - completed
+      to_mail: '[webform_submission:user:mail]'
+      to_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      from_mail: info@hotelbusinessevent.be
+      from_options: {  }
+      from_name: _default
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      subject: _default
+      body: '<p>Beste [webform_submission:user:field_first_name] [webform_submission:user:field_name],<br><br>Wij hebben uw inschrijving voor het Hotel Business Event 2026 goed ontvangen.<br><br>In de bijlage kunt u uw bestelde toegangsticket terugvinden. Dit toegangsticket geldt als badge en biedt u rechtstreeks toegang tot de beurs. Gelieve dit toegangsticket af te drukken en mee te brengen naar de ingang van de beurs. Uw registratie wijzigen en het toegangsticket downloaden kan steeds via uw profielpagina’s op onze website. (<a href="https://aquaramatradefair.ddev.site/my-registration">Klik hier</a>)<br><br><br><br><strong>Praktische info</strong><br>Hotel Business Event 2026<br>Donderdag 29 oktober van 9u tot 18u<br>Brabanthal, Brabantlaan 1, 3001 Leuven<br><br>Bij ‘no show’ of afmelden minder dan 48u voor het congres is de toegangsprijs verschuldigd.&nbsp;<br><br><strong>Organisatie</strong><br>FCO Media<br>Boulevard des Canadiens 118<br>B - 7711 Dottignies<br>+32 (0)56 77 13 10<br><a href="mailto:info@aquarama.be">info@aquarama.be</a><br><a href="https://www.aquaramatradefair.be">www.aquaramatradefair.be</a></p><div id="eid-safari-extension-is-installed">&nbsp;</div><p>&nbsp;</p>'
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      exclude_attachments: false
+      html: true
+      attachments: false
+      twig: false
+      theme_name: ''
+      langcode: ''
+      parameters: {  }
+      debug: false
+variants: {  }

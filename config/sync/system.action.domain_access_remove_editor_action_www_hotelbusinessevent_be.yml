@@ -1,0 +1,15 @@
+uuid: c2739189-2937-4778-8165-95f49c8eb159
+langcode: nl
+status: true
+dependencies:
+  config:
+    - domain.record.www_hotelbusinessevent_be
+  module:
+    - domain_access
+id: domain_access_remove_editor_action_www_hotelbusinessevent_be
+label: 'Remove editors from the Hotel Business Event domain'
+type: user
+plugin: domain_access_remove_editor_action
+configuration:
+  domain_id:
+    - www_hotelbusinessevent_be

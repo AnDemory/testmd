@@ -1,0 +1,15 @@
+uuid: 41d02db5-21fa-42ae-a38e-12fbf067b627
+langcode: nl
+status: true
+dependencies:
+  config:
+    - domain.record.www_hotelbusinessevent_be
+  module:
+    - domain_access
+id: domain_access_add_editor_action_www_hotelbusinessevent_be
+label: 'Add editors to the Hotel Business Event domain'
+type: user
+plugin: domain_access_add_editor_action
+configuration:
+  domain_id:
+    - www_hotelbusinessevent_be

@@ -1,0 +1,8 @@
+services:
+  webform_ticket_pdf.commands.people_import:
+    class: Drupal\webform_ticket_pdf\Drush\Commands\PeopleImportCommands
+    arguments:
+      - '@entity_type.manager'
+      - '@webform_ticket_pdf.ticket_pdf_generator'
+    tags:
+      - { name: drush.command }

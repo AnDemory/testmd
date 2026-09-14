@@ -19,3 +19,12 @@ domains:
     ticket_visitor_bulk_webform_id: fm_day_2026_bulk
     ticket_template: 'private://templates/FM/2026/FM2026'
     lead_retrieval_url: 'https://fmhb2026-events.fcoffice.local:444/apps/lr/'
+  -
+    domain: hotelbusinessevent.ddev.site
+    domain_id: hb
+    mail: info@hotelbusinessevent.be
+    ticket_webform_id: hotel_business_event_2026
+    ticket_exhibitor_webform_id: ''
+    ticket_visitor_bulk_webform_id: ''
+    ticket_template: 'private://templates/HB/2026/HB2026'
+    lead_retrieval_url: 'https://fmhb2026-events.fcoffice.local:444/apps/lr/'

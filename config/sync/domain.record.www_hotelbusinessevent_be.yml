@@ -1,0 +1,11 @@
+uuid: 6e38fac5-e2f2-4691-8767-8ec8ad683efd
+langcode: nl
+status: true
+dependencies: {  }
+id: www_hotelbusinessevent_be
+domain_id: 8698187
+hostname: www.hotelbusinessevent.be
+name: 'Hotel Business Event'
+scheme: https
+weight: 3
+is_default: false

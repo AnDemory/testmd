@@ -1,0 +1,15 @@
+uuid: 37004dc3-bf9b-4be7-b45c-1020bf72d0d1
+langcode: nl
+status: true
+dependencies:
+  config:
+    - domain.record.www_hotelbusinessevent_be
+  module:
+    - domain_access
+id: domain_access_add_action_www_hotelbusinessevent_be
+label: 'Add selected content to the Hotel Business Event domain'
+type: node
+plugin: domain_access_add_action
+configuration:
+  domain_id:
+    - www_hotelbusinessevent_be
