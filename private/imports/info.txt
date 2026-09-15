@@ -1,0 +1,8 @@
+https://chatgpt.com/g/g-p-6a8425545fa48191a5734395687f094f-drupal-11/c/6aa7f682-83fc-83ed-b10a-ea7745ba5cfb
+Finds the user by email address.
+Creates the account only when none exists.
+Checks for an existing submission for that user and webform.
+Creates the submission only when none exists. (via bulk form)
+Creates the PDF and save it in the same place as the import file.
+Form field 'is_import': if true (not empty): do not execute the handlers, do not lock the submission
+ddev drush wtp:import /var/www/html/private/imports/fm-belfa-2026.csv fm_day_2026_bulk --delimiter=";"

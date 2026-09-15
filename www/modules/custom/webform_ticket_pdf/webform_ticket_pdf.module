@@ -708,9 +708,10 @@ function webform_ticket_pdf_generate_ean( $sid, $prefix = '250' ) {
 function webform_ticket_pdf_webform_submission_presave( WebformSubmissionInterface $webform_submission): void {
   $webform = $webform_submission->getWebform();
   $categories = (array) $webform->get('categories');
+  $data = $webform_submission->getData();
 
-  // Only lock submissions belonging to a webform in the "bulk" category.
-  if (!in_array('bulk', $categories, TRUE)) {
+  // Only lock submissions belonging to a webform in the "bulk" category, and only if the submission is not marked as an import submission.
+  if (!in_array('bulk', $categories, TRUE) || $data['is_import'] === 'true') {
     return;
   }
 

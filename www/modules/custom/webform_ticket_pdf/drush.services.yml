@@ -3,6 +3,6 @@ services:
     class: Drupal\webform_ticket_pdf\Drush\Commands\PeopleImportCommands
     arguments:
       - '@entity_type.manager'
-      - '@webform_ticket_pdf.ticket_pdf_generator'
+      - '@webform_ticket_pdf.generator'
     tags:
       - { name: drush.command }

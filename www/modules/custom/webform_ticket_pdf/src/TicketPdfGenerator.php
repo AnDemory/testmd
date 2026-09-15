@@ -12,6 +12,7 @@ use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 
 use Picqer\Barcode\BarcodeGeneratorPNG;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Jenssegers\Optimus\Optimus;
 
 
@@ -24,6 +25,9 @@ class TicketPdfGenerator {
   }
 
   protected function getBackgroundTemplate(array $data, string $webform_id, ?string $domain = NULL): string {
+    \Drupal::logger('TicketPdfGenerator')->notice('Getting background template for webform: ' . $webform_id);
+    \Drupal::logger('TicketPdfGenerator')->notice('Submission data: ' . print_r($data, TRUE));
+    \Drupal::logger('TicketPdfGenerator')->notice('Domain: ' . $domain);
     $configured_webform_id = \Drupal::service('domain_settings.manager')
       ->getTicketWebformId($domain);
 
@@ -88,14 +92,14 @@ class TicketPdfGenerator {
   }
 
   public function generate(WebformSubmissionInterface $submission, ?string $domain = NULL): string {
-    $pdf = $this->builPDF($submission, $domain);
+    $pdf = $this->buildPdf($submission, $domain);
 
     // Return PDF as string, do not save file
     return $pdf->Output('', 'S');
   }
 
   //public function generate(WebformSubmissionInterface $submission): string {
-  private function builPDF(WebformSubmissionInterface $submission, ?string $domain = NULL): \TCPDF {
+  private function buildPdf(WebformSubmissionInterface $submission, ?string $domain = NULL): \TCPDF {
 
     $data = $submission->getData();
     $webform_id = $submission->getWebform()->id();
@@ -443,7 +447,13 @@ class TicketPdfGenerator {
     WebformSubmissionInterface $submission,
     string $destination,
   ): string {
-    $pdf = $this->buildPdf($submission);
+
+    $domain = webform_ticket_pdf_get_domain_for_submission($submission);
+
+    if (!$domain) {
+      throw new NotFoundHttpException('No ticket domain found for this submission.');
+    }
+    $pdf = $this->buildPdf($submission, $domain);
 
     $directory = dirname($destination);
 

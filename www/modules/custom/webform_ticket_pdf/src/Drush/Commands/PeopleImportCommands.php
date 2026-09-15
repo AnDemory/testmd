@@ -193,26 +193,30 @@ final class PeopleImportCommands extends DrushCommands {
       $submission->save();
       $created_submissions++;
 
-      // $pdf_filename = sprintf(
-      //   '%s-ticket-%d.pdf',
-      //   $webform_id,
-      //   $submission->id(),
-      // );
+      $pdf_filename = sprintf(
+        '%s-ticket-%d.pdf',
+        $webform_id,
+        $submission->id(),
+      );
 
-      // $pdf_path = $import_directory . DIRECTORY_SEPARATOR . $pdf_filename;
+      $pdf_path = $import_directory . DIRECTORY_SEPARATOR . $pdf_filename;
 
-      // try {
-      //   $this->ticketPdfGenerator->save($submission, $pdf_path);
+      \Drupal::logger('webform_ticket_pdf')->notice(
+        "Generating PDF for submission {$submission->id()} at $pdf_path"
+      );
 
-      //   $this->logger()->success(
-      //     "Created submission {$submission->id()} and PDF $pdf_filename for $email"
-      //   );
-      // }
-      // catch (\Throwable $exception) {
-      //   $this->logger()->error(
-      //     "Submission {$submission->id()} was created, but its PDF failed: {$exception->getMessage()}"
-      //   );
-      // }
+      try {
+        $this->ticketPdfGenerator->save($submission, $pdf_path);
+
+        $this->logger()->success(
+          "Created submission {$submission->id()} and PDF $pdf_filename for $email"
+        );
+      }
+      catch (\Throwable $exception) {
+        $this->logger()->error(
+          "Submission {$submission->id()} was created, but its PDF failed: {$exception->getMessage()}"
+        );
+      }
 
 
       $this->logger()->success(
